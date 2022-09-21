@@ -10,7 +10,7 @@ import Widgets.WordPickerController;
 public class WordsManager implements StoppableAccordinglyToPlayableTime {
 
     // -------------------------------  Dependencies -----------------------------------------
-    private WordRepositoryService wordRepositoryService;
+    private SessionManager sessionManager;
     private WordPickerController temporaryWordPickerController;
 
 
@@ -26,9 +26,9 @@ public class WordsManager implements StoppableAccordinglyToPlayableTime {
     // -------------------------------  Public Methods -----------------------------------------
 
 
-    public WordsManager(){
+    public WordsManager(SessionManager sessionManager){
 
-        wordRepositoryService = new WordRepositoryService();
+        this.sessionManager = sessionManager;
     }
 
 
