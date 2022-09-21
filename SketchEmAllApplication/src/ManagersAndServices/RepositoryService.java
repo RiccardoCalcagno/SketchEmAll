@@ -6,7 +6,7 @@ public class RepositoryService {
 
     public String chooseNextWord(){
 
-        return null;
+        return "cup";
     }
 
 

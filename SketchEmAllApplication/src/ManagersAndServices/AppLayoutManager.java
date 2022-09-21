@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class AppLayoutManager extends JFrame {
 
+    private JFrame containerOfWordPickerWdget = null;
+
     public AppLayoutManager() {
         super();
 
@@ -48,6 +50,24 @@ public class AppLayoutManager extends JFrame {
 
     public void instantiateWordPickerWidget(WordPickerController wordPickerController){
 
+        containerOfWordPickerWdget = new JFrame();
+
+        containerOfWordPickerWdget.add(wordPickerController);
+
+        containerOfWordPickerWdget.pack();
+        containerOfWordPickerWdget.setVisible(true);
     }
+
+    public void removeWordPickerWidget(){
+
+        if(containerOfWordPickerWdget !=null){
+
+            containerOfWordPickerWdget.setVisible(false);
+            containerOfWordPickerWdget.dispose();
+            containerOfWordPickerWdget = null;
+        }
+
+    }
+
 
 }

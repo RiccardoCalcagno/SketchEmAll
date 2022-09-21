@@ -1,13 +1,10 @@
 package ManagersAndServices;
 
-import Animators.Animator;
 import Animators.BadgeAttestationAnimator;
-import InternModels.TurnFailReason;
+import InternModels.TurnEndReason;
 import Widgets.*;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.HashSet;
 
 public class SessionManager{
 
@@ -71,19 +68,24 @@ public class SessionManager{
 
 
 
-    private void handleGenericEndOfTurn(){
+    public void handleGenericEndOfTurn(TurnEndReason turnEndReason){
+
+        if(turnEndReason == TurnEndReason.WORD_GUESSED){
+            handleSuccessOfTurn();
+        }
+        else{
+            handleFailOfTurn(turnEndReason);
+        }
+    }
+
+    private void handleSuccessOfTurn(){
+
+        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
 
         timeManager.stopSessionTime();
 
         canvasController.reset();
         wordsInputController.reset();
-    }
-
-    public void handleSuccessOfTurn(){
-
-        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
-
-        handleGenericEndOfTurn();
 
         //badgeAttestationAnimator.PerformAnimation();
 
@@ -92,9 +94,12 @@ public class SessionManager{
         turnsManager.startTurn();
     }
 
-    public void handleFailOfTurn(TurnFailReason turnFailReason){
+    private void handleFailOfTurn(TurnEndReason turnEndReason){
 
-        handleGenericEndOfTurn();
+        timeManager.stopSessionTime();
+
+        canvasController.reset();
+        wordsInputController.reset();
 
         turnsManager.startTurn();
     }
