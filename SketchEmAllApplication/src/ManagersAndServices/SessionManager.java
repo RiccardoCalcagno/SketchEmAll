@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 
-public class SessionManager extends JFrame {
+public class SessionManager{
 
     private TurnsManager turnsManager;
     private WordsManager wordsManager;
@@ -28,7 +28,7 @@ public class SessionManager extends JFrame {
     private WordsInputController wordsInputController;
 
 
-    public SessionManager(){
+    public SessionManager() {
 
         // ----------------- Services -------------------
         loopTaskService = new LoopTaskService();
@@ -53,10 +53,9 @@ public class SessionManager extends JFrame {
         timeManager.addPlayableTimeResponsiveController(timerController);
         timeManager.addPlayableTimeResponsiveController(wordsInputController);
 
-        startSession();
     }
 
-    private void startSession(){
+    public void startSession(){
         loopTaskService.startLoop();
 
         appLayoutManager.presentStartLayout(badgesController, canvasController, timerController, wordsInputController);
