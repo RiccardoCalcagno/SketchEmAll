@@ -12,11 +12,13 @@ import java.util.HashSet;
 public class SessionManager extends JFrame {
 
     private TurnsManager turnsManager;
-    public TimeManager timeManager;
     private WordsManager wordsManager;
-    private LoopTaskService loopTaskService;
     private BadgeAttestationAnimator badgeAttestationAnimator;
     private AppLayoutManager appLayoutManager;
+
+    public TimeManager timeManager;
+    public LoopTaskService loopTaskService;
+    public RepositoryService repositoryService;
 
 
     // -------------------------  widget of Session ------------------------
@@ -28,12 +30,17 @@ public class SessionManager extends JFrame {
 
     public SessionManager(){
 
+        // ----------------- Services -------------------
         loopTaskService = new LoopTaskService();
-        wordsManager = new WordsManager();
-        timeManager = new TimeManager(loopTaskService);
+        repositoryService = new RepositoryService();
+
+        // ----------------- Managers -------------------
+        wordsManager = new WordsManager(this);
+        timeManager = new TimeManager(this);
         turnsManager = new TurnsManager(this);
         appLayoutManager = new AppLayoutManager();
 
+        // ----------------- Widgets -------------------
         badgesController = new BadgesController();
         canvasController = new CanvasController();
         timerController = new TimerController(timeManager);

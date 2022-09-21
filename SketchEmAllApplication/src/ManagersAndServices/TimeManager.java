@@ -8,8 +8,7 @@ import java.util.List;
 
 public class TimeManager {
 
-    private LoopTaskService loopTaskService;
-
+    private SessionManager sessionManager;
 
     private LocalDateTime timeOfSessionStart;
 
@@ -33,11 +32,11 @@ public class TimeManager {
 
     private List<StoppableAccordinglyToPlayableTime> playableTimeResponsiveControllers = new ArrayList<StoppableAccordinglyToPlayableTime>();
 
-    public TimeManager(LoopTaskService loopTaskService){
+    public TimeManager(SessionManager sessionManager){
 
-        this.loopTaskService = loopTaskService;
+        this.sessionManager = sessionManager;
 
-        loopTaskService.addTaskInLoop(perpetualManagementOfTime);
+        sessionManager.loopTaskService.addTaskInLoop(perpetualManagementOfTime);
     }
 
 
