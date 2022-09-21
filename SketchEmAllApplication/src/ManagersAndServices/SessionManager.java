@@ -14,7 +14,7 @@ public class SessionManager{
     private TurnsManager turnsManager;
     private WordsManager wordsManager;
     private BadgeAttestationAnimator badgeAttestationAnimator;
-    private AppLayoutManager appLayoutManager;
+    public AppLayoutManager appLayoutManager;
 
     public TimeManager timeManager;
     public LoopTaskService loopTaskService;
