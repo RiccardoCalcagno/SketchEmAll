@@ -4,12 +4,11 @@ import java.awt.*;
 
 public abstract class SketchEmAllWidget {
 
-    protected Container containerParentOfWidget;
-    public SketchEmAllWidget(Container containerParentOfWidget){
-        this.containerParentOfWidget = containerParentOfWidget;
-    }
+    protected Container placeToPutWidget;
 
-    public abstract void showAndStartIdempotent();
+    public void instantiateWidget(Container placeToPutWidget){
+        this.placeToPutWidget = placeToPutWidget;
+    }
 
     void reset(){
 

@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class CanvasController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
 
-    public CanvasController(Container containerParentOfWidget) {
-        super(containerParentOfWidget);
+    public CanvasController() {
+
     }
 
     @Override
@@ -23,7 +23,7 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
 
 
     @Override
-    public void showAndStartIdempotent() {
+    public void instantiateWidget(Container placeToPutWidget){
 
     }
 

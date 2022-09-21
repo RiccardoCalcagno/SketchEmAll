@@ -12,9 +12,7 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
     private WordsInputModel wordsValidatorModel;
     private WordsInputPresentation wordsValidatorPresentation;
 
-    public WordsInputController(Container containerParentOfWidget, WordsManager wordsManager){
-
-        super(containerParentOfWidget);
+    public WordsInputController(WordsManager wordsManager){
 
         this.wordsManager = wordsManager;
 
@@ -39,7 +37,7 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
     }
 
     @Override
-    public void showAndStartIdempotent() {
+    public void instantiateWidget(Container placeToPutWidget){
 
     }
 

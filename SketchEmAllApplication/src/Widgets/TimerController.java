@@ -11,8 +11,7 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
     private TimerModel timerModel;
     private TimerPresentation timerPresentation;
 
-    public TimerController(Container containerParentOfWidget, TimeManager timeManager){
-        super(containerParentOfWidget);
+    public TimerController(TimeManager timeManager){
 
         this.timeManager = timeManager;
 
@@ -32,7 +31,7 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
 
 
     @Override
-    public void showAndStartIdempotent() {
+    public void instantiateWidget(Container placeToPutWidget){
 
     }
 

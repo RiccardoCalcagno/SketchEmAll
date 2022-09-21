@@ -4,12 +4,12 @@ import java.awt.*;
 
 public class WordPickerController extends SketchEmAllWidget {
 
-    public WordPickerController(Container containerParentOfWidget) {
-        super(containerParentOfWidget);
+    public WordPickerController() {
+
     }
 
     @Override
-    public void showAndStartIdempotent() {
+    public void instantiateWidget(Container placeToPutWidget){
 
     }
 

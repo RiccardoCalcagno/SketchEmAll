@@ -5,12 +5,11 @@ import java.awt.*;
 
 public class BadgesController extends SketchEmAllWidget {
 
-    public BadgesController(Container containerParentOfWidget){
-        super(containerParentOfWidget);
+    public BadgesController(){
     }
 
     @Override
-    public void showAndStartIdempotent() {
+    public void instantiateWidget(Container placeToPutWidget){
 
     }
 

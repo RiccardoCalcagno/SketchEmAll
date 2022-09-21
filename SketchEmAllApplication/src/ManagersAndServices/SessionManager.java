@@ -16,6 +16,7 @@ public class SessionManager extends JFrame {
     private WordsManager wordsManager;
     private LoopTaskService loopTaskService;
     private BadgeAttestationAnimator badgeAttestationAnimator;
+    private AppLayoutManager appLayoutManager;
 
 
     // -------------------------  widget of Session ------------------------
@@ -31,11 +32,12 @@ public class SessionManager extends JFrame {
         wordsManager = new WordsManager();
         timeManager = new TimeManager(loopTaskService);
         turnsManager = new TurnsManager(this);
+        appLayoutManager = new AppLayoutManager();
 
-        badgesController = new BadgesController((Container) this);
-        canvasController = new CanvasController((Container) this);
-        timerController = new TimerController((Container) this, timeManager);
-        wordsInputController = new WordsInputController((Container)this, wordsManager);
+        badgesController = new BadgesController();
+        canvasController = new CanvasController();
+        timerController = new TimerController(timeManager);
+        wordsInputController = new WordsInputController(wordsManager);
 
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
@@ -50,10 +52,7 @@ public class SessionManager extends JFrame {
     private void startSession(){
         loopTaskService.startLoop();
 
-        badgesController.showAndStartIdempotent();
-        canvasController.showAndStartIdempotent();
-        timerController.showAndStartIdempotent();
-        wordsInputController.showAndStartIdempotent();
+        appLayoutManager.presentStartLayout(badgesController, canvasController, timerController, wordsInputController);
 
         timeManager.startSessionTimer();
         turnsManager.startTurn();
@@ -80,13 +79,17 @@ public class SessionManager extends JFrame {
 
         handleGenericEndOfTurn();
 
-        badgeAttestationAnimator.PerformAnimation();
+        //badgeAttestationAnimator.PerformAnimation();
 
         badgesController.createNewBadge(imageOfWinningDrawing);
+
+        turnsManager.startTurn();
     }
 
     public void handleFailOfTurn(TurnFailReason turnFailReason){
 
         handleGenericEndOfTurn();
+
+        turnsManager.startTurn();
     }
 }
