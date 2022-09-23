@@ -9,10 +9,9 @@ public class RepositoryService {
         return "cup";
     }
 
-
     public ImageIcon loadImageFromResources(String iconName){
 
-        String imgLocation = iconName + ".png";
+        String imgLocation = "/./"+iconName;
 
         // how to select an image in the resources: https://www.jetbrains.com/help/idea/add-items-to-project.html#import-items
         java.net.URL image = getClass().getResource(imgLocation);

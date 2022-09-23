@@ -9,6 +9,7 @@ import Widgets.WordPickerController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Random;
 
@@ -21,7 +22,17 @@ public class TurnsManager{
     // present only in a sub-procedure of the turn
     private WordPickerController wordPickerController;
 
-    private Hashtable<PaintingToolsEnum, PaintMode> paintModesKit;
+    private Dictionary<PaintingToolsEnum, PaintMode> paintModesKit = new Hashtable<>();
+
+    private PaintMode modeUsedInTheTurn = null;
+    public PaintMode getModeUsedInTheTurn(){
+        return this.modeUsedInTheTurn;
+    }
+    private String wordUsedInTheTurn = null;
+    public String getWordUsedInTheTurn(){
+        return this.wordUsedInTheTurn;
+    }
+    private int numberOfAttemptsLeft;
 
 
     public TurnsManager(SessionManager sessionManager){
@@ -42,9 +53,13 @@ public class TurnsManager{
     }
 
     private PaintMode chosePaintModeForNewTurn(){
-        Object[] possiblePaintModes = paintModesKit.values().toArray();
-
-        return (PaintMode)possiblePaintModes[new Random().nextInt(possiblePaintModes.length)];
+        var paintModesEnumeration = paintModesKit.elements();
+        int indexOfChosenMode = new Random().nextInt(paintModesKit.size());
+        while(indexOfChosenMode > 0){
+            indexOfChosenMode--;
+            paintModesEnumeration.nextElement();
+        }
+        return paintModesEnumeration.nextElement();
     }
 
     private void invokeWordPickingProcedure() throws Exception{
@@ -55,26 +70,28 @@ public class TurnsManager{
 
         String chosenWord = sessionManager.repositoryService.chooseNextWord();
 
-        // TODO set it in the WordManager or WordInputController
+        modeUsedInTheTurn = chosePaintModeForNewTurn();
 
         wordPickerController = new WordPickerController(
-                chosePaintModeForNewTurn(),
+                modeUsedInTheTurn,
                 chosenWord
                 );
 
         wordPickerController.addEndProcedureListeners(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                endWordPickingProcedure();
+                startPlayingInTheTurn();
             }
         });
 
         sessionManager.appLayoutManager.instantiateWordPickerWidget(wordPickerController);
     }
 
-    private void endWordPickingProcedure(){
+    private void startPlayingInTheTurn(){
 
         sessionManager.appLayoutManager.removeWordPickerWidget();
+
+        sessionManager.canvasController.reset();
 
         timeManager.resumeSessionTime();
     }
@@ -95,6 +112,22 @@ public class TurnsManager{
                 new PencilTool()
             )
         );
+    }
+
+
+    public void validateNewAttempt(String wordToCheck){
+
+        if(wordToCheck == wordUsedInTheTurn){
+            handleSuccessOfTurn();
+        }
+        else {
+            if (numberOfAttemptsLeft == 0) {
+
+                numberOfAttemptsLeft--;
+            } else {
+                handleFailOfTurn(TurnEndReason.NO_MORE_ATTEMPTS);
+            }
+        }
     }
 
 

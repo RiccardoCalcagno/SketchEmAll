@@ -70,16 +70,6 @@ public class WordPickerController extends SketchEmAllWidget {
         repaint();
     }
 
-    @Override
-    public void updateUI() {
-        setUI((WordPickerPresentation)UIManager.getUI(this));
-    }
-
-    @Override
-    public WordPickerPresentation getUI() {
-        return (WordPickerPresentation)ui;
-    }
-
     public WordPickerModel getModel(){
         return wordPickerModel;
     }

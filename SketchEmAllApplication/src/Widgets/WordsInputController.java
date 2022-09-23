@@ -1,20 +1,20 @@
 package Widgets;
 
 import InternModels.StoppableAccordinglyToPlayableTime;
-import ManagersAndServices.WordsManager;
+import ManagersAndServices.TurnsManager;
 
 import java.awt.*;
 
 public class WordsInputController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
 
-    private WordsManager wordsManager;
+    private TurnsManager turnsManager;
 
     private WordsInputModel wordsValidatorModel;
     private WordsInputPresentation wordsValidatorPresentation;
 
-    public WordsInputController(WordsManager wordsManager){
+    public WordsInputController(TurnsManager turnsManager){
 
-        this.wordsManager = wordsManager;
+        this.turnsManager = turnsManager;
 
         wordsValidatorModel = new WordsInputModel();
         wordsValidatorPresentation = new WordsInputPresentation();
@@ -22,7 +22,7 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
 
     private void checkTypedWord(String typedWord){
 
-        wordsManager.validateNewAttempt(typedWord);
+        turnsManager.validateNewAttempt(typedWord);
     }
 
 

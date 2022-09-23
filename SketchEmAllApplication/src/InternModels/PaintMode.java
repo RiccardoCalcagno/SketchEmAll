@@ -1,13 +1,13 @@
 package InternModels;
 
-import PaintingTools.AbstractPaintTool;
+import PaintingTools.AbstractTool;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PaintMode {
 
-    public PaintMode(String uiName, String uiDesription, ImageIcon canvasRepresentativeIcon, Color timerRepresentativeColor, int weightedTimeInMilliseconds, AbstractPaintTool paintTool) {
+    public PaintMode(String uiName, String uiDesription, ImageIcon canvasRepresentativeIcon, Color timerRepresentativeColor, int weightedTimeInMilliseconds, AbstractTool paintTool) {
         this.uiName = uiName;
         this.canvasRepresentativeIcon = canvasRepresentativeIcon;
         this.timerRepresentativeColor = timerRepresentativeColor;
@@ -26,5 +26,5 @@ public class PaintMode {
 
     public int weightedTimeInMilliseconds;
 
-    public AbstractPaintTool paintTool;
+    public AbstractTool paintTool;
 }

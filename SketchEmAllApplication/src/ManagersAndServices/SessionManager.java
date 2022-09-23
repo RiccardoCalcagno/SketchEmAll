@@ -9,7 +9,6 @@ import javax.swing.*;
 public class SessionManager{
 
     private TurnsManager turnsManager;
-    private WordsManager wordsManager;
     private BadgeAttestationAnimator badgeAttestationAnimator;
     public AppLayoutManager appLayoutManager;
 
@@ -20,7 +19,7 @@ public class SessionManager{
 
     // -------------------------  widget of Session ------------------------
     private BadgesController badgesController;
-    private CanvasController canvasController;
+    public CanvasController canvasController;
     private TimerController timerController;
     private WordsInputController wordsInputController;
 
@@ -32,16 +31,15 @@ public class SessionManager{
         repositoryService = new RepositoryService();
 
         // ----------------- Managers -------------------
-        wordsManager = new WordsManager(this);
         timeManager = new TimeManager(this);
         turnsManager = new TurnsManager(this);
         appLayoutManager = new AppLayoutManager();
 
         // ----------------- Widgets -------------------
         badgesController = new BadgesController();
-        canvasController = new CanvasController();
+        canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager);
-        wordsInputController = new WordsInputController(wordsManager);
+        wordsInputController = new WordsInputController(turnsManager);
 
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
