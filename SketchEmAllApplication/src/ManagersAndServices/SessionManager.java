@@ -1,18 +1,14 @@
 package ManagersAndServices;
 
-import Animators.Animator;
 import Animators.BadgeAttestationAnimator;
-import InternModels.TurnFailReason;
+import InternModels.TurnEndReason;
 import Widgets.*;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.HashSet;
 
 public class SessionManager{
 
     private TurnsManager turnsManager;
-    private WordsManager wordsManager;
     private BadgeAttestationAnimator badgeAttestationAnimator;
     public AppLayoutManager appLayoutManager;
 
@@ -23,7 +19,7 @@ public class SessionManager{
 
     // -------------------------  widget of Session ------------------------
     private BadgesController badgesController;
-    private CanvasController canvasController;
+    public CanvasController canvasController;
     private TimerController timerController;
     private WordsInputController wordsInputController;
 
@@ -35,16 +31,15 @@ public class SessionManager{
         repositoryService = new RepositoryService();
 
         // ----------------- Managers -------------------
-        wordsManager = new WordsManager(this);
         timeManager = new TimeManager(this);
         turnsManager = new TurnsManager(this);
         appLayoutManager = new AppLayoutManager();
 
         // ----------------- Widgets -------------------
         badgesController = new BadgesController();
-        canvasController = new CanvasController();
+        canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager);
-        wordsInputController = new WordsInputController(wordsManager);
+        wordsInputController = new WordsInputController(turnsManager);
 
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
@@ -71,19 +66,24 @@ public class SessionManager{
 
 
 
-    private void handleGenericEndOfTurn(){
+    public void handleGenericEndOfTurn(TurnEndReason turnEndReason){
+
+        if(turnEndReason == TurnEndReason.WORD_GUESSED){
+            handleSuccessOfTurn();
+        }
+        else{
+            handleFailOfTurn(turnEndReason);
+        }
+    }
+
+    private void handleSuccessOfTurn(){
+
+        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
 
         timeManager.stopSessionTime();
 
         canvasController.reset();
         wordsInputController.reset();
-    }
-
-    public void handleSuccessOfTurn(){
-
-        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
-
-        handleGenericEndOfTurn();
 
         //badgeAttestationAnimator.PerformAnimation();
 
@@ -92,9 +92,12 @@ public class SessionManager{
         turnsManager.startTurn();
     }
 
-    public void handleFailOfTurn(TurnFailReason turnFailReason){
+    private void handleFailOfTurn(TurnEndReason turnEndReason){
 
-        handleGenericEndOfTurn();
+        timeManager.stopSessionTime();
+
+        canvasController.reset();
+        wordsInputController.reset();
 
         turnsManager.startTurn();
     }

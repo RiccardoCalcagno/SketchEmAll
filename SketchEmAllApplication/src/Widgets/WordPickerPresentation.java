@@ -8,6 +8,7 @@ public class WordPickerPresentation extends ComponentUI {
 
     @Override
     public void installUI(JComponent component) {
+        super.installUI(component);
         installListeners((WordPickerController) component);
     }
 

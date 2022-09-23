@@ -4,8 +4,11 @@ import Widgets.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
 
 public class AppLayoutManager extends JFrame {
+
+    private JFrame containerOfWordPickerWdget = null;
 
     public AppLayoutManager() {
         super();
@@ -48,6 +51,27 @@ public class AppLayoutManager extends JFrame {
 
     public void instantiateWordPickerWidget(WordPickerController wordPickerController){
 
+        // TODO continue
+        /*
+        containerOfWordPickerWdget = new JFrame();
+
+        containerOfWordPickerWdget.add(wordPickerController);
+
+        containerOfWordPickerWdget.pack();
+        containerOfWordPickerWdget.setVisible(true);
+         */
     }
+
+    public void removeWordPickerWidget(){
+
+        if(containerOfWordPickerWdget !=null){
+
+            containerOfWordPickerWdget.setVisible(false);
+            containerOfWordPickerWdget.dispose();
+            containerOfWordPickerWdget = null;
+        }
+
+    }
+
 
 }
