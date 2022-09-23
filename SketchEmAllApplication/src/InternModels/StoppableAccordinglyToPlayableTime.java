@@ -6,4 +6,5 @@ public interface StoppableAccordinglyToPlayableTime {
 
     void onPlayableTimeRestart();
 
+    boolean isActive();
 }

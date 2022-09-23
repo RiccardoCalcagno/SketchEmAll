@@ -56,6 +56,14 @@ public class CanvasModel {
     }
 
 
+    private boolean isActive = false;
+    public boolean isActive(){
+        return this.isActive;
+    }
+    public void setIsActive(boolean isActive){
+        this.isActive = isActive;
+        notifyChange();
+    }
 
     private List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){

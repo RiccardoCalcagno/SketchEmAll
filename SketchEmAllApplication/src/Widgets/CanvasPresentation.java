@@ -1,22 +1,16 @@
 package Widgets;
 
-import PaintingTools.AbstractDrawing;
-
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.util.HashSet;
 
 public class CanvasPresentation{
 
-    private static final Dimension PREFERED_SIZE_CANVAS = new Dimension(500, 300);
+    private static final Dimension PREFERRED_SIZE_CANVAS = new Dimension(500, 300);
 
     public void installUI(CanvasController canvas) {
         installListeners(canvas);
     }
 
-    protected void installListeners(CanvasController canvast)
-    {
+    protected void installListeners(CanvasController canvas) {
 
     }
 
@@ -36,12 +30,12 @@ public class CanvasPresentation{
 
 
     public Dimension getPreferredSize() {
-        return PREFERED_SIZE_CANVAS;
+        return PREFERRED_SIZE_CANVAS;
     }
     public Dimension getMaximumSize() {
-        return PREFERED_SIZE_CANVAS;
+        return PREFERRED_SIZE_CANVAS;
     }
     public Dimension getMinimumSize() {
-        return PREFERED_SIZE_CANVAS;
+        return PREFERRED_SIZE_CANVAS;
     }
 }

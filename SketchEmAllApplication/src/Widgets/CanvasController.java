@@ -20,6 +20,13 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
     private TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
 
+
+    @Override
+    public boolean isActive(){
+        return canvasModel.isActive();
+    }
+
+
     public CanvasController(TurnsManager turnsManager) {
             this.turnsManager = turnsManager;
 
@@ -35,11 +42,18 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
         canvasPresentation.installUI(this);
 
         canvasModel.addChangeListener(
-                e -> repaint()
+                e -> onModelChange()
         );
 
         title = new JLabel("Canvas");
     }
+
+
+    public void onModelChange(){
+
+        repaint();
+    }
+
 
 
     public void reset() {
@@ -56,6 +70,10 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
 
 
     public void editCurrentDrawing(AbstractTool toolToUse){
+        if(isActive() == false){
+            return;
+        }
+
         if(canvasModel.isDrawing() == false){
             addNewDrawing(toolToUse);
         }
@@ -64,6 +82,10 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
     }
 
     public void addNewDrawing(AbstractTool toolToUse) {
+        if(isActive() == false){
+            return;
+        }
+
         closeCurrentDrawing();
 
         AbstractDrawing newDrawing = toolToUse.getNewDrawing();
@@ -78,19 +100,16 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
     }
 
 
-
-
     public CanvasModel getModel() { return canvasModel;}
-
 
     @Override
     public void onPlayableTimeStop() {
-
+        canvasModel.setIsActive(false);
     }
 
     @Override
     public void onPlayableTimeRestart() {
-
+        canvasModel.setIsActive(true);
     }
 
     @Override

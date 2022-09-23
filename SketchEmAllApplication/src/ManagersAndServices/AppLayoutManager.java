@@ -51,15 +51,12 @@ public class AppLayoutManager extends JFrame {
 
     public void instantiateWordPickerWidget(WordPickerController wordPickerController){
 
-        // TODO continue
-        /*
         containerOfWordPickerWdget = new JFrame();
 
         containerOfWordPickerWdget.add(wordPickerController);
 
         containerOfWordPickerWdget.pack();
         containerOfWordPickerWdget.setVisible(true);
-         */
     }
 
     public void removeWordPickerWidget(){

@@ -9,15 +9,21 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
 
     private TurnsManager turnsManager;
 
-    private WordsInputModel wordsValidatorModel;
-    private WordsInputPresentation wordsValidatorPresentation;
+    private WordsInputModel wordsInputModel;
+    private WordsInputPresentation wordsInputPresentation;
+
+    @Override
+    public boolean isActive(){
+        return wordsInputModel.isActive();
+    }
+
 
     public WordsInputController(TurnsManager turnsManager){
 
         this.turnsManager = turnsManager;
 
-        wordsValidatorModel = new WordsInputModel();
-        wordsValidatorPresentation = new WordsInputPresentation();
+        wordsInputModel = new WordsInputModel();
+        wordsInputPresentation = new WordsInputPresentation();
     }
 
     private void checkTypedWord(String typedWord){
@@ -25,6 +31,16 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
         turnsManager.validateNewAttempt(typedWord);
     }
 
+    public void onModelChange(){
+
+        if(wordsInputModel.isActive()){
+
+        }
+        else{
+
+        }
+        repaint();
+    }
 
     @Override
     public void onPlayableTimeStop() {

@@ -1,7 +1,9 @@
 package Widgets;
 
 import InternModels.PaintMode;
+import ManagersAndServices.RepositoryService;
 
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
@@ -13,8 +15,15 @@ public class WordPickerModel {
     // add filed of type: String -> the word to Show
 
     public PaintMode paintMode;
-
     public String chosenWordForTurn;
+
+    private ImageIcon frontSideImage;
+    public ImageIcon getFrontSideImage(){
+        return  this.frontSideImage;
+    }
+    public void setFrontSideImage(ImageIcon frontSideImage){
+        this.frontSideImage = frontSideImage;
+    }
 
     private boolean isFlipped;
 

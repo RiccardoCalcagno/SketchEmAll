@@ -4,21 +4,26 @@ import InternModels.PaintMode;
 import InternModels.TurnEndReason;
 import PaintingTools.PaintingToolsEnum;
 import PaintingTools.PencilTool;
-import Widgets.WordPickerController;
+import Widgets.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
+import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Random;
 
 
 public class TurnsManager{
 
+    public static final int NUM_OF_ATTEMPT_EACH_TURN = 3;
+
     private SessionManager sessionManager;
     private TimeManager timeManager;
 
+    private CanvasController canvasController;
+    private WordsInputController wordsInputController;
     // present only in a sub-procedure of the turn
     private WordPickerController wordPickerController;
 
@@ -43,14 +48,11 @@ public class TurnsManager{
         setPaintModesKit();
     }
 
-    public void startTurn(){
-        try {
-            invokeWordPickingProcedure();
-        }
-        catch (Exception e){
-            System.out.println("[DEBUG error] two procedure of word picking at the same time");
-        }
+    public void setTurnWidgets(CanvasController canvasController, WordsInputController wordsInputController){
+        this.canvasController = canvasController;
+        this.wordsInputController = wordsInputController;
     }
+
 
     private PaintMode chosePaintModeForNewTurn(){
         var paintModesEnumeration = paintModesKit.elements();
@@ -62,40 +64,58 @@ public class TurnsManager{
         return paintModesEnumeration.nextElement();
     }
 
-    private void invokeWordPickingProcedure() throws Exception{
+    public void startTurn() throws Exception{
+
+        if(timeManager.getIsSessionRunning()){
+            throw new Exception("The session should not running now");
+        }
+
+        wordUsedInTheTurn = RepositoryService.chooseNextWord();
+
+        modeUsedInTheTurn = chosePaintModeForNewTurn();
+
+        canvasController.reset();
+        wordsInputController.reset();
+
+        numberOfAttemptsLeft = NUM_OF_ATTEMPT_EACH_TURN;
+
+        try {
+            invokeWordPickingProcedure(
+                    e -> startPlayingInTheTurn()
+            );
+        }
+        catch (Exception e){
+            System.out.println("[DEBUG error] two procedure of word picking at the same time");
+        }
+    }
+
+    private void invokeWordPickingProcedure(ActionListener endOfProcedureEvent) throws Exception{
 
         if(wordPickerController != null){
             throw new Exception("a new procedure of this kind should be invoked only if there are no other actives");
         }
 
-        String chosenWord = sessionManager.repositoryService.chooseNextWord();
-
-        modeUsedInTheTurn = chosePaintModeForNewTurn();
-
         wordPickerController = new WordPickerController(
                 modeUsedInTheTurn,
-                chosenWord
+                wordUsedInTheTurn
                 );
 
-        wordPickerController.addEndProcedureListeners(new ActionListener() {
+        // Auto-detach listener
+        var wrappedEndOfProcedureEvent = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startPlayingInTheTurn();
+
+                sessionManager.appLayoutManager.removeWordPickerWidget();
+                endOfProcedureEvent.actionPerformed(e);
             }
-        });
+        };
+
+        wordPickerController.addEndProcedureListeners(wrappedEndOfProcedureEvent);
 
         sessionManager.appLayoutManager.instantiateWordPickerWidget(wordPickerController);
-
-
-        //TODO remember to delete this, it is already done by wordPickerController.actionPerformed
-        startPlayingInTheTurn();
     }
 
     private void startPlayingInTheTurn(){
-
-        sessionManager.appLayoutManager.removeWordPickerWidget();
-
-        sessionManager.canvasController.reset();
 
         timeManager.resumeSessionTime();
     }
@@ -110,7 +130,7 @@ public class TurnsManager{
                 new PaintMode(
                 "Pencil",
                 "Keep pressed and drag the mouse to draw the lines for your amazing painting ;)",
-                sessionManager.repositoryService.loadImageFromResources("pencil_icon.png"),
+                RepositoryService.loadImageFromResources("pencil_icon.png"),
                 Color.orange,
                 60000,
                 new PencilTool()
@@ -122,24 +142,20 @@ public class TurnsManager{
     public void validateNewAttempt(String wordToCheck){
 
         if(wordToCheck == wordUsedInTheTurn){
-            handleSuccessOfTurn();
+            notifyEndOfTurn(TurnEndReason.WORD_GUESSED);
         }
         else {
             if (numberOfAttemptsLeft == 0) {
 
                 numberOfAttemptsLeft--;
             } else {
-                handleFailOfTurn(TurnEndReason.NO_MORE_ATTEMPTS);
+                notifyEndOfTurn(TurnEndReason.NO_MORE_ATTEMPTS);
             }
         }
     }
 
 
-    private void handleFailOfTurn(TurnEndReason turnEndReason){
+    private void notifyEndOfTurn(TurnEndReason turnEndReason){
         sessionManager.handleGenericEndOfTurn(turnEndReason);
-    }
-
-    private void handleSuccessOfTurn(){
-        sessionManager.handleGenericEndOfTurn(TurnEndReason.WORD_GUESSED);
     }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class AbstractDrawing{
 
-
     public AbstractDrawing(){
 
         this.isEmpty = true;
@@ -41,8 +40,6 @@ public abstract class AbstractDrawing{
 
 
     protected abstract void paintTemplateMethod(Graphics2D pen);
-
-
 
 
     private List<ChangeListener> changeListeners = new ArrayList<>();

@@ -11,12 +11,29 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
     private TimerModel timerModel;
     private TimerPresentation timerPresentation;
 
+    @Override
+    public boolean isActive(){
+        return timerModel.isActive();
+    }
+
     public TimerController(TimeManager timeManager){
 
         this.timeManager = timeManager;
 
         timerModel = new TimerModel();
         timerPresentation = new TimerPresentation();
+    }
+
+
+    public void onModelChange(){
+
+        if(timerModel.isActive()){
+
+        }
+        else{
+
+        }
+        repaint();
     }
 
     @Override
@@ -35,11 +52,9 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
 
     }
 
-
     public void reset() {
 
     }
-
 
     public Shape getShapeOfLastSlice(){
 

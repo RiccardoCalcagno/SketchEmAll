@@ -6,9 +6,7 @@ import java.awt.event.MouseEvent;
 
 public class PencilTool extends AbstractTool {
 
-
     private Point lastPointOfPointerDown;
-
 
     @Override
     public void applyCurrentTransformationOnSubject(AbstractDrawing subject) {
@@ -34,15 +32,13 @@ public class PencilTool extends AbstractTool {
         canvasWhereToDraw.closeCurrentDrawing();
     }
 
+
     @Override
     public AbstractDrawing getNewDrawing() {
         return new PencilDrawing();
     }
-
     @Override
     public PaintingToolsEnum getPaintingToolsEnum() {
         return PaintingToolsEnum.PENCIL;
     }
-
-
 }

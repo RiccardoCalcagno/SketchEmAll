@@ -39,8 +39,6 @@ public class WordPickerPresentation extends ComponentUI {
     }
 
 
-
-
     public Dimension getPreferredSize(){
         return new Dimension(400, 300);
     }

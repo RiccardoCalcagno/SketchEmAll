@@ -14,7 +14,6 @@ public class SessionManager{
 
     public TimeManager timeManager;
     public LoopTaskService loopTaskService;
-    public RepositoryService repositoryService;
 
 
     // -------------------------  widget of Session ------------------------
@@ -25,10 +24,9 @@ public class SessionManager{
 
 
     public SessionManager() {
-
         // ----------------- Services -------------------
         loopTaskService = new LoopTaskService();
-        repositoryService = new RepositoryService();
+        RepositoryService.initializeAsSingleton(this);
 
         // ----------------- Managers -------------------
         timeManager = new TimeManager(this);
@@ -44,10 +42,11 @@ public class SessionManager{
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 
+        turnsManager.setTurnWidgets(canvasController, wordsInputController);
+
         timeManager.addPlayableTimeResponsiveController(canvasController);
         timeManager.addPlayableTimeResponsiveController(timerController);
         timeManager.addPlayableTimeResponsiveController(wordsInputController);
-
     }
 
     public void startSession(){
@@ -55,8 +54,14 @@ public class SessionManager{
 
         appLayoutManager.presentStartLayout(badgesController, canvasController, timerController, wordsInputController);
 
-        timeManager.startSessionTimer();
-        turnsManager.startTurn();
+        timeManager.initializeSessionTimer();
+
+        try {
+            turnsManager.startTurn();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private void endSession(){
@@ -82,23 +87,27 @@ public class SessionManager{
 
         timeManager.stopSessionTime();
 
-        canvasController.reset();
-        wordsInputController.reset();
-
         //badgeAttestationAnimator.PerformAnimation();
 
         badgesController.createNewBadge(imageOfWinningDrawing);
 
-        turnsManager.startTurn();
+        try {
+            turnsManager.startTurn();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private void handleFailOfTurn(TurnEndReason turnEndReason){
 
         timeManager.stopSessionTime();
 
-        canvasController.reset();
-        wordsInputController.reset();
-
-        turnsManager.startTurn();
+        try {
+            turnsManager.startTurn();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

@@ -40,11 +40,9 @@ public class TimeManager {
     }
 
 
-    public void startSessionTimer(){
+    public void initializeSessionTimer(){
 
         // TODO cancel time before
-
-        resumeSessionTime();
     }
 
     public void addPlayableTimeResponsiveController(StoppableAccordinglyToPlayableTime controllerToManage){
@@ -56,6 +54,7 @@ public class TimeManager {
             controllerToStop.onPlayableTimeStop();
         }
     }
+
     public void resumeSessionTime(){
         for (StoppableAccordinglyToPlayableTime controllerToRestart: playableTimeResponsiveControllers) {
             controllerToRestart.onPlayableTimeRestart();
