@@ -24,7 +24,7 @@ public class CanvasModel {
     }
     public void addNewDrawing(AbstractDrawing drawing) {
         drawing.addChangeListener(e -> notifyChange());
-        drawings.add(currentDrawing);
+        drawings.add(drawing);
         notifyChange();
     }
 
@@ -37,13 +37,15 @@ public class CanvasModel {
         return this.currentDrawing != null;
     }
     public void chooseDrawingToEdit(AbstractDrawing drawingToOpenInEditMode){
+        if(currentDrawing == drawingToOpenInEditMode){
+            return;
+        }
         if(currentDrawing!= null){
             closeEditOfDrawing();
         }
         if(drawings.contains(drawingToOpenInEditMode) == false){
             return;
         }
-
         currentDrawing = drawingToOpenInEditMode;
     }
     public void closeEditOfDrawing(){

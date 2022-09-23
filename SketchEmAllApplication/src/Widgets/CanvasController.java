@@ -43,17 +43,15 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
 
 
     public void reset() {
-        if(this.lastToolUsed != null){
-            this.removeMouseListener(this.lastToolUsed);
-            this.removeMouseMotionListener(this.lastToolUsed);
-            this.removeKeyListener(this.lastToolUsed);
+        if(lastToolUsed != null) {
+            this.lastToolUsed.setCanvasWhereToDraw(null);
         }
 
         this.lastToolUsed = this.turnsManager.getModeUsedInTheTurn().paintTool;
 
-        this.addMouseListener(this.lastToolUsed);
-        this.addMouseMotionListener(this.lastToolUsed);
-        this.addKeyListener(this.lastToolUsed);
+        if(lastToolUsed != null){
+            this.lastToolUsed.setCanvasWhereToDraw(this);
+        }
     }
 
 

@@ -28,6 +28,13 @@ public class PencilTool extends AbstractTool {
     }
 
     @Override
+    public void mouseReleased(MouseEvent e) {
+        super.mouseReleased(e);
+
+        canvasWhereToDraw.closeCurrentDrawing();
+    }
+
+    @Override
     public AbstractDrawing getNewDrawing() {
         return new PencilDrawing();
     }

@@ -85,6 +85,10 @@ public class TurnsManager{
         });
 
         sessionManager.appLayoutManager.instantiateWordPickerWidget(wordPickerController);
+
+
+        //TODO remember to delete this, it is already done by wordPickerController.actionPerformed
+        startPlayingInTheTurn();
     }
 
     private void startPlayingInTheTurn(){
