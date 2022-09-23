@@ -29,6 +29,7 @@ public class PencilDrawing extends AbstractDrawing implements PointExtendable{
     public void addPoint(Point newPointToAdd) {
         points.add(newPointToAdd);
         setIsEmpty(false);
+        notifyChange();
     }
 
     private int[] getXPoints() {

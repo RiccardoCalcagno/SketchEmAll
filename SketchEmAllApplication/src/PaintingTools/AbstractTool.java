@@ -17,12 +17,12 @@ public abstract class AbstractTool extends MouseAdapter implements KeyListener {
             this.canvasWhereToDraw.removeMouseListener(this);
             this.canvasWhereToDraw.removeMouseMotionListener(this);
         }
-
         this.canvasWhereToDraw = canvasWhereToDraw;
-
-        this.canvasWhereToDraw.addMouseListener(this);
-        this.canvasWhereToDraw.addMouseMotionListener(this);
-        this.canvasWhereToDraw.addKeyListener(this);
+        if(this.canvasWhereToDraw != null){
+            this.canvasWhereToDraw.addMouseListener(this);
+            this.canvasWhereToDraw.addMouseMotionListener(this);
+            this.canvasWhereToDraw.addKeyListener(this);
+        }
     }
 
 
