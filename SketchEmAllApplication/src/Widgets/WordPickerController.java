@@ -87,7 +87,7 @@ public class WordPickerController extends SketchEmAllWidget {
         JLabel interactiveImageFrontCard = new JLabel(wordPickerModel.getFrontSideImage());
         interactiveImageFrontCard.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 flipCard();
             }
         });
@@ -98,6 +98,7 @@ public class WordPickerController extends SketchEmAllWidget {
         panelForDescriptionFrontCard.setBackground(wordPickerPresentation.getBackgroundColor());
         panelForDescriptionFrontCard.setBorder(new EmptyBorder(10,50,50,50));
         JLabel labelForDescriptionFrontCard = new JLabel(FRONT_SIDE_CARD_DESCRIPTION);
+        labelForDescriptionFrontCard.setFont(new Font("SansSerif", Font.PLAIN, 15));
         labelForDescriptionFrontCard.setForeground(Color.white);
         labelForDescriptionFrontCard.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panelForDescriptionFrontCard.add(labelForDescriptionFrontCard);
