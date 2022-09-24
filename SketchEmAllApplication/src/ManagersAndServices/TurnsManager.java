@@ -70,7 +70,7 @@ public class TurnsManager{
             throw new Exception("The session should not running now");
         }
 
-        wordUsedInTheTurn = RepositoryService.chooseNextWord();
+        wordUsedInTheTurn =  RepositoryService.chooseNextWord();
 
         modeUsedInTheTurn = chosePaintModeForNewTurn();
 

@@ -16,6 +16,7 @@ public class WordPickerModel {
 
     public PaintMode paintMode;
     public String chosenWordForTurn;
+    public ImageIcon modeImage;
 
     private ImageIcon frontSideImage;
     public ImageIcon getFrontSideImage(){
@@ -23,6 +24,9 @@ public class WordPickerModel {
     }
     public void setFrontSideImage(ImageIcon frontSideImage){
         this.frontSideImage = frontSideImage;
+    }
+    public ImageIcon getModeImage(){
+        return this.modeImage;
     }
 
     private boolean isFlipped;
@@ -44,6 +48,8 @@ public class WordPickerModel {
         this.chosenWordForTurn = chosenWordForTurn;
         this.isFlipped = false;
         this.isReadyToExitProcedure = false;
+
+        modeImage = paintMode.canvasRepresentativeIcon;
     }
 
     public boolean getIsFlipped(){

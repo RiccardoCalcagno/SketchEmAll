@@ -12,7 +12,6 @@ public class AppLayoutManager extends JFrame {
 
     public AppLayoutManager() {
         super();
-
     }
 
     public void presentStartLayout(BadgesController badgesController,
@@ -29,7 +28,7 @@ public class AppLayoutManager extends JFrame {
         placeToPutCanvas.add(canvasController);
 
         //placeholder for now
-        placeToPutCanvas.setPreferredSize(new Dimension(700,600));
+        placeToPutCanvas.setPreferredSize(new Dimension(850,600));
 
 
         JPanel placeToPutBadges = new JPanel();
@@ -42,6 +41,7 @@ public class AppLayoutManager extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
@@ -52,10 +52,15 @@ public class AppLayoutManager extends JFrame {
     public void instantiateWordPickerWidget(WordPickerController wordPickerController){
 
         containerOfWordPickerWdget = new JFrame();
+        containerOfWordPickerWdget.setAlwaysOnTop(true);
+        containerOfWordPickerWdget.setResizable(false);
+        containerOfWordPickerWdget.setUndecorated(true);
+        containerOfWordPickerWdget.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
         containerOfWordPickerWdget.add(wordPickerController);
 
         containerOfWordPickerWdget.pack();
+        containerOfWordPickerWdget.setLocationRelativeTo(this);
         containerOfWordPickerWdget.setVisible(true);
     }
 

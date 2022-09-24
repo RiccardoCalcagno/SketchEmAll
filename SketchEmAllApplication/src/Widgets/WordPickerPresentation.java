@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class WordPickerPresentation extends ComponentUI {
 
+    private static final Color BACKGROUND_COLOR = new Color(50,50,50);
     @Override
     public void installUI(JComponent component) {
         super.installUI(component);
@@ -38,9 +39,12 @@ public class WordPickerPresentation extends ComponentUI {
 
     }
 
+    public Color getBackgroundColor(){
+        return BACKGROUND_COLOR;
+    }
 
     public Dimension getPreferredSize(){
-        return new Dimension(400, 300);
+        return new Dimension(600, 450);
     }
     public Dimension getMinimumSize(){
         return getPreferredSize();
