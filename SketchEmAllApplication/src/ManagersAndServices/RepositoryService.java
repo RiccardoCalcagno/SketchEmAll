@@ -17,7 +17,7 @@ public class RepositoryService {
 
     public static ImageIcon loadImageFromResources(String iconName){
 
-        String imgLocation = "/./"+iconName;
+        String imgLocation = "/resources/"+iconName;
 
         // how to select an image in the resources: https://www.jetbrains.com/help/idea/add-items-to-project.html#import-items
         java.net.URL image = sessionManager.getClass().getResource(imgLocation);
