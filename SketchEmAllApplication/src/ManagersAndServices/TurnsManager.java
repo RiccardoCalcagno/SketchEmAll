@@ -2,6 +2,7 @@ package ManagersAndServices;
 
 import InternModels.PaintMode;
 import InternModels.TurnEndReason;
+import PaintingTools.CrazyPenTool;
 import PaintingTools.PaintingToolsEnum;
 import PaintingTools.PencilTool;
 import Widgets.*;
@@ -135,6 +136,17 @@ public class TurnsManager{
                 60000,
                 new PencilTool()
             )
+        );
+
+        paintModesKit.put(PaintingToolsEnum.CRAZY_PEN,
+                new PaintMode(
+                        "Crazy Pen",
+                        "Keep pressed and drag the mouse to draw the lines, but... pay attention... sometimes it likes to be silly!",
+                        RepositoryService.loadImageFromResources("crazy_pen.png"),
+                        Color.PINK,
+                        80000,
+                        new CrazyPenTool()
+                )
         );
     }
 

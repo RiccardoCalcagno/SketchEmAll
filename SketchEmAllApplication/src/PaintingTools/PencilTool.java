@@ -1,26 +1,29 @@
 package PaintingTools;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class PencilTool extends AbstractTool {
 
-    private Point lastPointOfPointerDown;
+    protected Point nextPointToAdd;
 
     @Override
     public void applyCurrentTransformationOnSubject(AbstractDrawing subject) {
 
-        if(lastPointOfPointerDown !=null){
-            ((PointExtendable)subject).addPoint(lastPointOfPointerDown);
+        if(nextPointToAdd !=null){
+            ((PointExtendable)subject).addPoint(nextPointToAdd);
         }
+    }
+
+    protected void addNewAlteredPointFromPointer(Point pointerLocation){
+        nextPointToAdd = pointerLocation;
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
 
-        lastPointOfPointerDown = e.getPoint();
+        addNewAlteredPointFromPointer(e.getPoint());
 
         canvasWhereToDraw.editCurrentDrawing(this);
     }

@@ -1,5 +1,6 @@
 package PaintingTools;
 
 public enum PaintingToolsEnum {
-    PENCIL
+    PENCIL,
+    CRAZY_PEN,
 }
