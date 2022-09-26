@@ -31,7 +31,6 @@ public class AppLayoutManager extends JFrame {
         placeToPutCanvas.setPreferredSize(new Dimension(850,600));
 
         JPanel timerAndInputWordPanel = new JPanel();
-
         centerPanel.add(timerAndInputWordPanel, BorderLayout.CENTER);
         timerAndInputWordPanel.setPreferredSize(placeToPutCanvas.getSize());
 

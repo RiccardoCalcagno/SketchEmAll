@@ -5,6 +5,9 @@ import java.awt.*;
 
 public class WordsInputPresentation {
 
+    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(600, 450);
+
+
     private static final Color BACKGROUND_COLOR = new Color(50,50,50);
 
     public void installUI(CanvasController canvas) {
@@ -24,7 +27,14 @@ public class WordsInputPresentation {
         pen.fillRect(0,0, 600,450);
 
     }
-    public Dimension getPreferredSize(){
-        return new Dimension(600, 450);
+
+    public Dimension getPreferredSize() {
+        return PREFERRED_SIZE_WORD_INPUT;
+    }
+    public Dimension getMaximumSize() {
+        return PREFERRED_SIZE_WORD_INPUT;
+    }
+    public Dimension getMinimumSize() {
+        return PREFERRED_SIZE_WORD_INPUT;
     }
 }

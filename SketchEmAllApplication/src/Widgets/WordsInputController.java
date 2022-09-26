@@ -82,8 +82,9 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
     public void paintComponent(Graphics pen) {
         super.paintComponent(pen);
 
-        wordsInputPresentation.paint((Graphics2D)pen, this);
-
+        if(wordsInputPresentation!= null){
+            wordsInputPresentation.paint((Graphics2D)pen, this);
+        }
     }
 
     public WordsInputModel getModel(){
@@ -91,4 +92,16 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
     }
 
 
+    @Override
+    public Dimension getPreferredSize() {
+        return this.wordsInputPresentation.getPreferredSize();
+    }
+    @Override
+    public Dimension getMaximumSize() {
+        return this.wordsInputPresentation.getMaximumSize();
+    }
+    @Override
+    public Dimension getMinimumSize() {
+        return this.wordsInputPresentation.getMinimumSize();
+    }
 }
