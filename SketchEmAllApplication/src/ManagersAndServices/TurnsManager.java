@@ -72,7 +72,7 @@ public class TurnsManager{
         }
 
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
-
+        //changed to normal pen
         modeUsedInTheTurn = chosePaintModeForNewTurn();
 
         canvasController.reset();
@@ -137,7 +137,7 @@ public class TurnsManager{
                 new PencilTool()
             )
         );
-
+        /*
         paintModesKit.put(PaintingToolsEnum.CRAZY_PEN,
                 new PaintMode(
                         "Crazy Pen",
@@ -148,6 +148,8 @@ public class TurnsManager{
                         new CrazyPenTool()
                 )
         );
+
+         */
     }
 
 
