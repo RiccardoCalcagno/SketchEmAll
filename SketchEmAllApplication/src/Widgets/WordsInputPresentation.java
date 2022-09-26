@@ -24,7 +24,7 @@ public class WordsInputPresentation {
         WordsInputController wordsInputController = ((WordsInputController)component);
         WordsInputModel model = wordsInputController.getModel();
         pen.setColor(Color.black);
-        pen.fillRect(0,0, 600,450);
+        pen.fillRect(0,0, 200,20);
 
     }
 

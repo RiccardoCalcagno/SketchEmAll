@@ -22,21 +22,24 @@ public class AppLayoutManager extends JFrame {
         this.setLayout(new BorderLayout());
 
         JPanel centerPanel = new JPanel();
-
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
         JPanel placeToPutCanvas = new JPanel();
-        centerPanel.add(placeToPutCanvas, BorderLayout.NORTH);
+        centerPanel.add(placeToPutCanvas);
         placeToPutCanvas.add(canvasController);
 
         //placeholder for now
         placeToPutCanvas.setPreferredSize(new Dimension(850,600));
 
         JPanel timerAndInputWordPanel = new JPanel();
-        centerPanel.add(timerAndInputWordPanel, BorderLayout.CENTER);
-        timerAndInputWordPanel.setPreferredSize(placeToPutCanvas.getSize());
+        centerPanel.add(timerAndInputWordPanel);
 
-        timerAndInputWordPanel.add(timerController);
-        timerAndInputWordPanel.add(wordsInputController);
-
+        //the problem is from the LAYOUT
+        timerAndInputWordPanel.setLayout(new BoxLayout(timerAndInputWordPanel, BoxLayout.LINE_AXIS));
+        //timerAndInputWordPanel.add(timerController);
+        Box b = Box.createVerticalBox();
+        b.add(wordsInputController);
+        b.add(Box.createVerticalGlue());
+        timerAndInputWordPanel.add(b);
 
         JPanel placeToPutBadges = new JPanel();
         centerPanel.add(placeToPutBadges, BorderLayout.SOUTH);
