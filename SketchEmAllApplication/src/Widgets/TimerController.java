@@ -22,7 +22,24 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
 
         timerModel = new TimerModel();
         timerPresentation = new TimerPresentation();
+        Init(timerModel);
     }
+
+
+    private void Init(TimerModel model){
+
+        this.timerModel = model;
+
+        this.timerPresentation = new TimerPresentation();
+
+
+        timerModel.addChangeListener(
+                e -> onModelChange()
+        );
+        repaint();
+
+    }
+
 
 
     public void onModelChange(){
@@ -61,5 +78,33 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
         // TODO
         return null;
     }
+
+    @Override
+    public void paintComponent(Graphics pen) {
+        super.paintComponent(pen);
+
+        if(timerPresentation!= null){
+            timerPresentation.paint((Graphics2D)pen, this);
+        }
+    }
+
+    public TimerModel getModel(){
+        return timerModel;
+    }
+
+
+    @Override
+    public Dimension getPreferredSize() {
+        return this.timerPresentation.getPreferredSize();
+    }
+    @Override
+    public Dimension getMaximumSize() {
+        return this.timerPresentation.getMaximumSize();
+    }
+    @Override
+    public Dimension getMinimumSize() {
+        return this.timerPresentation.getMinimumSize();
+    }
+
 
 }
