@@ -3,6 +3,7 @@ package Widgets;
 import InternModels.StoppableAccordinglyToPlayableTime;
 import ManagersAndServices.TurnsManager;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class WordsInputController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
@@ -24,6 +25,21 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
 
         wordsInputModel = new WordsInputModel();
         wordsInputPresentation = new WordsInputPresentation();
+        Init(wordsInputModel);
+    }
+
+    private void Init(WordsInputModel wordsInputModel){
+
+        this.wordsInputModel = wordsInputModel;
+
+        this.wordsInputPresentation = new WordsInputPresentation();
+
+
+        wordsInputModel.addChangeListener(
+                e -> onModelChange()
+        );
+        repaint();
+
     }
 
     private void checkTypedWord(String typedWord){
@@ -61,4 +77,18 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
     public void reset() {
 
     }
+
+    @Override
+    public void paintComponent(Graphics pen) {
+        super.paintComponent(pen);
+
+        wordsInputPresentation.paint((Graphics2D)pen, this);
+
+    }
+
+    public WordsInputModel getModel(){
+        return wordsInputModel;
+    }
+
+
 }

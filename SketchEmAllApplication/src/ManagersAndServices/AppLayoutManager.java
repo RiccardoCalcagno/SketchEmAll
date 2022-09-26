@@ -30,9 +30,17 @@ public class AppLayoutManager extends JFrame {
         //placeholder for now
         placeToPutCanvas.setPreferredSize(new Dimension(850,600));
 
+        JPanel timerAndInputWordPanel = new JPanel();
+
+        centerPanel.add(timerAndInputWordPanel, BorderLayout.CENTER);
+        timerAndInputWordPanel.setPreferredSize(placeToPutCanvas.getSize());
+
+        timerAndInputWordPanel.add(timerController);
+        timerAndInputWordPanel.add(wordsInputController);
+
 
         JPanel placeToPutBadges = new JPanel();
-        centerPanel.add(placeToPutCanvas, BorderLayout.SOUTH);
+        centerPanel.add(placeToPutBadges, BorderLayout.SOUTH);
         badgesController.instantiateWidget(placeToPutBadges);
 
         this.add(centerPanel, BorderLayout.CENTER);
@@ -45,9 +53,7 @@ public class AppLayoutManager extends JFrame {
         this.setVisible(true);
     }
 
-    private void setUpCanvas(){
 
-    }
 
     public void instantiateWordPickerWidget(WordPickerController wordPickerController){
 
