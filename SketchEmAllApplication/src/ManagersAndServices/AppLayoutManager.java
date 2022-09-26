@@ -21,8 +21,31 @@ public class AppLayoutManager extends JFrame {
 
         this.setLayout(new BorderLayout());
 
+
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+
+        centerPanel.add(Box.createVerticalGlue());
+
+        centerPanel.add(canvasController);
+
+        centerPanel.add(Box.createVerticalGlue());
+
+        FlowLayout layoutForTimerAndInput = new FlowLayout();
+        layoutForTimerAndInput.setAlignment(FlowLayout.CENTER);
+        layoutForTimerAndInput.setHgap(100);
+        JPanel timerAndInputWordPanel = new JPanel(layoutForTimerAndInput);
+        timerAndInputWordPanel.add(timerController);
+        timerAndInputWordPanel.add(wordsInputController);
+        centerPanel.add(timerAndInputWordPanel);
+
+        centerPanel.add(Box.createVerticalGlue());
+
+        centerPanel.add(badgesController);
+
+        centerPanel.add(Box.createVerticalGlue());
+        /*
         JPanel placeToPutCanvas = new JPanel();
         centerPanel.add(placeToPutCanvas);
         placeToPutCanvas.add(canvasController);
@@ -44,6 +67,8 @@ public class AppLayoutManager extends JFrame {
         JPanel placeToPutBadges = new JPanel();
         centerPanel.add(placeToPutBadges, BorderLayout.SOUTH);
         badgesController.instantiateWidget(placeToPutBadges);
+         */
+
 
         this.add(centerPanel, BorderLayout.CENTER);
 

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class WordsInputPresentation {
 
-    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(600, 450);
+    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(350, 200);
 
 
     private static final Color BACKGROUND_COLOR = new Color(50,50,50);
@@ -24,7 +24,7 @@ public class WordsInputPresentation {
         WordsInputController wordsInputController = ((WordsInputController)component);
         WordsInputModel model = wordsInputController.getModel();
         pen.setColor(Color.black);
-        pen.fillRect(0,0, 200,20);
+        pen.fillRect(0,0, getPreferredSize().width,getPreferredSize().height);
 
     }
 
