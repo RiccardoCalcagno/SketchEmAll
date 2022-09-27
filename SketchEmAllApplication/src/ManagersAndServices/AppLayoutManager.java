@@ -21,10 +21,9 @@ public class AppLayoutManager extends JFrame {
 
         this.setLayout(new BorderLayout());
 
-
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-
+        centerPanel.setBackground(Color.BLACK);
 
         centerPanel.add(Box.createVerticalGlue());
 
@@ -37,13 +36,9 @@ public class AppLayoutManager extends JFrame {
         layoutForTimerAndInput.setHgap(100);
         JPanel timerAndInputWordPanel = new JPanel(layoutForTimerAndInput);
 
-        JPanel timerPanel = new JPanel();
-        JPanel wordsInputPanel = new JPanel();
-        timerPanel.add(timerController);
-        timerAndInputWordPanel.add(timerPanel);
-
-        wordsInputPanel.add(wordsInputController);
-        timerAndInputWordPanel.add(wordsInputPanel);
+        timerAndInputWordPanel.setBackground(Color.BLACK);
+        timerAndInputWordPanel.add(timerController);
+        timerAndInputWordPanel.add(wordsInputController);
         centerPanel.add(timerAndInputWordPanel);
 
         centerPanel.add(Box.createVerticalGlue());

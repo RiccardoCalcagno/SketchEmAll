@@ -40,8 +40,6 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
         );
         repaint();
 
-        this.setLayout(new BorderLayout());
-        this.revalidate();
     }
 
     private void checkTypedWord(String typedWord){

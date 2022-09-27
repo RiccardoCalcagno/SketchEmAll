@@ -10,13 +10,16 @@ public class WordsInputPresentation {
         //not showing on screen...
         JPanel labelsPanel = new JPanel();
         //labelsPanel.setPreferredSize(new Dimension(200,100));
-        controller.add(labelsPanel);
+        controller.setLayout(new BorderLayout());
+
+        controller.add(labelsPanel, BorderLayout.NORTH);
+        labelsPanel.setBackground(Color.RED);
         JLabel wordLabel = new JLabel("Guess word:");
+        wordLabel.setForeground(Color.white);
         labelsPanel.add(wordLabel);
 
         JTextField wordInputField = new JTextField(10);
         labelsPanel.add(wordInputField);
-
         installListeners(controller);
 
     }
