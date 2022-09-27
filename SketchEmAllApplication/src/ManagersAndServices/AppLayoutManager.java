@@ -36,8 +36,14 @@ public class AppLayoutManager extends JFrame {
         layoutForTimerAndInput.setAlignment(FlowLayout.CENTER);
         layoutForTimerAndInput.setHgap(100);
         JPanel timerAndInputWordPanel = new JPanel(layoutForTimerAndInput);
-        timerAndInputWordPanel.add(timerController);
-        timerAndInputWordPanel.add(wordsInputController);
+
+        JPanel timerPanel = new JPanel();
+        JPanel wordsInputPanel = new JPanel();
+        timerPanel.add(timerController);
+        timerAndInputWordPanel.add(timerPanel);
+
+        wordsInputPanel.add(wordsInputController);
+        timerAndInputWordPanel.add(wordsInputPanel);
         centerPanel.add(timerAndInputWordPanel);
 
         centerPanel.add(Box.createVerticalGlue());
