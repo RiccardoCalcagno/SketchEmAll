@@ -13,7 +13,7 @@ public class WordsInputPresentation {
         controller.setLayout(new BorderLayout());
 
         controller.add(labelsPanel, BorderLayout.NORTH);
-        labelsPanel.setBackground(Color.RED);
+        labelsPanel.setBackground(Color.BLACK);
         JLabel wordLabel = new JLabel("Guess word:");
         wordLabel.setForeground(Color.white);
         labelsPanel.add(wordLabel);

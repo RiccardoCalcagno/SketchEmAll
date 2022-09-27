@@ -1,15 +1,22 @@
 package Widgets;
 
 import InternModels.StoppableAccordinglyToPlayableTime;
+import ManagersAndServices.RepositoryService;
 import ManagersAndServices.TimeManager;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class TimerController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
 
     private TimeManager timeManager;
     private TimerModel timerModel;
     private TimerPresentation timerPresentation;
+    private BufferedImage timerBuffImage;
 
     @Override
     public boolean isActive(){
@@ -21,6 +28,7 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
         this.timeManager = timeManager;
 
         timerModel = new TimerModel();
+        timerModel.setTimerImage(RepositoryService.loadImageFromResources("timer.png"));
         timerPresentation = new TimerPresentation();
         Init(timerModel);
     }
@@ -32,10 +40,15 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
 
         this.timerPresentation = new TimerPresentation();
 
-
         timerModel.addChangeListener(
                 e -> onModelChange()
         );
+
+        //some UI stuff that probably should be moved?
+        //JLabel iconLbl = new JLabel();
+        //iconLbl.setIcon(timerModel.getTimerImage());
+        this.setLayout(new BorderLayout());
+        //this.add(iconLbl, BorderLayout.CENTER);
         repaint();
 
     }

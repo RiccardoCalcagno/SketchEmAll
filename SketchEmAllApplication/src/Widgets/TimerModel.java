@@ -1,5 +1,6 @@
 package Widgets;
 
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 public class TimerModel {
 
+    private ImageIcon timerIcon;
     private boolean isActive = false;
     public boolean isActive(){
         return this.isActive;
@@ -29,5 +31,17 @@ public class TimerModel {
         for (ChangeListener changeListener: changeListeners){
             changeListener.stateChanged(changeEvent);
         }
+    }
+
+
+    public ImageIcon getTimerImage(){
+        return  this.timerIcon;
+    }
+    public void setTimerImage(ImageIcon timerImage){
+        this.timerIcon = timerImage;
+    }
+
+    public  void updateTimerImage(ImageIcon timerImgage){
+        this.timerIcon = timerImgage;
     }
 }
