@@ -2,32 +2,48 @@ package Widgets;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class WordsInputPresentation {
 
     private JTextField wordInputField;
+    private JButton submitBtn;
 
     public WordsInputPresentation(WordsInputController controller){
 
         //not showing on screen...
         JPanel labelsPanel = new JPanel();
+        JPanel wordsPanel = new JPanel();
         //labelsPanel.setPreferredSize(new Dimension(200,100));
         controller.setLayout(new BoxLayout(controller, BoxLayout.Y_AXIS));
         controller.add(Box.createVerticalGlue());
         controller.add(labelsPanel);
         controller.add(Box.createVerticalGlue());
+        controller.add(wordsPanel);
 
         labelsPanel.setBackground(Color.BLACK);
         JLabel wordLabel = new JLabel("Guess word:");
         wordLabel.setForeground(Color.white);
+        wordLabel.setVerticalAlignment(JLabel.BOTTOM);
+
         labelsPanel.add(wordLabel);
 
         this.wordInputField = new JTextField(10);
-        labelsPanel.add(this.wordInputField);
+        wordsPanel.add(this.wordInputField);
+
+        this.submitBtn = new JButton("Submit");
+        submitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.onSubmitRequest();
+            }
+        });
+        wordsPanel.add(submitBtn);
         installListeners(controller);
     }
 
-    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(250, 100);
+    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(250, 90);
 
 
     private static final Color BACKGROUND_COLOR = new Color(50,50,50);
@@ -38,6 +54,9 @@ public class WordsInputPresentation {
 
     }
 
+    public String getCurrText(){
+        return this.wordInputField.getText();
+    }
 
     public void paint(Graphics2D pen, JComponent component)
     {
