@@ -1,5 +1,7 @@
 package Widgets;
 
+import ManagersAndServices.AppLayoutManager;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -14,7 +16,7 @@ public abstract class SketchEmAllWidget extends JPanel {
 
 
     public SketchEmAllWidget(){
-        setBackground(new Color(new Random().nextInt(255), 200, 200));
+        setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
     }
 
     public void instantiateWidget(Container placeToPutWidget){

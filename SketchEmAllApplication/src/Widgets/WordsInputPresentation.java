@@ -1,5 +1,7 @@
 package Widgets;
 
+import ManagersAndServices.AppLayoutManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +16,9 @@ public class WordsInputPresentation {
 
         //not showing on screen...
         JPanel labelsPanel = new JPanel();
+        labelsPanel.setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
         JPanel wordsPanel = new JPanel();
+        wordsPanel.setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
         //labelsPanel.setPreferredSize(new Dimension(200,100));
         controller.setLayout(new BoxLayout(controller, BoxLayout.Y_AXIS));
         controller.add(Box.createVerticalGlue());
@@ -22,7 +26,7 @@ public class WordsInputPresentation {
         controller.add(Box.createVerticalGlue());
         controller.add(wordsPanel);
 
-        labelsPanel.setBackground(Color.BLACK);
+
         JLabel wordLabel = new JLabel("Guess word:");
         wordLabel.setForeground(Color.white);
         wordLabel.setVerticalAlignment(JLabel.BOTTOM);

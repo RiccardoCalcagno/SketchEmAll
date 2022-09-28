@@ -5,6 +5,7 @@ import java.awt.*;
 public class CanvasPresentation{
 
     private static final Dimension PREFERRED_SIZE_CANVAS = new Dimension(600, 400);
+    private static final Dimension MINIMUM_SIZE_CANVAS = new Dimension(100, 70);
 
     public void installUI(CanvasController canvas) {
         installListeners(canvas);
@@ -36,6 +37,6 @@ public class CanvasPresentation{
         return PREFERRED_SIZE_CANVAS;
     }
     public Dimension getMinimumSize() {
-        return PREFERRED_SIZE_CANVAS;
+        return MINIMUM_SIZE_CANVAS;
     }
 }

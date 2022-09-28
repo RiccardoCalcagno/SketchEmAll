@@ -9,7 +9,6 @@ public class BadgesController extends SketchEmAllWidget {
         private  BadgesPresentation badgesPresentation;
         private BadgesModel badgesModel;
         public ImageIcon currBadge;
-        public static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(500,150);;
 
     public BadgesController(){
         this.badgesModel = new BadgesModel();
@@ -52,9 +51,11 @@ public class BadgesController extends SketchEmAllWidget {
 
     @Override
     public Dimension getPreferredSize() {
-        return PREFERRED_SIZE_BADGES_BOX;
+        return badgesPresentation.getPreferredSize();
     }
+
     @Override
-    //public Dimension getMaximumSize() {return PREFERRED_SIZE_BADGES_BOX;}
-    public Dimension getMinimumSize() {return PREFERRED_SIZE_BADGES_BOX;}
+    public Dimension getMaximumSize() {
+        return badgesPresentation.getPreferredSize();
+    }
 }

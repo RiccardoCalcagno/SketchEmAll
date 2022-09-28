@@ -5,17 +5,20 @@ import java.awt.*;
 
 public class BadgesPresentation {
 
+    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(500, 180);
+
 
     public BadgesPresentation(BadgesController controller){
+        /*
         JPanel badgesPanel = new JPanel();
-        /*JLabel iconBadge = new JLabel(controller.currBadge);
-        badgesPanel.add(iconBadge);
-        controller.setLayout(new BorderLayout());
-        controller.add(badgesPanel, BorderLayout.NORTH);*/
+        //JLabel iconBadge = new JLabel(controller.currBadge);
+        //badgesPanel.add(iconBadge);
+        //controller.setLayout(new BorderLayout());
+        //controller.add(badgesPanel, BorderLayout.NORTH);
         controller.setLayout(new BorderLayout());
         controller.setPreferredSize(controller.getPreferredSize());
         controller.add(badgesPanel, BorderLayout.NORTH);
-
+        */
     }
     public void paint(Graphics2D pen, BadgesController controller)
     {
@@ -36,6 +39,5 @@ public class BadgesPresentation {
     }
 
 
-    //public Dimension getMaximumSize() {return PREFERRED_SIZE_BADGES_BOX;}
-
+    public Dimension getPreferredSize() {return PREFERRED_SIZE_BADGES_BOX;}
 }

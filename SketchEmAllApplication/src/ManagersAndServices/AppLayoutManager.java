@@ -11,6 +11,8 @@ public class AppLayoutManager extends JFrame {
     private JFrame containerOfWordPickerWdget = null;
     private Dimension APP_PREFFERED_SIZE = new Dimension(1000,1000);
 
+    public static final Color BACKGROUND_APPLICATION = new Color(20,20,20);
+
     public AppLayoutManager() {
         super();
     }
@@ -25,7 +27,7 @@ public class AppLayoutManager extends JFrame {
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setBackground(Color.BLACK);
+        centerPanel.setBackground(BACKGROUND_APPLICATION);
 
         centerPanel.add(Box.createVerticalGlue());
 
@@ -33,13 +35,13 @@ public class AppLayoutManager extends JFrame {
 
         centerPanel.add(Box.createVerticalGlue());
 
-        FlowLayout layoutForTimerAndInput = new FlowLayout();
-        layoutForTimerAndInput.setAlignment(FlowLayout.CENTER);
-        layoutForTimerAndInput.setHgap(50);
-        JPanel timerAndInputWordPanel = new JPanel(layoutForTimerAndInput);
-
-        timerAndInputWordPanel.setBackground(Color.BLACK);
+        JPanel timerAndInputWordPanel = new JPanel();
+        BoxLayout layoutForTimerAndInput = new BoxLayout(timerAndInputWordPanel, BoxLayout.X_AXIS);
+        timerAndInputWordPanel.setLayout(layoutForTimerAndInput);
+        timerAndInputWordPanel.setBackground(BACKGROUND_APPLICATION);
+        timerAndInputWordPanel.setMaximumSize(new Dimension(600, 200));
         timerAndInputWordPanel.add(timerController);
+        timerAndInputWordPanel.add(Box.createHorizontalGlue());
         timerAndInputWordPanel.add(wordsInputController);
         centerPanel.add(timerAndInputWordPanel);
 
