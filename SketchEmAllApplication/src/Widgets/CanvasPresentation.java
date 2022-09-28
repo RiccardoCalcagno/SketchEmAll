@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class CanvasPresentation{
 
-    private static final Dimension PREFERRED_SIZE_CANVAS = new Dimension(500, 300);
+    private static final Dimension PREFERRED_SIZE_CANVAS = new Dimension(600, 400);
 
     public void installUI(CanvasController canvas) {
         installListeners(canvas);
