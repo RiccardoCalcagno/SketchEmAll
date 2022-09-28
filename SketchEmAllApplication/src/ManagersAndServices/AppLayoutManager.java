@@ -9,6 +9,7 @@ import java.awt.event.FocusEvent;
 public class AppLayoutManager extends JFrame {
 
     private JFrame containerOfWordPickerWdget = null;
+    private Dimension APP_PREFFERED_SIZE = new Dimension(1000,1000);
 
     public AppLayoutManager() {
         super();
@@ -20,6 +21,7 @@ public class AppLayoutManager extends JFrame {
                                     WordsInputController wordsInputController){
 
         this.setLayout(new BorderLayout());
+        this.setPreferredSize(APP_PREFFERED_SIZE);
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));

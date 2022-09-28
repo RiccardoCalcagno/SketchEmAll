@@ -30,6 +30,7 @@ public class WordsInputPresentation {
         labelsPanel.add(wordLabel);
 
         this.wordInputField = new JTextField(10);
+
         wordsPanel.add(this.wordInputField);
 
         this.submitBtn = new JButton("Submit");
