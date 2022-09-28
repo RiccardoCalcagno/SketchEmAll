@@ -35,7 +35,7 @@ public class AppLayoutManager extends JFrame {
 
         FlowLayout layoutForTimerAndInput = new FlowLayout();
         layoutForTimerAndInput.setAlignment(FlowLayout.CENTER);
-        layoutForTimerAndInput.setHgap(100);
+        layoutForTimerAndInput.setHgap(50);
         JPanel timerAndInputWordPanel = new JPanel(layoutForTimerAndInput);
 
         timerAndInputWordPanel.setBackground(Color.BLACK);
