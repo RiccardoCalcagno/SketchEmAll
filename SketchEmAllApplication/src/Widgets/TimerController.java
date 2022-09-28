@@ -28,13 +28,14 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
         this.timeManager = timeManager;
 
         timerModel = new TimerModel();
-        timerModel.setTimerImage(RepositoryService.loadImageFromResources("timer.png"));
-        timerPresentation = new TimerPresentation();
+
         Init(timerModel);
     }
 
 
     private void Init(TimerModel model){
+
+        timerModel.setTimerImage(RepositoryService.loadImageFromResources("timerPlaceholder.png"));
 
         this.timerModel = model;
 
@@ -47,10 +48,9 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
         //some UI stuff that probably should be moved?
         //JLabel iconLbl = new JLabel();
         //iconLbl.setIcon(timerModel.getTimerImage());
-        this.setLayout(new BorderLayout());
+        //this.setLayout(new BorderLayout());
         //this.add(iconLbl, BorderLayout.CENTER);
         repaint();
-
     }
 
 

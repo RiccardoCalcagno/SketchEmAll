@@ -24,7 +24,7 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
         this.turnsManager = turnsManager;
 
         wordsInputModel = new WordsInputModel();
-        wordsInputPresentation = new WordsInputPresentation(this);
+
         Init(wordsInputModel);
     }
 
@@ -39,12 +39,15 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
                 e -> onModelChange()
         );
         repaint();
-
     }
 
     private void checkTypedWord(String typedWord){
 
         turnsManager.validateNewAttempt(typedWord);
+    }
+
+    public void onSubmitRequest(){
+
     }
 
     public void onModelChange(){

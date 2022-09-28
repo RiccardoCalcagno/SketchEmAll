@@ -5,23 +5,26 @@ import java.awt.*;
 
 public class WordsInputPresentation {
 
+    private JTextField wordInputField;
+
     public WordsInputPresentation(WordsInputController controller){
 
         //not showing on screen...
         JPanel labelsPanel = new JPanel();
         //labelsPanel.setPreferredSize(new Dimension(200,100));
-        controller.setLayout(new BorderLayout());
+        controller.setLayout(new BoxLayout(controller, BoxLayout.Y_AXIS));
+        controller.add(Box.createVerticalGlue());
+        controller.add(labelsPanel);
+        controller.add(Box.createVerticalGlue());
 
-        controller.add(labelsPanel, BorderLayout.NORTH);
         labelsPanel.setBackground(Color.BLACK);
         JLabel wordLabel = new JLabel("Guess word:");
         wordLabel.setForeground(Color.white);
         labelsPanel.add(wordLabel);
 
-        JTextField wordInputField = new JTextField(10);
-        labelsPanel.add(wordInputField);
+        this.wordInputField = new JTextField(10);
+        labelsPanel.add(this.wordInputField);
         installListeners(controller);
-
     }
 
     private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(250, 100);

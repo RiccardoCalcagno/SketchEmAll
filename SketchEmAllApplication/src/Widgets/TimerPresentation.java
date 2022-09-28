@@ -26,8 +26,16 @@ public class TimerPresentation {
 
         ImageIcon img = timerController.getModel().getTimerImage();
 
+
+        var image = img.getImage();
+
+        int imageDimension = (int)(getPreferredSize().height * 0.7d);
+
         //placeholder
-        pen.drawImage(img.getImage(),60,0, 30,30,null);
+        pen.drawImage(img.getImage(),
+                10,
+                (int)(getPreferredSize().height * 0.15d),
+                imageDimension,imageDimension,null);
 
     }
 
