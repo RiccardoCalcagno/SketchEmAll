@@ -47,6 +47,8 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     }
 
     public void onSubmitRequest(){
+        System.out.println("Submitted word is " +wordsInputPresentation.getCurrText());
+        checkTypedWord(wordsInputPresentation.getCurrText());
 
     }
 
