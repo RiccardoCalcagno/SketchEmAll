@@ -66,6 +66,7 @@ public class TurnsManager{
 
     public void startTurn() throws Exception{
 
+        System.out.println("starting new turn");
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
         //changed to normal pen
         modeUsedInTheTurn = chosePaintModeForNewTurn();
@@ -102,6 +103,7 @@ public class TurnsManager{
             public void actionPerformed(ActionEvent e) {
 
                 sessionManager.appLayoutManager.removeWordPickerWidget();
+                wordPickerController = null;
                 endOfProcedureEvent.actionPerformed(e);
             }
         };
@@ -150,11 +152,11 @@ public class TurnsManager{
 
     public void validateNewAttempt(String wordToCheck){
 
-        if(wordToCheck == wordUsedInTheTurn){
+        if(wordToCheck.toLowerCase().compareTo(wordUsedInTheTurn.toLowerCase()) == 0){
             notifyEndOfTurn(TurnEndReason.WORD_GUESSED);
         }
         else {
-            if (numberOfAttemptsLeft == 0) {
+            if (numberOfAttemptsLeft > 0) {
 
                 numberOfAttemptsLeft--;
             } else {

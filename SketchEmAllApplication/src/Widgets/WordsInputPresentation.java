@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class WordsInputPresentation {
 
     private JTextField wordInputField;
-    private JButton submitBtn;
+    private JButton submitButton;
 
     public WordsInputPresentation(WordsInputController controller){
 
@@ -33,14 +33,14 @@ public class WordsInputPresentation {
 
         wordsPanel.add(this.wordInputField);
 
-        this.submitBtn = new JButton("Submit");
-        submitBtn.addActionListener(new ActionListener() {
+        this.submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.onSubmitRequest();
             }
         });
-        wordsPanel.add(submitBtn);
+        wordsPanel.add(submitButton);
         installListeners(controller);
     }
 
@@ -53,6 +53,15 @@ public class WordsInputPresentation {
 
     protected void installListeners(WordsInputController controller) {
 
+    }
+
+    public void clearInputField(){
+        wordInputField.setText("");
+    }
+
+    public void setIsEnabledInteractions(boolean isEnabled){
+        submitButton.setEnabled(isEnabled);
+        wordInputField.setEnabled(isEnabled);
     }
 
     public String getCurrText(){

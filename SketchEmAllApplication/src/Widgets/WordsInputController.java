@@ -13,11 +13,6 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     private WordsInputModel wordsInputModel;
     private WordsInputPresentation wordsInputPresentation;
 
-    @Override
-    public boolean isActive(){
-        return wordsInputModel.isActive();
-    }
-
 
     public WordsInputController(TurnsManager turnsManager){
 
@@ -47,25 +42,32 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     }
 
     public void onSubmitRequest(){
-        System.out.println("Submitted word is " +wordsInputPresentation.getCurrText());
-        checkTypedWord(wordsInputPresentation.getCurrText());
 
+        var textToValidate =wordsInputPresentation.getCurrText();
+
+        if(textToValidate.isEmpty() == false){
+            checkTypedWord(textToValidate);
+            reset();
+        }
     }
 
     public void onModelChange(){
 
-        if(wordsInputModel.isActive()){
+        wordsInputPresentation.setIsEnabledInteractions(wordsInputModel.isActive());
 
-        }
-        else{
-
-        }
         repaint();
     }
 
     @Override
     public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
 
+        if(levelOfRequest == ChangePlayingTimeRequestLevel.NONE){
+            wordsInputModel.setIsActive(true);
+        }
+        else{
+            wordsInputModel.setIsActive(false);
+            wordsInputPresentation.clearInputField();
+        }
     }
 
 
@@ -76,7 +78,7 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
 
 
     public void reset() {
-
+        wordsInputPresentation.clearInputField();
     }
 
     @Override

@@ -19,12 +19,10 @@ public class TimeManager {
         return currentLevelOfStoppedTime.compareTo(levelToCheck) < 0;
     }
 
-
     private ChangePlayingTimeRequestLevel currentLevelOfStoppedTime;
     public ChangePlayingTimeRequestLevel getCurrentLevelOfStoppedTime() {
         return currentLevelOfStoppedTime;
     }
-
 
 
     private LoopTaskService.TaskOfSession perpetualManagementOfTime = new LoopTaskService.TaskOfSession() {
@@ -47,7 +45,7 @@ public class TimeManager {
 
     public void initializeSessionTimer(){
 
-        currentLevelOfStoppedTime = ChangePlayingTimeRequestLevel.NONE;
+        currentLevelOfStoppedTime = ChangePlayingTimeRequestLevel.TURN_OVER;
 
         sessionManager.loopTaskService.addTaskInLoop(perpetualManagementOfTime);
     }
@@ -63,7 +61,7 @@ public class TimeManager {
             currentLevelOfStoppedTime = levelOfRequest;
 
             for (ObserverOfApplicationActivityStates controllerToStop: playableTimeResponsiveControllers) {
-                controllerToStop.onChangeActivityStateLevel(levelOfRequest);
+                controllerToStop.onChangeActivityStateLevel(currentLevelOfStoppedTime);
             }
         }
     }
@@ -72,9 +70,10 @@ public class TimeManager {
 
         if(levelOfRequest.compareTo(currentLevelOfStoppedTime) >= 0 && currentLevelOfStoppedTime != ChangePlayingTimeRequestLevel.NONE){
             currentLevelOfStoppedTime = ChangePlayingTimeRequestLevel.NONE;
-            
+
+
             for (ObserverOfApplicationActivityStates controllerToRestart: playableTimeResponsiveControllers) {
-                controllerToRestart.onChangeActivityStateLevel(levelOfRequest);
+                controllerToRestart.onChangeActivityStateLevel(currentLevelOfStoppedTime);
             }
         }
     }

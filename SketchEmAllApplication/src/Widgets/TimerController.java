@@ -14,10 +14,11 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     private TimerPresentation timerPresentation;
     private BufferedImage timerBuffImage;
 
-    @Override
+
     public boolean isActive(){
         return timerModel.isActive();
     }
+
 
     public TimerController(TimeManager timeManager){
 

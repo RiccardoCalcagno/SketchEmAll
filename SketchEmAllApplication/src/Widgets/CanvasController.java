@@ -19,7 +19,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     private AbstractTool lastToolUsed;
 
 
-    @Override
     public boolean isActive(){
         return canvasModel.isActive();
     }
@@ -102,7 +101,7 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
     @Override
     public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
-
+        canvasModel.setIsActive(levelOfRequest == ChangePlayingTimeRequestLevel.NONE);
     }
 
 

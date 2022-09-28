@@ -74,6 +74,8 @@ public class SessionManager{
 
     public void handleGenericEndOfTurn(TurnEndReason turnEndReason){
 
+        timeManager.stopTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
+
         if(turnEndReason == TurnEndReason.WORD_GUESSED){
             handleSuccessOfTurn();
         }
@@ -84,13 +86,11 @@ public class SessionManager{
 
     private void handleSuccessOfTurn(){
 
-        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
-
-        timeManager.stopTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
+        //ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
 
         //badgeAttestationAnimator.PerformAnimation();
 
-        badgesController.createNewBadge(imageOfWinningDrawing);
+        //badgesController.createNewBadge(imageOfWinningDrawing);
 
         try {
             turnsManager.startTurn();
@@ -101,8 +101,6 @@ public class SessionManager{
     }
 
     private void handleFailOfTurn(TurnEndReason turnEndReason){
-
-        timeManager.stopTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
 
         try {
             turnsManager.startTurn();
