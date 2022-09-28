@@ -18,6 +18,16 @@ public class TimerModel {
         notifyChange();
     }
 
+    private boolean isGameOccasionallyInterrupted;
+    public boolean isGameOccasionallyInterrupted() {
+        return this.isGameOccasionallyInterrupted;
+    }
+    public void setGameOccasionallyInterrupted(boolean gameOccasionallyInterrupted) {
+        this.isGameOccasionallyInterrupted = gameOccasionallyInterrupted;
+        notifyChange();
+    }
+
+
     private List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
@@ -31,17 +41,5 @@ public class TimerModel {
         for (ChangeListener changeListener: changeListeners){
             changeListener.stateChanged(changeEvent);
         }
-    }
-
-
-    public ImageIcon getTimerImage(){
-        return  this.timerIcon;
-    }
-    public void setTimerImage(ImageIcon timerImage){
-        this.timerIcon = timerImage;
-    }
-
-    public  void updateTimerImage(ImageIcon timerImgage){
-        this.timerIcon = timerImgage;
     }
 }

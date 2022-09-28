@@ -1,12 +1,12 @@
 package Widgets;
 
-import InternModels.StoppableAccordinglyToPlayableTime;
+import InternModels.ChangePlayingTimeRequestLevel;
+import InternModels.ObserverOfApplicationActivityStates;
 import ManagersAndServices.TurnsManager;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class WordsInputController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
+public class WordsInputController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
     private TurnsManager turnsManager;
 
@@ -34,10 +34,10 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
 
         this.wordsInputPresentation = new WordsInputPresentation(this);
 
-
         wordsInputModel.addChangeListener(
                 e -> onModelChange()
         );
+
         repaint();
     }
 
@@ -62,14 +62,10 @@ public class WordsInputController extends SketchEmAllWidget implements Stoppable
     }
 
     @Override
-    public void onPlayableTimeStop() {
+    public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
 
     }
 
-    @Override
-    public void onPlayableTimeRestart() {
-
-    }
 
     @Override
     public void instantiateWidget(Container placeToPutWidget){

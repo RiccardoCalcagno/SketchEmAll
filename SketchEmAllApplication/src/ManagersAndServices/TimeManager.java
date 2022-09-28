@@ -1,6 +1,7 @@
 package ManagersAndServices;
 
-import InternModels.StoppableAccordinglyToPlayableTime;
+import InternModels.ChangePlayingTimeRequestLevel;
+import InternModels.ObserverOfApplicationActivityStates;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,10 +15,16 @@ public class TimeManager {
 
     private int millisecondsOfPause;
 
-    private boolean isSessionRunning;
-    public boolean getIsSessionRunning(){
-        return isSessionRunning;
+    public boolean isSessionRunningOverThisLevel(ChangePlayingTimeRequestLevel levelToCheck){
+        return currentLevelOfStoppedTime.compareTo(levelToCheck) < 0;
     }
+
+
+    private ChangePlayingTimeRequestLevel currentLevelOfStoppedTime;
+    public ChangePlayingTimeRequestLevel getCurrentLevelOfStoppedTime() {
+        return currentLevelOfStoppedTime;
+    }
+
 
 
     private LoopTaskService.TaskOfSession perpetualManagementOfTime = new LoopTaskService.TaskOfSession() {
@@ -30,34 +37,45 @@ public class TimeManager {
     };
 
 
-    private List<StoppableAccordinglyToPlayableTime> playableTimeResponsiveControllers = new ArrayList<StoppableAccordinglyToPlayableTime>();
+    private List<ObserverOfApplicationActivityStates> playableTimeResponsiveControllers = new ArrayList<ObserverOfApplicationActivityStates>();
 
     public TimeManager(SessionManager sessionManager){
 
         this.sessionManager = sessionManager;
-
-        sessionManager.loopTaskService.addTaskInLoop(perpetualManagementOfTime);
     }
 
 
     public void initializeSessionTimer(){
 
-        // TODO cancel time before
+        currentLevelOfStoppedTime = ChangePlayingTimeRequestLevel.NONE;
+
+        sessionManager.loopTaskService.addTaskInLoop(perpetualManagementOfTime);
     }
 
-    public void addPlayableTimeResponsiveController(StoppableAccordinglyToPlayableTime controllerToManage){
+    public void addPlayableTimeResponsiveController(ObserverOfApplicationActivityStates controllerToManage){
         playableTimeResponsiveControllers.add(controllerToManage);
     }
 
-    public void stopSessionTime(){
-        for (StoppableAccordinglyToPlayableTime controllerToStop: playableTimeResponsiveControllers) {
-            controllerToStop.onPlayableTimeStop();
+    public void stopTime_levelledRequest(ChangePlayingTimeRequestLevel levelOfRequest){
+
+        if(levelOfRequest.compareTo(currentLevelOfStoppedTime) > 0){
+
+            currentLevelOfStoppedTime = levelOfRequest;
+
+            for (ObserverOfApplicationActivityStates controllerToStop: playableTimeResponsiveControllers) {
+                controllerToStop.onChangeActivityStateLevel(levelOfRequest);
+            }
         }
     }
 
-    public void resumeSessionTime(){
-        for (StoppableAccordinglyToPlayableTime controllerToRestart: playableTimeResponsiveControllers) {
-            controllerToRestart.onPlayableTimeRestart();
+    public void resumeTime_levelledRequest(ChangePlayingTimeRequestLevel levelOfRequest){
+
+        if(levelOfRequest.compareTo(currentLevelOfStoppedTime) >= 0 && currentLevelOfStoppedTime != ChangePlayingTimeRequestLevel.NONE){
+            currentLevelOfStoppedTime = ChangePlayingTimeRequestLevel.NONE;
+            
+            for (ObserverOfApplicationActivityStates controllerToRestart: playableTimeResponsiveControllers) {
+                controllerToRestart.onChangeActivityStateLevel(levelOfRequest);
+            }
         }
     }
 }

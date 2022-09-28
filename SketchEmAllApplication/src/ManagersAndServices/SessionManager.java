@@ -1,6 +1,7 @@
 package ManagersAndServices;
 
 import Animators.BadgeAttestationAnimator;
+import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.TurnEndReason;
 import Widgets.*;
 
@@ -85,7 +86,7 @@ public class SessionManager{
 
         ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
 
-        timeManager.stopSessionTime();
+        timeManager.stopTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
 
         //badgeAttestationAnimator.PerformAnimation();
 
@@ -101,7 +102,7 @@ public class SessionManager{
 
     private void handleFailOfTurn(TurnEndReason turnEndReason){
 
-        timeManager.stopSessionTime();
+        timeManager.stopTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
 
         try {
             turnsManager.startTurn();

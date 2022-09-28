@@ -1,8 +1,8 @@
 package ManagersAndServices;
 
+import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.PaintMode;
 import InternModels.TurnEndReason;
-import PaintingTools.CrazyPenTool;
 import PaintingTools.PaintingToolsEnum;
 import PaintingTools.PencilTool;
 import Widgets.*;
@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
-import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Random;
 
@@ -67,10 +66,6 @@ public class TurnsManager{
 
     public void startTurn() throws Exception{
 
-        if(timeManager.getIsSessionRunning()){
-            throw new Exception("The session should not running now");
-        }
-
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
         //changed to normal pen
         modeUsedInTheTurn = chosePaintModeForNewTurn();
@@ -86,7 +81,7 @@ public class TurnsManager{
             );
         }
         catch (Exception e){
-            System.out.println("[DEBUG error] two procedure of word picking at the same time");
+            System.out.println(e.getMessage()+" probably due to: two procedure of word picking at the same time");
         }
     }
 
@@ -118,7 +113,7 @@ public class TurnsManager{
 
     private void startPlayingInTheTurn(){
 
-        timeManager.resumeSessionTime();
+        timeManager.resumeTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
     }
 
 

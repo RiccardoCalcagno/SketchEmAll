@@ -1,17 +1,13 @@
 package Widgets;
 
-import InternModels.StoppableAccordinglyToPlayableTime;
-import ManagersAndServices.RepositoryService;
+import InternModels.ChangePlayingTimeRequestLevel;
+import InternModels.ObserverOfApplicationActivityStates;
 import ManagersAndServices.TimeManager;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-public class TimerController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
+public class TimerController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
     private TimeManager timeManager;
     private TimerModel timerModel;
@@ -34,9 +30,6 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
 
 
     private void Init(TimerModel model){
-
-        timerModel.setTimerImage(RepositoryService.loadImageFromResources("timerPlaceholder.png"));
-
         this.timerModel = model;
 
         this.timerPresentation = new TimerPresentation();
@@ -45,35 +38,60 @@ public class TimerController extends SketchEmAllWidget implements StoppableAccor
                 e -> onModelChange()
         );
 
+        this.timerPresentation.installUI(this);
+
         //some UI stuff that probably should be moved?
         //JLabel iconLbl = new JLabel();
         //iconLbl.setIcon(timerModel.getTimerImage());
         //this.setLayout(new BorderLayout());
         //this.add(iconLbl, BorderLayout.CENTER);
-        repaint();
+
+        onModelChange();
     }
 
+
+    public void handleOccasionalPauseResumeRequest(boolean isRequestedByUser ){
+
+        var levelOfRequest = (isRequestedByUser)?
+                ChangePlayingTimeRequestLevel.USER_REQUEST :
+                ChangePlayingTimeRequestLevel.OCCASIONAL_PROGRAM_REQUEST;
+
+        boolean isPauseRequest = timerModel.isGameOccasionallyInterrupted() == false;
+
+        if(isPauseRequest){
+            timeManager.stopTime_levelledRequest(levelOfRequest);
+        }
+        else{
+            timeManager.resumeTime_levelledRequest(levelOfRequest);
+        }
+    }
 
 
     public void onModelChange(){
 
-        if(timerModel.isActive()){
+        timerPresentation.setEnabledPauseResumeButton(timerModel.isActive());
 
-        }
-        else{
+        timerPresentation.updateLocalPauseResume(timerModel.isGameOccasionallyInterrupted());
 
-        }
         repaint();
     }
 
     @Override
-    public void onPlayableTimeStop() {
+    public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
 
-    }
-
-    @Override
-    public void onPlayableTimeRestart() {
-
+        if(levelOfRequest == ChangePlayingTimeRequestLevel.NONE){
+            timerModel.setGameOccasionallyInterrupted(false);
+            timerModel.setIsActive(true);
+        }
+        else{
+            if(levelOfRequest.compareTo(ChangePlayingTimeRequestLevel.TURN_OVER) < 0){
+                timerModel.setGameOccasionallyInterrupted(true);
+                timerModel.setIsActive(true);
+            }
+            else{
+                timerModel.setIsActive(false);
+            }
+        }
     }
 
 

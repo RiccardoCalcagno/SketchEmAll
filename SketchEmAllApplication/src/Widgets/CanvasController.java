@@ -1,17 +1,15 @@
 package Widgets;
 
-import InternModels.StoppableAccordinglyToPlayableTime;
+import InternModels.ChangePlayingTimeRequestLevel;
+import InternModels.ObserverOfApplicationActivityStates;
 import ManagersAndServices.TurnsManager;
 import PaintingTools.AbstractDrawing;
 import PaintingTools.AbstractTool;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
-public class CanvasController extends SketchEmAllWidget implements StoppableAccordinglyToPlayableTime {
+public class CanvasController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
     private CanvasModel canvasModel;
     private CanvasPresentation canvasPresentation;
@@ -103,14 +101,10 @@ public class CanvasController extends SketchEmAllWidget implements StoppableAcco
     public CanvasModel getModel() { return canvasModel;}
 
     @Override
-    public void onPlayableTimeStop() {
-        canvasModel.setIsActive(false);
+    public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
+
     }
 
-    @Override
-    public void onPlayableTimeRestart() {
-        canvasModel.setIsActive(true);
-    }
 
     @Override
     public void instantiateWidget(Container placeToPutWidget){
