@@ -3,6 +3,7 @@ package ManagersAndServices;
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.PaintMode;
 import InternModels.TurnEndReason;
+import PaintingTools.InvertedPenTool;
 import PaintingTools.PaintingToolsEnum;
 import PaintingTools.PencilTool;
 import Widgets.*;
@@ -147,6 +148,16 @@ public class TurnsManager{
         );
 
          */
+        paintModesKit.put(PaintingToolsEnum.INVERTED_PEN,
+                new PaintMode(
+                        "Inverted pen",
+                        "Have you ever drawn in a mirror? No? This changes now. Good luck! O:)",
+                        RepositoryService.loadImageFromResources("pencil_icon.png"),
+                        Color.orange,
+                        60000,
+                        new InvertedPenTool()
+                )
+        );
     }
 
 
