@@ -27,7 +27,11 @@ public class CanvasModel {
         drawings.add(drawing);
         notifyChange();
     }
-
+    public void removeAllDrawing(){
+        closeEditOfDrawing();
+        drawings.clear();
+        notifyChange();
+    }
 
     private AbstractDrawing currentDrawing = null;
     public AbstractDrawing getCurrentDrawing(){

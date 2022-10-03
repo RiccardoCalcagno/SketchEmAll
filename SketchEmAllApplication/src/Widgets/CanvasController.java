@@ -63,6 +63,8 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         if(lastToolUsed != null){
             this.lastToolUsed.setCanvasWhereToDraw(this);
         }
+
+        this.canvasModel.removeAllDrawing();
     }
 
 

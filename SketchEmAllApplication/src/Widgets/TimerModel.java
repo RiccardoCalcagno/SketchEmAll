@@ -18,16 +18,6 @@ public class TimerModel {
         notifyChange();
     }
 
-    private boolean isGameOccasionallyInterrupted;
-    public boolean isGameOccasionallyInterrupted() {
-        return this.isGameOccasionallyInterrupted;
-    }
-    public void setGameOccasionallyInterrupted(boolean gameOccasionallyInterrupted) {
-        this.isGameOccasionallyInterrupted = gameOccasionallyInterrupted;
-        notifyChange();
-    }
-
-
     private List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);

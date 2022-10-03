@@ -4,12 +4,10 @@ import Widgets.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
 
 public class AppLayoutManager extends JFrame {
 
-    private JFrame containerOfWordPickerWdget = null;
-    private Dimension APP_PREFFERED_SIZE = new Dimension(1000,1000);
+    private Dimension APP_PREFFERRED_SIZE = new Dimension(1000,1000);
 
     public static final Color BACKGROUND_APPLICATION = new Color(20,20,20);
 
@@ -23,7 +21,7 @@ public class AppLayoutManager extends JFrame {
                                     WordsInputController wordsInputController){
 
         this.setLayout(new BorderLayout());
-        this.setPreferredSize(APP_PREFFERED_SIZE);
+        this.setPreferredSize(APP_PREFFERRED_SIZE);
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -50,29 +48,6 @@ public class AppLayoutManager extends JFrame {
         centerPanel.add(badgesController);
 
         centerPanel.add(Box.createVerticalGlue());
-        /*
-        JPanel placeToPutCanvas = new JPanel();
-        centerPanel.add(placeToPutCanvas);
-        placeToPutCanvas.add(canvasController);
-
-        //placeholder for now
-        placeToPutCanvas.setPreferredSize(new Dimension(850,600));
-
-        JPanel timerAndInputWordPanel = new JPanel();
-        centerPanel.add(timerAndInputWordPanel);
-
-        //the problem is from the LAYOUT
-        timerAndInputWordPanel.setLayout(new BoxLayout(timerAndInputWordPanel, BoxLayout.LINE_AXIS));
-        //timerAndInputWordPanel.add(timerController);
-        Box b = Box.createVerticalBox();
-        b.add(wordsInputController);
-        b.add(Box.createVerticalGlue());
-        timerAndInputWordPanel.add(b);
-
-        JPanel placeToPutBadges = new JPanel();
-        centerPanel.add(placeToPutBadges, BorderLayout.SOUTH);
-        badgesController.instantiateWidget(placeToPutBadges);
-         */
 
 
         this.add(centerPanel, BorderLayout.CENTER);
@@ -84,34 +59,5 @@ public class AppLayoutManager extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
-
-
-
-    public void instantiateWordPickerWidget(WordPickerController wordPickerController){
-
-        containerOfWordPickerWdget = new JFrame();
-        containerOfWordPickerWdget.setAlwaysOnTop(true);
-        containerOfWordPickerWdget.setResizable(false);
-        containerOfWordPickerWdget.setUndecorated(true);
-        containerOfWordPickerWdget.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-
-        containerOfWordPickerWdget.add(wordPickerController);
-
-        containerOfWordPickerWdget.pack();
-        containerOfWordPickerWdget.setLocationRelativeTo(this);
-        containerOfWordPickerWdget.setVisible(true);
-    }
-
-    public void removeWordPickerWidget(){
-
-        if(containerOfWordPickerWdget !=null){
-
-            containerOfWordPickerWdget.setVisible(false);
-            containerOfWordPickerWdget.dispose();
-            containerOfWordPickerWdget = null;
-        }
-
-    }
-
 
 }

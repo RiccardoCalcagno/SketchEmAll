@@ -47,36 +47,8 @@ public class TimerPresentation {
     private static final Dimension PREFERRED_SIZE_TIMER_BOX = new Dimension(250, 100);
 
 
-    public void setEnabledPauseResumeButton(boolean isEnabled){
-        this.pauseResumeButton.setEnabled(isEnabled);
-    }
-
-    public void updateLocalPauseResume(boolean isPaused){
-        if(isPaused){
-            this.pauseResumeButton.setIcon(pauseIcon);
-        }
-        else{
-            this.pauseResumeButton.setIcon(playIcon);
-        }
-    }
-
     public void paint(Graphics2D pen, JComponent component)
     {
-        TimerController timerController = ((TimerController)component);
-        TimerModel model = timerController.getModel();
-
-        /*
-        pen.setColor(Color.red);
-        //pen.fillRect(0,0, getPreferredSize().width,getPreferredSize().height);
-        var image = timerImagePlaceholder.getImage();
-        int imageDimension = (int)(getPreferredSize().height * 0.7d);
-        //placeholder
-        pen.drawImage(image,
-                10,
-                (int)(getPreferredSize().height * 0.15d),
-                imageDimension,imageDimension,null);
-         */
-
     }
 
     public Dimension getPreferredSize() {

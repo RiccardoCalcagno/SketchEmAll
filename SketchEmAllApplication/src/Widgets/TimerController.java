@@ -53,26 +53,10 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
 
     public void handleOccasionalPauseResumeRequest(boolean isRequestedByUser ){
 
-        var levelOfRequest = (isRequestedByUser)?
-                ChangePlayingTimeRequestLevel.USER_REQUEST :
-                ChangePlayingTimeRequestLevel.OCCASIONAL_PROGRAM_REQUEST;
-
-        boolean isPauseRequest = timerModel.isGameOccasionallyInterrupted() == false;
-
-        if(isPauseRequest){
-            timeManager.stopTime_levelledRequest(levelOfRequest);
-        }
-        else{
-            timeManager.resumeTime_levelledRequest(levelOfRequest);
-        }
     }
 
 
     public void onModelChange(){
-
-        timerPresentation.setEnabledPauseResumeButton(timerModel.isActive());
-
-        timerPresentation.updateLocalPauseResume(timerModel.isGameOccasionallyInterrupted());
 
         repaint();
     }
@@ -80,19 +64,6 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     @Override
     public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
 
-        if(levelOfRequest == ChangePlayingTimeRequestLevel.NONE){
-            timerModel.setGameOccasionallyInterrupted(false);
-            timerModel.setIsActive(true);
-        }
-        else{
-            if(levelOfRequest.compareTo(ChangePlayingTimeRequestLevel.TURN_OVER) < 0){
-                timerModel.setGameOccasionallyInterrupted(true);
-                timerModel.setIsActive(true);
-            }
-            else{
-                timerModel.setIsActive(false);
-            }
-        }
     }
 
 

@@ -31,7 +31,6 @@ public abstract class AbstractTool extends MouseAdapter implements KeyListener {
     public abstract AbstractDrawing getNewDrawing();
 
 
-
     public abstract PaintingToolsEnum getPaintingToolsEnum();
 
 

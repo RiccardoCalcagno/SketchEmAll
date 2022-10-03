@@ -3,6 +3,7 @@ package ManagersAndServices;
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.PaintMode;
 import InternModels.TurnEndReason;
+import PaintingTools.CrazyPenTool;
 import PaintingTools.PaintingToolsEnum;
 import PaintingTools.PencilTool;
 import Widgets.*;
@@ -24,8 +25,6 @@ public class TurnsManager{
 
     private CanvasController canvasController;
     private WordsInputController wordsInputController;
-    // present only in a sub-procedure of the turn
-    private WordPickerController wordPickerController;
 
     private Dictionary<PaintingToolsEnum, PaintMode> paintModesKit = new Hashtable<>();
 
@@ -76,41 +75,7 @@ public class TurnsManager{
 
         numberOfAttemptsLeft = NUM_OF_ATTEMPT_EACH_TURN;
 
-        try {
-            invokeWordPickingProcedure(
-                    e -> startPlayingInTheTurn()
-            );
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage()+" probably due to: two procedure of word picking at the same time");
-        }
-    }
-
-    private void invokeWordPickingProcedure(ActionListener endOfProcedureEvent) throws Exception{
-
-        if(wordPickerController != null){
-            throw new Exception("a new procedure of this kind should be invoked only if there are no other actives");
-        }
-
-        wordPickerController = new WordPickerController(
-                modeUsedInTheTurn,
-                wordUsedInTheTurn
-                );
-
-        // Auto-detach listener
-        var wrappedEndOfProcedureEvent = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                sessionManager.appLayoutManager.removeWordPickerWidget();
-                wordPickerController = null;
-                endOfProcedureEvent.actionPerformed(e);
-            }
-        };
-
-        wordPickerController.addEndProcedureListeners(wrappedEndOfProcedureEvent);
-
-        sessionManager.appLayoutManager.instantiateWordPickerWidget(wordPickerController);
+        startPlayingInTheTurn();
     }
 
     private void startPlayingInTheTurn(){
@@ -134,7 +99,6 @@ public class TurnsManager{
                 new PencilTool()
             )
         );
-        /*
         paintModesKit.put(PaintingToolsEnum.CRAZY_PEN,
                 new PaintMode(
                         "Crazy Pen",
@@ -145,8 +109,6 @@ public class TurnsManager{
                         new CrazyPenTool()
                 )
         );
-
-         */
     }
 
 

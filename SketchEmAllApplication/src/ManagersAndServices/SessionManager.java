@@ -1,6 +1,5 @@
 package ManagersAndServices;
 
-import Animators.BadgeAttestationAnimator;
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.TurnEndReason;
 import Widgets.*;
@@ -10,7 +9,7 @@ import javax.swing.*;
 public class SessionManager{
 
     private TurnsManager turnsManager;
-    private BadgeAttestationAnimator badgeAttestationAnimator;
+
     public AppLayoutManager appLayoutManager;
 
     public TimeManager timeManager;
@@ -40,8 +39,6 @@ public class SessionManager{
         timerController = new TimerController(timeManager);
         wordsInputController = new WordsInputController(turnsManager);
 
-        badgeAttestationAnimator
-                = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 
         turnsManager.setTurnWidgets(canvasController, wordsInputController);
 
