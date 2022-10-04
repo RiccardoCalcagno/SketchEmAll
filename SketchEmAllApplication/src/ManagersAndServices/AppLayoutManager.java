@@ -15,6 +15,7 @@ public class AppLayoutManager extends JFrame {
 
     public AppLayoutManager() {
         super();
+        setTitle("SketchEmAll");
     }
 
     public void presentStartLayout(BadgesController badgesController,
@@ -90,6 +91,7 @@ public class AppLayoutManager extends JFrame {
     public void instantiateWordPickerWidget(WordPickerController wordPickerController){
 
         containerOfWordPickerWdget = new JFrame();
+        containerOfWordPickerWdget.setTitle("Your mission!");
         containerOfWordPickerWdget.setAlwaysOnTop(true);
         containerOfWordPickerWdget.setResizable(false);
         containerOfWordPickerWdget.setUndecorated(true);
