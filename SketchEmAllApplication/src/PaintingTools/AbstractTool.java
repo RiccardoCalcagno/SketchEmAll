@@ -5,8 +5,6 @@ import Widgets.CanvasController;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.function.Function;
 
 public abstract class AbstractTool extends MouseAdapter implements KeyListener {
 
@@ -29,8 +27,6 @@ public abstract class AbstractTool extends MouseAdapter implements KeyListener {
     public abstract void applyCurrentTransformationOnSubject(AbstractDrawing subject);
 
     public abstract AbstractDrawing getNewDrawing();
-
-
 
     public abstract PaintingToolsEnum getPaintingToolsEnum();
 

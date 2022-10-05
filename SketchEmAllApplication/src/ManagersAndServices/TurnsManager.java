@@ -3,6 +3,7 @@ package ManagersAndServices;
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.PaintMode;
 import InternModels.TurnEndReason;
+import PaintingTools.CrazyPenTool;
 import PaintingTools.InvertedPenTool;
 import PaintingTools.PaintingToolsEnum;
 import PaintingTools.PencilTool;
@@ -135,7 +136,6 @@ public class TurnsManager{
                 new PencilTool()
             )
         );
-        /*
         paintModesKit.put(PaintingToolsEnum.CRAZY_PEN,
                 new PaintMode(
                         "Crazy Pen",
@@ -147,7 +147,6 @@ public class TurnsManager{
                 )
         );
 
-         */
         paintModesKit.put(PaintingToolsEnum.INVERTED_PEN,
                 new PaintMode(
                         "Inverted pen",

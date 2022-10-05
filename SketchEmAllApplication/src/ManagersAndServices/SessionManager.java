@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class SessionManager{
 
-    private TurnsManager turnsManager;
+    private final TurnsManager turnsManager;
     private BadgeAttestationAnimator badgeAttestationAnimator;
     public AppLayoutManager appLayoutManager;
 
@@ -18,10 +18,10 @@ public class SessionManager{
 
 
     // -------------------------  widget of Session ------------------------
-    private BadgesController badgesController;
+    private final BadgesController badgesController;
     public CanvasController canvasController;
-    private TimerController timerController;
-    private WordsInputController wordsInputController;
+    private final TimerController timerController;
+    private final WordsInputController wordsInputController;
 
 
     public SessionManager() {
