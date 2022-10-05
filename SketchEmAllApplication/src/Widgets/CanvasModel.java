@@ -2,7 +2,6 @@ package Widgets;
 
 import PaintingTools.AbstractDrawing;
 
-import javax.management.OperationsException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class CanvasModel {
 
-    private HashSet<AbstractDrawing> drawings = new HashSet<>();
+    private final HashSet<AbstractDrawing> drawings = new HashSet<>();
     public HashSet<AbstractDrawing> getDrawings(){
         return drawings;
     }
@@ -27,7 +26,11 @@ public class CanvasModel {
         drawings.add(drawing);
         notifyChange();
     }
-
+    public void removeAllDrawing(){
+        closeEditOfDrawing();
+        drawings.clear();
+        notifyChange();
+    }
 
     private AbstractDrawing currentDrawing = null;
     public AbstractDrawing getCurrentDrawing(){
@@ -43,7 +46,7 @@ public class CanvasModel {
         if(currentDrawing!= null){
             closeEditOfDrawing();
         }
-        if(drawings.contains(drawingToOpenInEditMode) == false){
+        if(!drawings.contains(drawingToOpenInEditMode)){
             return;
         }
         currentDrawing = drawingToOpenInEditMode;
@@ -65,7 +68,7 @@ public class CanvasModel {
         notifyChange();
     }
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
     }

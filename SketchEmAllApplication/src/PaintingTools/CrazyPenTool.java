@@ -39,7 +39,7 @@ public class CrazyPenTool extends PencilTool{
                 (int)(startPosition.x + myRandom.nextInt((int)(40 * constantOfCraziness))  - 20 * constantOfCraziness),
                 (int)(startPosition.y + myRandom.nextInt((int)(40 * constantOfCraziness)) - 20 * constantOfCraziness)
         );
-    };
+    }
 
     private double getConstantOfCraziness(){
 
@@ -53,7 +53,6 @@ public class CrazyPenTool extends PencilTool{
         }
         return realConstant;
     }
-
     @Override
     public void addNewAlteredPointFromPointer(Point pointerLocation){
 
@@ -66,6 +65,7 @@ public class CrazyPenTool extends PencilTool{
             nextPointToAdd = pointerLocation;
         }
     }
+
 
     private void restSpeedBuffer(){
         for(int i=0; i<SPEED_SAMPLING_AMPLITUDE; i++){

@@ -15,7 +15,7 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     private CanvasPresentation canvasPresentation;
     private JLabel title;
 
-    private TurnsManager turnsManager;
+    private final TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
 
 
@@ -63,15 +63,17 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         if(lastToolUsed != null){
             this.lastToolUsed.setCanvasWhereToDraw(this);
         }
+
+        this.canvasModel.removeAllDrawing();
     }
 
 
     public void editCurrentDrawing(AbstractTool toolToUse){
-        if(isActive() == false){
+        if(!isActive()){
             return;
         }
 
-        if(canvasModel.isDrawing() == false){
+        if(!canvasModel.isDrawing()){
             addNewDrawing(toolToUse);
         }
 
@@ -79,7 +81,7 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     }
 
     public void addNewDrawing(AbstractTool toolToUse) {
-        if(isActive() == false){
+        if(!isActive()){
             return;
         }
 
