@@ -36,7 +36,7 @@ public class WordPickerModel {
         return this.isReadyToExitProcedure;
     }
     public void setIsReadyToExitProcedure(boolean isReadyToExitProcedure){
-        if(this.isReadyToExitProcedure == false){
+        if(!this.isReadyToExitProcedure){
             this.isReadyToExitProcedure = true;
             notifyChange();
         }
@@ -63,7 +63,7 @@ public class WordPickerModel {
     }
 
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
     }

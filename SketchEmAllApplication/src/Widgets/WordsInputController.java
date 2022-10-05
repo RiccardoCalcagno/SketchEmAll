@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class WordsInputController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
-    private TurnsManager turnsManager;
+    private final TurnsManager turnsManager;
 
     private WordsInputModel wordsInputModel;
     private WordsInputPresentation wordsInputPresentation;
