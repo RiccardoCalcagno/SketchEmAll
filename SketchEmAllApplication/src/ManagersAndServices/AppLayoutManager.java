@@ -112,7 +112,7 @@ public class AppLayoutManager extends JFrame {
             containerOfWordPickerWdget.dispose();
             containerOfWordPickerWdget = null;
         }
-
+        this.setState(JFrame.NORMAL);
     }
 
 
