@@ -9,7 +9,7 @@ public class AppLayoutManager extends JFrame {
 
     private JFrame containerOfWordPickerWidget = null;
 
-    private final Dimension APP_PREFFERRED_SIZE = new Dimension(1000,1000);
+    private final Dimension APP_PREFERRED_SIZE = new Dimension(1000,1000);
 
     public static final Color BACKGROUND_APPLICATION = new Color(20,20,20);
 
@@ -24,7 +24,7 @@ public class AppLayoutManager extends JFrame {
                                     WordsInputController wordsInputController){
 
         this.setLayout(new BorderLayout());
-        this.setPreferredSize(APP_PREFFERRED_SIZE);
+        this.setPreferredSize(APP_PREFERRED_SIZE);
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -90,6 +90,8 @@ public class AppLayoutManager extends JFrame {
             containerOfWordPickerWidget = null;
         }
         this.setState(JFrame.NORMAL);
+        this.setVisible(true);
+        this.toFront();
     }
 
 
