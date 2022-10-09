@@ -4,9 +4,7 @@ import InternModels.PaintMode;
 import ManagersAndServices.RepositoryService;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -126,7 +124,7 @@ public class WordPickerController extends SketchEmAllWidget {
         JLabel modeLabelFrontCard = new JLabel(wordPickerModel.paintMode.uiName);
         modeLabelFrontCard.setForeground(Color.white);
         panelForTextualDescriptionsOfMode.add(modeLabelFrontCard, BorderLayout.NORTH);
-        JLabel modeDescriptionFrontCard = new JLabel("<html>"+ wordPickerModel.paintMode.uiDesription+"</html>");
+        JLabel modeDescriptionFrontCard = new JLabel("<html>"+ wordPickerModel.paintMode.uiDescription +"</html>");
         modeDescriptionFrontCard.setPreferredSize(new Dimension(400, 80));
         modeDescriptionFrontCard.setForeground(Color.white);
         panelForTextualDescriptionsOfMode.add(modeDescriptionFrontCard, BorderLayout.CENTER);

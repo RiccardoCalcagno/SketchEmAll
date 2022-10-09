@@ -7,24 +7,27 @@ import java.awt.*;
 
 public class PaintMode {
 
-    public PaintMode(String uiName, String uiDesription, ImageIcon canvasRepresentativeIcon, Color timerRepresentativeColor, int weightedTimeInMilliseconds, AbstractTool paintTool) {
+    public PaintMode(String uiName, String uiDescription, ImageIcon canvasRepresentativeIcon, Color timerRepresentativeColor, double weightedTimeInPercentage, AbstractTool paintTool) {
         this.uiName = uiName;
         this.canvasRepresentativeIcon = canvasRepresentativeIcon;
         this.timerRepresentativeColor = timerRepresentativeColor;
-        this.weightedTimeInMilliseconds = weightedTimeInMilliseconds;
+        this.weightedTimeInPercentage = weightedTimeInPercentage;
         this.paintTool = paintTool;
-        this.uiDesription = uiDesription;
+        this.uiDescription = uiDescription;
     }
+
+    // TODO change
+    public static final int MAXIMUM_SECONDS_OF_HARDEST_MODE = 80;
 
     public String uiName;
 
-    public String uiDesription;
+    public String uiDescription;
 
     public ImageIcon canvasRepresentativeIcon;
 
     public Color timerRepresentativeColor;
 
-    public int weightedTimeInMilliseconds;
+    public double weightedTimeInPercentage;
 
     public AbstractTool paintTool;
 }

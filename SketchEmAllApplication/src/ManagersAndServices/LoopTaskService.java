@@ -1,20 +1,18 @@
 package ManagersAndServices;
 
-import java.util.ArrayList;
+import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LoopTaskService {
 
     public interface TaskOfSession {
-        abstract void call();
+        void performTask();
     }
 
     // how to create a game loop: https://java-design-patterns.com/patterns/game-loop/
     public LoopTaskService(){
-
         isLoopRunning = false;
     }
 
@@ -63,14 +61,13 @@ public class LoopTaskService {
         while (isLoopRunning) {
 
             try {
-                var lag = new Random().nextInt(200) + 50;
-                Thread.sleep(lag);
+                Thread.sleep(100);
 
                 lockInAccessToTasksContainer.lock();
 
                 for (TaskOfSession taskToPerform: tasksToPerform) {
 
-                        taskToPerform.call();
+                        taskToPerform.performTask();
                 }
             }
             catch (Exception e){
