@@ -21,11 +21,14 @@ public class TurnsManager{
 
     public static final int NUM_OF_ATTEMPT_EACH_TURN = 3;
 
+    public static final int DURATION_OF_SESSION_IN_SECONDS = 400;
+
     private SessionManager sessionManager;
     private TimeManager timeManager;
 
     private CanvasController canvasController;
     private WordsInputController wordsInputController;
+    private TimerController timerController;
     // present only in a sub-procedure of the turn
     private WordPickerController wordPickerController;
 
@@ -41,18 +44,27 @@ public class TurnsManager{
     }
     private int numberOfAttemptsLeft;
 
+    private ActionListener expiredTimeForCurrentTurn = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
+        }
+    };
 
     public TurnsManager(SessionManager sessionManager){
 
         this.sessionManager = sessionManager;
-        timeManager = sessionManager.timeManager;
+        this.timeManager = sessionManager.timeManager;
 
         setPaintModesKit();
     }
 
-    public void setTurnWidgets(CanvasController canvasController, WordsInputController wordsInputController){
+    public void setTurnWidgets(CanvasController canvasController, WordsInputController wordsInputController, TimerController timerController){
         this.canvasController = canvasController;
         this.wordsInputController = wordsInputController;
+        this.timerController = timerController;
+
+        this.timerController.addActionListener(expiredTimeForCurrentTurn);
     }
 
 
@@ -117,7 +129,9 @@ public class TurnsManager{
 
     private void startPlayingInTheTurn(){
 
-        timeManager.resumeTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
+        timerController.createNewSliceForNewTurn(modeUsedInTheTurn);
+
+        this.timeManager.resumeTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
     }
 
 
@@ -132,7 +146,7 @@ public class TurnsManager{
                 "Keep pressed and drag the mouse to draw the lines for your amazing painting ;)",
                 RepositoryService.loadImageFromResources("pencil_icon.png"),
                 Color.orange,
-                60000,
+                0.5d,
                 new PencilTool()
             )
         );
@@ -142,18 +156,17 @@ public class TurnsManager{
                         "Keep pressed and drag the mouse to draw the lines, but... pay attention... sometimes it likes to be silly!",
                         RepositoryService.loadImageFromResources("crazy_pen.png"),
                         Color.PINK,
-                        80000,
+                        0.6d,
                         new CrazyPenTool()
                 )
         );
-
         paintModesKit.put(PaintingToolsEnum.INVERTED_PEN,
                 new PaintMode(
                         "Inverted pen",
                         "Have you ever drawn in a mirror? No? This changes now. Good luck! O:)",
                         RepositoryService.loadImageFromResources("pencil_icon.png"),
-                        Color.orange,
-                        60000,
+                        Color.cyan,
+                        0.8d,
                         new InvertedPenTool()
                 )
         );
@@ -177,6 +190,9 @@ public class TurnsManager{
 
 
     private void notifyEndOfTurn(TurnEndReason turnEndReason){
+
+        timerController.endCurrentSlice(turnEndReason == TurnEndReason.WORD_GUESSED);
+
         sessionManager.handleGenericEndOfTurn(turnEndReason);
     }
 }

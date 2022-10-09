@@ -1,5 +1,6 @@
 package Animators;
 
+import InternModels.TimerSlice;
 import ManagersAndServices.LoopTaskService;
 import Widgets.BadgesController;
 import Widgets.TimerController;
@@ -27,8 +28,8 @@ public class BadgeAttestationAnimator implements Animator{
     @Override
     public void PerformAnimation() {
 
-        Shape sliceOfTimerToMove = timerController.getShapeOfLastSlice();
-        Rectangle2D boundsOfSlice = sliceOfTimerToMove.getBounds2D();
+        TimerSlice sliceOfTimerToMove = timerController.getCurrentSlice();
+        Rectangle2D boundsOfSlice = sliceOfTimerToMove.getSliceShape().getBounds2D();
         double[] startPositionOfSlice = {boundsOfSlice.getCenterX(), boundsOfSlice.getCenterY()};
 
         double[] endPositionOfSlice = badgesController.getPointInScreenOfNextBadge();
@@ -47,28 +48,26 @@ public class BadgeAttestationAnimator implements Animator{
         private final double ANIMATION_SPEED = 0.4d;
         private double[] startPositionOfSlice;
         private double[] endPositionOfSlice;
-        private Shape sliceOfTimerToMove;
+        private TimerSlice sliceOfTimerToMove;
 
         public AnimationTaskForBadgeAttestation(BadgeAttestationAnimator badgeAttestationAnimator, LoopTaskService loopTaskService){
             this.badgeAttestationAnimator = badgeAttestationAnimator;
             this.loopTaskService = loopTaskService;
-        }
-        @Override
-        public void call(){
-
-
-            // TODO
-
         }
 
         private void onEndAnimation(){
             loopTaskService.removeTaskFromLoop(this);
         }
 
-        public void prepareAnimation(Shape sliceOfTimerToMove, double[] startPositionOfSlice, double[] endPositionOfSlice){
+        public void prepareAnimation(TimerSlice sliceOfTimerToMove, double[] startPositionOfSlice, double[] endPositionOfSlice){
             this.startPositionOfSlice = startPositionOfSlice;
             this.endPositionOfSlice = endPositionOfSlice;
             this.sliceOfTimerToMove = sliceOfTimerToMove;
+        }
+
+        @Override
+        public void performTask() {
+            // TODO
         }
     }
 }

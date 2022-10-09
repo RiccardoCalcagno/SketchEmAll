@@ -2,27 +2,45 @@ package Widgets;
 
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.ObserverOfApplicationActivityStates;
+import InternModels.PaintMode;
+import InternModels.TimerSlice;
+import ManagersAndServices.LoopTaskService;
 import ManagersAndServices.TimeManager;
+import ManagersAndServices.TurnsManager;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TimerController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
-    private TimeManager timeManager;
+    private LoopTaskService loopTaskService;
+    private TimeManager timerManager;
     private TimerModel timerModel;
     private TimerPresentation timerPresentation;
     private BufferedImage timerBuffImage;
 
+    private LoopTaskService.TaskOfSession updateTimerTask = new LoopTaskService.TaskOfSession() {
+        @Override
+        public void performTask() {
+            updateTimerOnSessionTimeIncrement();
+        }
+    };
+
+    public static final String TIMER_OF_SLICE_EXPIRED_ACTION_NAME = "timerOfSliceExpired";
 
     public boolean isActive(){
         return timerModel.isActive();
     }
 
 
-    public TimerController(TimeManager timeManager){
-
-        this.timeManager = timeManager;
+    public TimerController(TimeManager timerManager, LoopTaskService loopTaskService){
+        this.timerManager = timerManager;
+        this.loopTaskService = loopTaskService;
 
         timerModel = new TimerModel();
 
@@ -33,21 +51,17 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     private void Init(TimerModel model){
         this.timerModel = model;
 
+        this.loopTaskService.addTaskInLoop(updateTimerTask);
+
         this.timerPresentation = new TimerPresentation();
 
         timerModel.addChangeListener(
-                e -> onModelChange()
+                e -> repaint()
         );
 
         this.timerPresentation.installUI(this);
 
-        //some UI stuff that probably should be moved?
-        //JLabel iconLbl = new JLabel();
-        //iconLbl.setIcon(timerModel.getTimerImage());
-        //this.setLayout(new BorderLayout());
-        //this.add(iconLbl, BorderLayout.CENTER);
-
-        onModelChange();
+        repaint();
     }
 
 
@@ -60,22 +74,13 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
         boolean isPauseRequest = timerModel.isGameOccasionallyInterrupted() == false;
 
         if(isPauseRequest){
-            timeManager.stopTime_levelledRequest(levelOfRequest);
+            timerManager.stopTime_levelledRequest(levelOfRequest);
         }
         else{
-            timeManager.resumeTime_levelledRequest(levelOfRequest);
+            timerManager.resumeTime_levelledRequest(levelOfRequest);
         }
     }
 
-
-    public void onModelChange(){
-
-        timerPresentation.setEnabledPauseResumeButton(timerModel.isActive());
-
-        timerPresentation.updateLocalPauseResume(timerModel.isGameOccasionallyInterrupted());
-
-        repaint();
-    }
 
     @Override
     public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
@@ -105,11 +110,53 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
 
     }
 
-    public Shape getShapeOfLastSlice(){
 
-        // TODO
-        return null;
+    public TimerSlice getCurrentSlice(){
+
+        var slices = timerModel.getTimerSlices();
+
+        if(slices.size() == 0){
+            return null;
+        }
+
+        return slices.get(slices.size() -1);
     }
+
+
+    public void endCurrentSlice(boolean isWon){
+        timerModel.stopGrowthOfCurrentSlice(isWon);
+    }
+
+    public void createNewSliceForNewTurn(PaintMode paintModeUsedInNewTurn){
+
+        TimerSlice newTimerSlice = new TimerSlice(
+                paintModeUsedInNewTurn,
+                timerPresentation,
+                timerManager.getPercentageOfSession()
+                );
+
+        timerModel.addTimerSlice(newTimerSlice);
+    }
+
+    public void updateTimerOnSessionTimeIncrement(){
+        var currentSlice = getCurrentSlice();
+
+        if(currentSlice != null && currentSlice.isGrowing == true){
+
+            var maxSecondsForCurrentMode = PaintMode.MAXIMUM_SECONDS_OF_HARDEST_MODE * currentSlice.paintMode.weightedTimeInPercentage;
+
+            var secondsSpentInForThisSlice = (currentSlice.getEndingPercentageTime() - currentSlice.getStartingPercentageTime())
+                    * TurnsManager.DURATION_OF_SESSION_IN_SECONDS;
+
+            if(secondsSpentInForThisSlice >= maxSecondsForCurrentMode){
+                notifyExpirationOfTurn();
+            }
+            else{
+                timerModel.setCurrentSliceEndPercentageTime(timerManager.getPercentageOfSession());
+            }
+        }
+    }
+
 
     @Override
     public void paintComponent(Graphics pen) {
@@ -122,6 +169,10 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
 
     public TimerModel getModel(){
         return timerModel;
+    }
+
+    public LocalTime getCurrentSessionTime(){
+        return timerManager.getSessionTime();
     }
 
 
@@ -138,5 +189,20 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
         return this.timerPresentation.getMinimumSize();
     }
 
+
+    private List<ActionListener> actionListeners = new ArrayList<>();
+    public void addActionListener(ActionListener actionListenerToAdd){
+        actionListeners.add(actionListenerToAdd);
+    }
+    public void removeActionListener(ActionListener actionListenerToRemove){
+        actionListeners.remove(actionListenerToRemove);
+    }
+    public void notifyExpirationOfTurn(){
+        ActionEvent actionEventEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, TIMER_OF_SLICE_EXPIRED_ACTION_NAME);
+
+        for (var listener: actionListeners){
+            listener.actionPerformed(actionEventEvent);
+        }
+    }
 
 }

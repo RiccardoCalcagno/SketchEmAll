@@ -26,24 +26,24 @@ public class SessionManager{
 
     public SessionManager() {
         // ----------------- Services -------------------
-        loopTaskService = new LoopTaskService();
         RepositoryService.initializeAsSingleton(this);
+        loopTaskService = new LoopTaskService();
 
         // ----------------- Managers -------------------
-        timeManager = new TimeManager(this);
+        timeManager = new TimeManager();
         turnsManager = new TurnsManager(this);
         appLayoutManager = new AppLayoutManager();
 
         // ----------------- Widgets -------------------
         badgesController = new BadgesController();
         canvasController = new CanvasController(turnsManager);
-        timerController = new TimerController(timeManager);
+        timerController = new TimerController(timeManager, loopTaskService);
         wordsInputController = new WordsInputController(turnsManager);
 
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 
-        turnsManager.setTurnWidgets(canvasController, wordsInputController);
+        turnsManager.setTurnWidgets(canvasController, wordsInputController, timerController);
 
         timeManager.addPlayableTimeResponsiveController(canvasController);
         timeManager.addPlayableTimeResponsiveController(timerController);
