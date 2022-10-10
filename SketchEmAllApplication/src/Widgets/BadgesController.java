@@ -32,8 +32,10 @@ public class BadgesController extends SketchEmAllWidget {
 
 
 
-    public void createNewBadge(ImageIcon iconForTheBadge){
-
+    public void createNewBadge(ImageIcon bagdeIcon){
+        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge1.png"));
+        badgesModel.setCurrBadge(bagdeIcon);
+        this.currBadge = badgesModel.getCurrBadge();
     }
 
     public BadgesModel getModel(){

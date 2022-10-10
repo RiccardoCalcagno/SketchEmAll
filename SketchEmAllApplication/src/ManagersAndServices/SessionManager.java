@@ -86,11 +86,11 @@ public class SessionManager{
 
     private void handleSuccessOfTurn(){
 
-        //ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
+        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
 
         //badgeAttestationAnimator.PerformAnimation();
 
-        //badgesController.createNewBadge(imageOfWinningDrawing);
+        badgesController.createNewBadge(imageOfWinningDrawing);
 
         try {
             turnsManager.startTurn();

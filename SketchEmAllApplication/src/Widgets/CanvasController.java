@@ -7,8 +7,12 @@ import ManagersAndServices.TurnsManager;
 import PaintingTools.AbstractDrawing;
 import PaintingTools.AbstractTool;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class CanvasController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
@@ -19,6 +23,7 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     private final TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
 
+    public int nextNumberOfBadge;
 
     public PaintMode getCurrentPaintMode(){
         return turnsManager.getModeUsedInTheTurn();
@@ -48,6 +53,8 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         );
 
         title = new JLabel("Canvas");
+
+        this.nextNumberOfBadge = 1;
     }
 
 
@@ -142,9 +149,23 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
 
 
-    public ImageIcon takeScreenshotOfDrawing(){
+    public ImageIcon takeScreenshotOfDrawing() {
 
         // TODO
-        return null;
+
+        BufferedImage image = null;
+
+        try {
+            image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+        if (image == null){
+            System.out.println("image is null");
+        }
+        nextNumberOfBadge++;
+        assert image != null;
+        return new ImageIcon(image);
     }
 }
