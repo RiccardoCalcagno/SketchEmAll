@@ -17,12 +17,12 @@ public class WordPickerController extends SketchEmAllWidget {
     private WordPickerModel wordPickerModel;
     private WordPickerPresentation wordPickerPresentation;
 
-    private static final String FRONT_SIDE_CARD_DESCRIPTION = "click the treasure to discover the mysterious word!";
+    private static final String FRONT_SIDE_CARD_DESCRIPTION = "Click the treasure to discover the mysterious word!";
 
     private JPanel panelForFrontSideCard;
     private JPanel panelForBackSideCard;
 
-    private ArrayList<ActionListener> endProcedureListeners = new ArrayList<>();
+    private final ArrayList<ActionListener> endProcedureListeners = new ArrayList<>();
     public void addEndProcedureListeners(ActionListener endProcedureListener){
         this.endProcedureListeners.add(endProcedureListener);
     }
@@ -163,7 +163,7 @@ public class WordPickerController extends SketchEmAllWidget {
 
     private void handleChangesInModel(){
 
-        if(wordPickerModel.getIsReadyToExitProcedure() == true && notifiedEndOfProcedure == false){
+        if(wordPickerModel.getIsReadyToExitProcedure() && !notifiedEndOfProcedure){
             notifyEndOfProcedure();
             notifiedEndOfProcedure = true;
         }

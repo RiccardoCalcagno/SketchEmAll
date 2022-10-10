@@ -4,13 +4,12 @@ import ManagersAndServices.AppLayoutManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class WordsInputPresentation {
 
-    private JTextField wordInputField;
-    private JButton submitButton;
+    private final JTextField wordInputField;
+    private final JButton submitButton;
 
     public WordsInputPresentation(WordsInputController controller){
 
@@ -37,13 +36,17 @@ public class WordsInputPresentation {
 
         wordsPanel.add(this.wordInputField);
 
-        this.submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener() {
+        wordInputField.addKeyListener(new KeyAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.onSubmitRequest();
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                    controller.onSubmitRequest();
+                }
             }
         });
+
+        this.submitButton = new JButton("Submit");
+        submitButton.addActionListener(e -> controller.onSubmitRequest());
         wordsPanel.add(submitButton);
         installListeners(controller);
     }
