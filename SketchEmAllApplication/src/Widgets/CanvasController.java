@@ -2,6 +2,7 @@ package Widgets;
 
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.ObserverOfApplicationActivityStates;
+import InternModels.PaintMode;
 import ManagersAndServices.TurnsManager;
 import PaintingTools.AbstractDrawing;
 import PaintingTools.AbstractTool;
@@ -18,6 +19,10 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     private final TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
 
+
+    public PaintMode getCurrentPaintMode(){
+        return turnsManager.getModeUsedInTheTurn();
+    }
 
     public boolean isActive(){
         return canvasModel.isActive();

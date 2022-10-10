@@ -21,7 +21,7 @@ public class TurnsManager{
 
     public static final int NUM_OF_ATTEMPT_EACH_TURN = 3;
 
-    public static final int DURATION_OF_SESSION_IN_SECONDS = 400;
+    public static final int DURATION_OF_SESSION_IN_SECONDS = 40000;
 
     private SessionManager sessionManager;
     private TimeManager timeManager;
@@ -96,7 +96,7 @@ public class TurnsManager{
             );
         }
         catch (Exception e){
-            System.out.println(e.getMessage()+" probably due to: two procedure of word picking at the same time");
+            System.out.println(e.getMessage()+". Probably due to: two procedure of word picking at the same time");
         }
     }
 

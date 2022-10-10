@@ -17,7 +17,7 @@ public class PaintMode {
     }
 
     // TODO change
-    public static final int MAXIMUM_SECONDS_OF_HARDEST_MODE = 80;
+    public static final int MAXIMUM_SECONDS_OF_HARDEST_MODE = 80000;
 
     public String uiName;
 

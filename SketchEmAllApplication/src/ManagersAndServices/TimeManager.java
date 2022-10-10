@@ -56,6 +56,8 @@ public class TimeManager {
         executorTimer.setDelay(10);
         executorTimer.setRepeats(true);
         executorTimer.start();
+
+        executorTimer.stop();
     }
 
     public void addPlayableTimeResponsiveController(ObserverOfApplicationActivityStates controllerToManage){

@@ -1,6 +1,10 @@
 package Widgets;
 
+import ManagersAndServices.AppLayoutManager;
+import ManagersAndServices.StyleUtility;
+
 import java.awt.*;
+import java.awt.font.FontRenderContext;
 
 public class CanvasPresentation{
 
@@ -27,8 +31,17 @@ public class CanvasPresentation{
 
             drawAnnotation.paint(pen);
         }
-    }
 
+        if(canvasController.isActive()){
+            StyleUtility.drawPaintModeFrame(
+                    pen,
+                    canvasController.getCurrentPaintMode(),
+                    new Point(0,0),
+                    canvasController.getSize(),
+                    AppLayoutManager.BACKGROUND_APPLICATION
+            );
+        }
+    }
 
     public Dimension getPreferredSize() {
         return PREFERRED_SIZE_CANVAS;
