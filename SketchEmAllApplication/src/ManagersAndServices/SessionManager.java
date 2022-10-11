@@ -27,6 +27,7 @@ public class SessionManager{
     public SessionManager() {
         // ----------------- Services -------------------
         RepositoryService.initializeAsSingleton(this);
+        AudioService.initialize();
         loopTaskService = new LoopTaskService();
 
         // ----------------- Managers -------------------
@@ -91,6 +92,8 @@ public class SessionManager{
 
         badgesController.createNewBadge(imageOfWinningDrawing);
 
+        AudioService.playVictorySound();
+
         try {
             turnsManager.startTurn();
         }
@@ -100,6 +103,12 @@ public class SessionManager{
     }
 
     private void handleFailOfTurn(TurnEndReason turnEndReason){
+        if (turnEndReason == TurnEndReason.TURN_TIMER_EXPIRATION){
+            AudioService.playOutOfTimeSound();
+        }
+        else if (turnEndReason == TurnEndReason.NO_MORE_ATTEMPTS){
+            AudioService.playLossSound();
+        }
 
         try {
             turnsManager.startTurn();

@@ -17,8 +17,18 @@ public class RepositoryService {
         initializeWordsList();
     }
 
+    /**
+     * Initializes the list of words to take random words from.
+     */
     private static void initializeWordsList(){
         java.net.URL wordsLocation =  sessionManager.getClass().getResource("/resources/words.txt");
+
+        if (wordsLocation==null){
+            System.out.println("Could not load words list, falling back on default.");
+            wordsList.add("cup");
+            return;
+        }
+
         File wordsFile = new File(wordsLocation.getPath());
         Scanner reader;
         try  {
@@ -35,6 +45,11 @@ public class RepositoryService {
         reader.close();
     }
 
+    /**
+     * Randomly chooses a word for the player to draw
+     * @return
+     *  Word to draw
+     */
     public static String chooseNextWord(){
         int nextWordIndex = new Random().nextInt(wordsList.size());
         return wordsList.get(nextWordIndex);
@@ -50,5 +65,24 @@ public class RepositoryService {
         assert image != null;
 
         return new ImageIcon(image);
+    }
+
+    /**
+     * Retrieves an audio file from the resources
+     * @param soundname
+     *  Name of the sound file
+     * @return
+     *  Sound file
+     */
+    public static File loadSoundFromResources(String soundname){
+
+        String soundLocation = "/resources/"+soundname;
+
+        // how to select an image in the resources: https://www.jetbrains.com/help/idea/add-items-to-project.html#import-items
+        java.net.URL sound = sessionManager.getClass().getResource(soundLocation);
+
+        assert sound != null;
+
+        return new File(sound.getPath());
     }
 }
