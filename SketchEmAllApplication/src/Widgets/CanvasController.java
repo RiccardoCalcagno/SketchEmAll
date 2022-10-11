@@ -151,21 +151,12 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
     public ImageIcon takeScreenshotOfDrawing() {
 
-        // TODO
+        BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
 
-        BufferedImage image = null;
+        canvasPresentation.paint((Graphics2D) image.getGraphics(),this);
 
-        try {
-            image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-
-        if (image == null){
-            System.out.println("image is null");
-        }
         nextNumberOfBadge++;
-        assert image != null;
+
         return new ImageIcon(image);
     }
 }
