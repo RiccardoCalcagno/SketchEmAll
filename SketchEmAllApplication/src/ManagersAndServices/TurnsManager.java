@@ -65,7 +65,7 @@ public class TurnsManager{
         this.canvasController = canvasController;
         this.wordsInputController = wordsInputController;
         this.timerController = timerController;
-        this.badgesController = new BadgesController();
+        this.badgesController = new BadgesController(canvasController, this);
         this.timerController.addActionListener(expiredTimeForCurrentTurn);
     }
 

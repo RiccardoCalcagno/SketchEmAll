@@ -35,11 +35,10 @@ public class SessionManager{
         appLayoutManager = new AppLayoutManager();
 
         // ----------------- Widgets -------------------
-        badgesController = new BadgesController();
         canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager, loopTaskService);
         wordsInputController = new WordsInputController(turnsManager);
-
+        badgesController = new BadgesController(canvasController,turnsManager);
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 
