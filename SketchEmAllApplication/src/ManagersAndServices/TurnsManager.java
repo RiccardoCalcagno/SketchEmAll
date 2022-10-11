@@ -23,8 +23,8 @@ public class TurnsManager{
 
     public static final int DURATION_OF_SESSION_IN_SECONDS = 40000;
 
-    private SessionManager sessionManager;
-    private TimeManager timeManager;
+    private final SessionManager sessionManager;
+    private final TimeManager timeManager;
 
     private CanvasController canvasController;
     private WordsInputController wordsInputController;
@@ -44,12 +44,7 @@ public class TurnsManager{
     }
     private int numberOfAttemptsLeft;
 
-    private ActionListener expiredTimeForCurrentTurn = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
-        }
-    };
+    private final ActionListener expiredTimeForCurrentTurn = e -> notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
 
     public TurnsManager(SessionManager sessionManager){
 
@@ -78,7 +73,7 @@ public class TurnsManager{
         return paintModesEnumeration.nextElement();
     }
 
-    public void startTurn() throws Exception{
+    public void startTurn() {
 
         System.out.println("starting new turn");
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
@@ -182,6 +177,7 @@ public class TurnsManager{
             if (numberOfAttemptsLeft > 1) {
 
                 numberOfAttemptsLeft--;
+                AudioService.playFailureSound();
             } else {
                 notifyEndOfTurn(TurnEndReason.NO_MORE_ATTEMPTS);
             }

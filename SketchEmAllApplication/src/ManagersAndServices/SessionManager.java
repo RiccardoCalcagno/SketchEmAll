@@ -104,6 +104,12 @@ public class SessionManager{
     }
 
     private void handleFailOfTurn(TurnEndReason turnEndReason){
+        if (turnEndReason == TurnEndReason.TURN_TIMER_EXPIRATION){
+            AudioService.playOutOfTimeSound();
+        }
+        else if (turnEndReason == TurnEndReason.NO_MORE_ATTEMPTS){
+            AudioService.playLossSound();
+        }
 
         try {
             turnsManager.startTurn();
