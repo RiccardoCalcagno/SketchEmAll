@@ -32,6 +32,8 @@ public class TurnsManager{
     // present only in a sub-procedure of the turn
     private WordPickerController wordPickerController;
 
+    private BadgesController badgesController;
+
     private Dictionary<PaintingToolsEnum, PaintMode> paintModesKit = new Hashtable<>();
 
     private PaintMode modeUsedInTheTurn = null;
@@ -63,7 +65,7 @@ public class TurnsManager{
         this.canvasController = canvasController;
         this.wordsInputController = wordsInputController;
         this.timerController = timerController;
-
+        this.badgesController = new BadgesController(canvasController, this);
         this.timerController.addActionListener(expiredTimeForCurrentTurn);
     }
 
@@ -192,7 +194,10 @@ public class TurnsManager{
     private void notifyEndOfTurn(TurnEndReason turnEndReason){
 
         timerController.endCurrentSlice(turnEndReason == TurnEndReason.WORD_GUESSED);
-
+        /*if (turnEndReason == TurnEndReason.WORD_GUESSED){
+            canvasController.takeScreenshotOfDrawing();
+            badgesController.createNewBadge(canvasController.takeScreenshotOfDrawing());
+        }*/
         sessionManager.handleGenericEndOfTurn(turnEndReason);
     }
 }

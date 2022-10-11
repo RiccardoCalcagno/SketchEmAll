@@ -1,6 +1,8 @@
 package Widgets;
 
+import InternModels.PaintMode;
 import ManagersAndServices.RepositoryService;
+import ManagersAndServices.TurnsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +11,16 @@ public class BadgesController extends SketchEmAllWidget {
         private  BadgesPresentation badgesPresentation;
         private BadgesModel badgesModel;
         public ImageIcon currBadge;
+        public PaintMode currPaintMode;
+        public String currWord;
 
-    public BadgesController(){
+    public BadgesController(CanvasController cc, TurnsManager tm){
         this.badgesModel = new BadgesModel();
         this.badgesPresentation = new BadgesPresentation(this);
-        badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge_placeholder.png"));
+        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge_placeholder.png"));
         this.currBadge = badgesModel.getCurrBadge();
+        this.currPaintMode = cc.getCurrentPaintMode();
+        this.currWord = tm.getWordUsedInTheTurn();
         repaint();
     }
 
@@ -32,8 +38,11 @@ public class BadgesController extends SketchEmAllWidget {
 
 
 
-    public void createNewBadge(ImageIcon iconForTheBadge){
-
+    public void createNewBadge(ImageIcon bagdeIcon){
+        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge1.png"));
+        badgesModel.setCurrBadge(bagdeIcon);
+        this.currBadge = badgesModel.getCurrBadge();
+        repaint();
     }
 
     public BadgesModel getModel(){

@@ -35,11 +35,10 @@ public class SessionManager{
         appLayoutManager = new AppLayoutManager();
 
         // ----------------- Widgets -------------------
-        badgesController = new BadgesController();
         canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager, loopTaskService);
         wordsInputController = new WordsInputController(turnsManager);
-
+        badgesController = new BadgesController(canvasController,turnsManager);
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 
@@ -86,11 +85,11 @@ public class SessionManager{
 
     private void handleSuccessOfTurn(){
 
-        //ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
+        ImageIcon imageOfWinningDrawing = canvasController.takeScreenshotOfDrawing();
 
         //badgeAttestationAnimator.PerformAnimation();
 
-        //badgesController.createNewBadge(imageOfWinningDrawing);
+        badgesController.createNewBadge(imageOfWinningDrawing);
 
         try {
             turnsManager.startTurn();
