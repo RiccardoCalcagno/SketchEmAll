@@ -27,6 +27,7 @@ public class SessionManager{
     public SessionManager() {
         // ----------------- Services -------------------
         RepositoryService.initializeAsSingleton(this);
+        AudioService.initialize();
         loopTaskService = new LoopTaskService();
 
         // ----------------- Managers -------------------
@@ -91,6 +92,8 @@ public class SessionManager{
         //badgeAttestationAnimator.PerformAnimation();
 
         //badgesController.createNewBadge(imageOfWinningDrawing);
+
+        AudioService.playVictorySound();
 
         try {
             turnsManager.startTurn();

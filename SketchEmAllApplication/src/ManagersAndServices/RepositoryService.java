@@ -51,4 +51,16 @@ public class RepositoryService {
 
         return new ImageIcon(image);
     }
+
+    public static File loadSoundFromResources(String soundname){
+
+        String soundLocation = "/resources/"+soundname;
+
+        // how to select an image in the resources: https://www.jetbrains.com/help/idea/add-items-to-project.html#import-items
+        java.net.URL sound = sessionManager.getClass().getResource(soundLocation);
+
+        assert sound != null;
+
+        return new File(sound.getPath());
+    }
 }
