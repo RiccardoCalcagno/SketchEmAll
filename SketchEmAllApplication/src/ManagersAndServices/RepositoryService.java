@@ -7,11 +7,26 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Resources folder handler
+ */
 public class RepositoryService {
 
+    /**
+     * Reference to the main {@link SessionManager}
+     */
     private static SessionManager sessionManager;
+
+    /**
+     * List of words to draw
+     */
     private static final ArrayList<String> wordsList = new ArrayList<>();
 
+    /**
+     * Initializes the static fields
+     * @param sessionManager
+     *  Reference to the main {@link SessionManager} of the app
+     */
     public static void initializeAsSingleton(SessionManager sessionManager){
         RepositoryService.sessionManager = sessionManager;
         initializeWordsList();
@@ -55,6 +70,13 @@ public class RepositoryService {
         return wordsList.get(nextWordIndex);
     }
 
+    /**
+     * Retrieves an image file from the resources
+     * @param iconName
+     *  Name of the image file
+     * @return
+     *  ImageIcon containing the loaded image
+     */
     public static ImageIcon loadImageFromResources(String iconName){
 
         String imgLocation = "/resources/"+iconName;
