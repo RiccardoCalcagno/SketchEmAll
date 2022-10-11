@@ -179,7 +179,7 @@ public class TurnsManager{
             notifyEndOfTurn(TurnEndReason.WORD_GUESSED);
         }
         else {
-            if (numberOfAttemptsLeft > 0) {
+            if (numberOfAttemptsLeft > 1) {
 
                 numberOfAttemptsLeft--;
             } else {
