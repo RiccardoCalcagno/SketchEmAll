@@ -13,7 +13,7 @@ public class BadgesController extends SketchEmAllWidget {
     public BadgesController(){
         this.badgesModel = new BadgesModel();
         this.badgesPresentation = new BadgesPresentation(this);
-        badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge_placeholder.png"));
+        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge_placeholder.png"));
         this.currBadge = badgesModel.getCurrBadge();
         repaint();
     }
@@ -36,6 +36,7 @@ public class BadgesController extends SketchEmAllWidget {
         //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge1.png"));
         badgesModel.setCurrBadge(bagdeIcon);
         this.currBadge = badgesModel.getCurrBadge();
+        repaint();
     }
 
     public BadgesModel getModel(){

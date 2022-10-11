@@ -12,7 +12,7 @@ public class BadgesModel {
 
     public void setCurrBadge(ImageIcon badgeIcon) {
         this.currBadge = badgeIcon;
-        addBadgeToList(currBadge);
+        this.addBadgeToList(currBadge);
         notifyChange();
     }
     public ImageIcon getCurrBadge(){
@@ -23,7 +23,8 @@ public class BadgesModel {
         return  this.listBadges;
     }
     public void addBadgeToList(ImageIcon curr){
-        listBadges.add(curr);
+        this.listBadges.add(curr);
+        this.notifyChange();
     }
 
     private List<ChangeListener> changeListeners = new ArrayList<>();

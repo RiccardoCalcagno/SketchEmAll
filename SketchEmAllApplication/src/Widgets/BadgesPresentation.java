@@ -33,21 +33,22 @@ public class BadgesPresentation {
         int imageDimension = (int)(controller.getPreferredSize().height * 0.7d);
 
         //placeholder
-
+        /*
         pen.drawImage(img.getImage(),
                 50,
                 (int)(controller.getPreferredSize().height * 0.15d),
                 imageDimension,imageDimension,null);
-
+        */
         //draw all badges
-        int x = 150;
+        int x = 10;
+        System.out.println(bm.getListBadges().size());
         for (int i = 0; i < bm.getListBadges().size() ; i++) {
 
             pen.drawImage(bm.getListBadges().get(i).getImage(),
                     x,
                     (int) (controller.getPreferredSize().height * 0.15d),
                     imageDimension, imageDimension, null);
-            x = x+100;
+            x = x+80;
         }
 
     }
