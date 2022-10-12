@@ -58,7 +58,7 @@ public class SessionManager{
         timeManager.initializeSessionTimer();
 
         try {
-            turnsManager.startTurn();
+            turnsManager.startTurn(TurnEndReason.NONE);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -95,7 +95,7 @@ public class SessionManager{
         AudioService.playVictorySound();
 
         try {
-            turnsManager.startTurn();
+            turnsManager.startTurn(TurnEndReason.WORD_GUESSED);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -111,7 +111,7 @@ public class SessionManager{
         }
 
         try {
-            turnsManager.startTurn();
+            turnsManager.startTurn(turnEndReason);
         }
         catch (Exception e){
             System.out.println(e.getMessage());

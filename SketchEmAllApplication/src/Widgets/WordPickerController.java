@@ -1,47 +1,100 @@
 package Widgets;
 
 import InternModels.PaintMode;
+import InternModels.TurnEndReason;
 import ManagersAndServices.RepositoryService;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+/**
+ * Controller for the picking of a new word. It's a one-time widget, most of its attributes are final.
+ * @see WordPickerPresentation
+ * @see WordPickerModel
+ */
 public class WordPickerController extends SketchEmAllWidget {
 
-    private WordPickerModel wordPickerModel;
-    private WordPickerPresentation wordPickerPresentation;
+    /**
+     * Basic description for the frond side
+     */
+    final String FRONT_SIDE_CARD_DESCRIPTION = "Click the treasure to discover the mysterious word!";
+    /**
+     * Description for the front side when the players failed three times to guess the word.
+     */
+    final String THIRD_FAIL_DESCRIPTION = "Oops, you failed 3 times, so we picked another word for you to try again. Click the treasure to discover the mysterious word!";
+    /**
+     * Description for the front side when the players managed to guess the word.
+     */
+    final String WIN_DESCRIPTION = "You won! You even won a badge with your creation on it! Now click the treasure to discover another mysterious word!";
+    /**
+     * Description for the front side when the players ran out of time
+     */
+    final String OUT_OF_TIME_DESCRIPTION = "Oops, it looks like you took too long, so we picked another word for you to try again. Click the treasure to discover the mysterious word!";
 
-    private static final String FRONT_SIDE_CARD_DESCRIPTION = "Click the treasure to discover the mysterious word!";
-
-    private JPanel panelForFrontSideCard;
-    private JPanel panelForBackSideCard;
-
+    public ImageIcon modeImage;
+    private ImageIcon frontSideImage;
+    private final String chosenWordForTurn;
+    private String description;
+    private boolean notifiedEndOfProcedure = false;
+    private final PaintMode paintMode;
     private final ArrayList<ActionListener> endProcedureListeners = new ArrayList<>();
-    public void addEndProcedureListeners(ActionListener endProcedureListener){
-        this.endProcedureListeners.add(endProcedureListener);
+
+    private JPanel frontCardPanel;
+    private JPanel backCardPanel;
+
+    private WordPickerModel wordPickerModel;
+
+    /**
+     * Default constructor
+     * @param paintMode
+     *  To know the mode that will be used for the drawing
+     * @param chosenWordForTurn
+     *  The word that was picked
+     * @param callReason
+     *  To know the context of the call to the word picker
+     */
+    public WordPickerController(PaintMode paintMode, String chosenWordForTurn, TurnEndReason callReason) {
+        this.chosenWordForTurn = chosenWordForTurn;
+        this.paintMode = paintMode;
+        init(new WordPickerModel(this, callReason));
     }
-    public void removeEndProcedureListeners(ActionListener endProcedureListener){
-        this.endProcedureListeners.remove(endProcedureListener);
+
+    /**
+     * Initializes the widget
+     * @param wordPickerModel
+     *  Model of the word picking utility
+     */
+    private void init(WordPickerModel wordPickerModel){
+        this.wordPickerModel = wordPickerModel;
+
+        setFrontSideImage(RepositoryService.loadImageFromResources("frontSideImage.png"));
+
+        modeImage = this.paintMode.canvasRepresentativeIcon;
+
+        wordPickerModel.addChangeListener(
+                e -> handleChangesInModel()
+        );
+
+        setUI(new WordPickerPresentation());
+        add(frontCardPanel);
     }
-    private void notifyEndOfProcedure(){
+
+    /**
+     * Notifies the listeners that the user is fully aware of the picked word.
+     */
+    void notifyEndOfProcedure(){
+        if (notifiedEndOfProcedure) return;
+
         ActionEvent endOfProcedureActionEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "use chosen word");
 
         for (ActionListener endProcedureListener: endProcedureListeners){
             endProcedureListener.actionPerformed(endOfProcedureActionEvent);
         }
-    }
-    private boolean notifiedEndOfProcedure = false;
 
-
-    public WordPickerController(PaintMode paintMode, String chosenWordForTurn) {
-
-        init(new WordPickerModel(paintMode, chosenWordForTurn));
+        notifiedEndOfProcedure = true;
     }
 
 
@@ -50,166 +103,82 @@ public class WordPickerController extends SketchEmAllWidget {
 
     }
 
-    private void init(WordPickerModel wordPickerModel){
-        this.wordPickerModel = wordPickerModel;
-
-        wordPickerModel.setFrontSideImage(RepositoryService.loadImageFromResources("frontSideImage.png"));
-
-        this.wordPickerPresentation = new WordPickerPresentation();
-
-        wordPickerPresentation.installUI(this);
-
-        wordPickerModel.addChangeListener(
-                e -> handleChangesInModel()
-        );
-
-        // ---------------- UI structure --------
-
-        this.setLayout(new BorderLayout());
-
-        installStructureOfFrontSideCardUI();
-        installStructureOfBackSideCardUI();
-
-        this.add(panelForFrontSideCard);
-        this.revalidate();
-    }
-
-    private void installStructureOfFrontSideCardUI(){
-        panelForFrontSideCard = new JPanel();
-        panelForFrontSideCard.setBackground(wordPickerPresentation.getBackgroundColor());
-        panelForFrontSideCard.setLayout(new BoxLayout(panelForFrontSideCard, BoxLayout.Y_AXIS));
-
-        JPanel panelForImageFrontCard = new JPanel();
-        panelForImageFrontCard.setBackground(wordPickerPresentation.getBackgroundColor());
-        panelForImageFrontCard.setBorder(new EmptyBorder(90,50,0,50));
-        JLabel interactiveImageFrontCard = new JLabel(wordPickerModel.getFrontSideImage());
-        interactiveImageFrontCard.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                flipCard();
-            }
-        });
-        interactiveImageFrontCard.setAlignmentX(JButton.CENTER_ALIGNMENT);
-        panelForImageFrontCard.add(interactiveImageFrontCard);
-
-        JPanel panelForDescriptionFrontCard = new JPanel();
-        panelForDescriptionFrontCard.setBackground(wordPickerPresentation.getBackgroundColor());
-        panelForDescriptionFrontCard.setBorder(new EmptyBorder(10,50,50,50));
-        JLabel labelForDescriptionFrontCard = new JLabel(FRONT_SIDE_CARD_DESCRIPTION);
-        labelForDescriptionFrontCard.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        labelForDescriptionFrontCard.setForeground(Color.white);
-        labelForDescriptionFrontCard.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        panelForDescriptionFrontCard.add(labelForDescriptionFrontCard);
-
-        panelForFrontSideCard.add(panelForImageFrontCard);
-        panelForFrontSideCard.add(panelForDescriptionFrontCard);
-    }
-
-    private void installStructureOfBackSideCardUI() {
-        panelForBackSideCard = new JPanel();
-        panelForBackSideCard.setBackground(wordPickerPresentation.getBackgroundColor());
-        panelForBackSideCard.setLayout(new BorderLayout());
-
-        FlowLayout layoutForModePanel = new FlowLayout();
-        layoutForModePanel.setAlignment(FlowLayout.CENTER);
-        layoutForModePanel.setHgap(20);
-        JPanel panelForModeBackCard = new JPanel(layoutForModePanel);
-        panelForModeBackCard.setBackground(wordPickerPresentation.getBackgroundColor());
-        panelForModeBackCard.setBorder(new EmptyBorder(65,50,0,50));
-        JLabel modeImageFrontCard = new JLabel(wordPickerModel.getModeImage());
-        panelForModeBackCard.add(modeImageFrontCard);
-
-        JPanel panelForTextualDescriptionsOfMode = new JPanel(new BorderLayout());
-        panelForTextualDescriptionsOfMode.setBackground(wordPickerPresentation.getBackgroundColor());
-        JLabel modeLabelFrontCard = new JLabel(wordPickerModel.paintMode.uiName);
-        modeLabelFrontCard.setForeground(Color.white);
-        panelForTextualDescriptionsOfMode.add(modeLabelFrontCard, BorderLayout.NORTH);
-        JLabel modeDescriptionFrontCard = new JLabel("<html>"+ wordPickerModel.paintMode.uiDescription +"</html>");
-        modeDescriptionFrontCard.setPreferredSize(new Dimension(400, 80));
-        modeDescriptionFrontCard.setForeground(Color.white);
-        panelForTextualDescriptionsOfMode.add(modeDescriptionFrontCard, BorderLayout.CENTER);
-        panelForModeBackCard.add(panelForTextualDescriptionsOfMode);
-
-        JPanel panelForWordBackCard = new JPanel(new BorderLayout());
-        panelForWordBackCard.setBackground(wordPickerPresentation.getBackgroundColor());
-        panelForWordBackCard.setBorder(new EmptyBorder(10, 50,35,50));
-        JLabel word = new JLabel(wordPickerModel.chosenWordForTurn);
-        word.setForeground(Color.white);
-        word.setFont(new Font("SansSerif", Font.BOLD, 60));
-        word.setHorizontalAlignment(JLabel.CENTER);
-        panelForWordBackCard.add(word, BorderLayout.NORTH);
-
-        FlowLayout layout =new FlowLayout();
-        layout.setAlignment(FlowLayout.CENTER);
-        JPanel panelForStartGameTrigger = new JPanel(layout);
-        panelForStartGameTrigger.setBackground(Color.orange/*wordPickerPresentation.getBackgroundColor()*/);
-        panelForStartGameTrigger.setBorder(new EmptyBorder(25,160,25,160));
-        panelForStartGameTrigger.setPreferredSize(new Dimension(200, 100));
-        JButton buttonForStartTheGame = new JButton("START");
-
-        buttonForStartTheGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                notifyEndOfProcedure();
-            }
-        });
-        panelForStartGameTrigger.add(buttonForStartTheGame);
-        buttonForStartTheGame.setMinimumSize(new Dimension(300, 100));
-
-        panelForBackSideCard.add(panelForModeBackCard, BorderLayout.NORTH);
-        panelForBackSideCard.add(panelForWordBackCard, BorderLayout.CENTER);
-        panelForBackSideCard.add(panelForStartGameTrigger, BorderLayout.SOUTH);
-    }
-
+    /**
+     * Changes the content of the view according to the changes in the model
+     */
     private void handleChangesInModel(){
 
-        if(wordPickerModel.getIsReadyToExitProcedure() && !notifiedEndOfProcedure){
-            notifyEndOfProcedure();
-            notifiedEndOfProcedure = true;
+        if (wordPickerModel.isFlipped()){
+            this.remove(frontCardPanel);
+            this.add(backCardPanel);
+        }
+        else {
+            this.remove(backCardPanel);
+            this.add(frontCardPanel);
         }
 
-        repaint();
+        revalidate();
+    }
+
+    public void addEndProcedureListeners(ActionListener endProcedureListener){
+        this.endProcedureListeners.add(endProcedureListener);
+    }
+
+    public void removeEndProcedureListeners(ActionListener endProcedureListener){
+        this.endProcedureListeners.remove(endProcedureListener);
     }
 
     public WordPickerModel getModel(){
         return wordPickerModel;
     }
-
-    public void flipCard(){
-        wordPickerModel.setIsFlipped(true);
-
-        this.remove(panelForFrontSideCard);
-        this.add(panelForBackSideCard);
-
-        this.revalidate();
-    }
-
-    public boolean isCardFlipped(){
-        return  wordPickerModel.getIsFlipped();
-    }
-
-
-
-    @Override
-    public void paintComponent(Graphics pen) {
-        super.paintComponent(pen);
-
-        if (wordPickerPresentation != null){
-            wordPickerPresentation.paint((Graphics2D)pen, this);
-        }
-    }
-
-
     @Override
     public Dimension getPreferredSize() {
-        return wordPickerPresentation.getPreferredSize();
+        return ui.getPreferredSize(this);
     }
     @Override
     public Dimension getMaximumSize() {
-        return wordPickerPresentation.getMaximumSize();
+        return ui.getMaximumSize(this);
     }
     @Override
     public Dimension getMinimumSize() {
-        return wordPickerPresentation.getMinimumSize();
+        return ui.getMinimumSize(this);
+    }
+
+    public ImageIcon getFrontSideImage(){
+        return  this.frontSideImage;
+    }
+    public void setFrontSideImage(ImageIcon frontSideImage){
+        this.frontSideImage = frontSideImage;
+    }
+    public ImageIcon getModeImage(){
+        return this.modeImage;
+    }
+
+    public PaintMode getPaintMode() {
+        return paintMode;
+    }
+
+    public String getChosenWordForTurn() {
+        return chosenWordForTurn;
+    }
+
+    public void flipCard(){
+        wordPickerModel.flip();
+    }
+
+    public void setFrontCardPanel(JPanel frontCardPanel) {
+        this.frontCardPanel = frontCardPanel;
+    }
+
+    public void setBackCardPanel(JPanel backCardPanel) {
+        this.backCardPanel = backCardPanel;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

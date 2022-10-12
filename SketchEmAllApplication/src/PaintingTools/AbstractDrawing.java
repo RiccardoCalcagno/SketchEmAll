@@ -3,10 +3,6 @@ package PaintingTools;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +20,13 @@ public abstract class AbstractDrawing{
             notifyChange();
         }
     }
-    public boolean IsEmpty(){
+    public boolean isEmpty(){
         return this.isEmpty;
     }
 
     public final void paint(Graphics2D pen){
 
-        if(this.isEmpty == false){
+        if(!this.isEmpty){
             paintTemplateMethod(pen);
         }
     }
@@ -42,7 +38,7 @@ public abstract class AbstractDrawing{
     protected abstract void paintTemplateMethod(Graphics2D pen);
 
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
     }
