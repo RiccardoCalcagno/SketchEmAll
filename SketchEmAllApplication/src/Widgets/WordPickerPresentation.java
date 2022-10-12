@@ -9,6 +9,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * UI for the word picking utility
+ * @see WordPickerController
+ */
 public class WordPickerPresentation extends ComponentUI {
 
     private static final Color BACKGROUND_COLOR = new Color(50,50,50);

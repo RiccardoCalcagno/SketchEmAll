@@ -7,10 +7,21 @@ import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model for the mode picking utility
+ * @see WordPickerController
+ */
 public class WordPickerModel {
     private boolean isFlipped;
     private final List<ChangeListener> changeListeners = new ArrayList<>();
 
+    /**
+     * Model for the mode picking utility
+     * @param controller
+     *  Controller of the word picking utility
+     * @param callReason
+     *  Parameter to know the previous state of the game that led to the word picking
+     */
     public WordPickerModel(WordPickerController controller, TurnEndReason callReason){
         this.isFlipped = false;
         switch (callReason){
@@ -31,6 +42,10 @@ public class WordPickerModel {
     public void removeChangeListener(ChangeListener changeListenerToRemove){
         changeListeners.add(changeListenerToRemove);
     }
+
+    /**
+     * Notifies the change listeners about a change in the model.
+     */
     public void notifyChange(){
         ChangeEvent changeEvent = new ChangeEvent(this);
 
@@ -39,11 +54,18 @@ public class WordPickerModel {
         }
     }
 
+    /**
+     * Flips the card of the word picker
+     */
     public void flip(){
         this.isFlipped = !this.isFlipped;
         notifyChange();
     }
 
+    /**
+     * Returns whether the card of the word picker is flipped
+     * @return
+     */
     public boolean isFlipped() {
         return isFlipped;
     }
