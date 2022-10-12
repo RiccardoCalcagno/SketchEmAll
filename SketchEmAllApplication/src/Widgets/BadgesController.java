@@ -10,16 +10,11 @@ import java.awt.*;
 public class BadgesController extends SketchEmAllWidget {
         private  BadgesPresentation badgesPresentation;
         private BadgesModel badgesModel;
-        public ImageIcon currBadge;
-        public PaintMode currPaintMode;
         public String currWord;
 
     public BadgesController(CanvasController cc, TurnsManager tm){
         this.badgesModel = new BadgesModel();
         this.badgesPresentation = new BadgesPresentation(this);
-        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge_placeholder.png"));
-        this.currBadge = badgesModel.getCurrBadge();
-        this.currPaintMode = cc.getCurrentPaintMode();
         this.currWord = tm.getWordUsedInTheTurn();
         repaint();
     }
@@ -37,11 +32,9 @@ public class BadgesController extends SketchEmAllWidget {
     }
 
 
-
-    public void createNewBadge(ImageIcon bagdeIcon){
+    public void createNewBadge(ImageIcon bagdeIcon, Color paintModeUsed, String word){
         //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge1.png"));
-        badgesModel.setCurrBadge(bagdeIcon);
-        this.currBadge = badgesModel.getCurrBadge();
+        badgesModel.setCurrBadge(bagdeIcon, paintModeUsed,word);
         repaint();
     }
 

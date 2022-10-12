@@ -3,6 +3,7 @@ package ManagersAndServices;
 import Widgets.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class AppLayoutManager extends JFrame {
@@ -48,7 +49,20 @@ public class AppLayoutManager extends JFrame {
 
         centerPanel.add(Box.createVerticalGlue());
 
-        centerPanel.add(badgesController);
+        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f),Color.DARK_GRAY);
+
+        badgesController.setBorder(border);
+        JScrollPane scrollPane = new JScrollPane(badgesController,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBackground(new Color(20, 20, 20));
+        scrollPane.getViewport().setBackground(new Color(20, 20, 20));
+        scrollPane.getVerticalScrollBar().setBackground(new Color(20, 20, 20));
+        scrollPane.getHorizontalScrollBar().setBackground(new Color(20, 20, 20));
+
+        centerPanel.add(scrollPane);
 
         centerPanel.add(Box.createVerticalGlue());
 
