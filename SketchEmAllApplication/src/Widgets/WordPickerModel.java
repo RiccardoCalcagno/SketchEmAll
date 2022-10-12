@@ -1,5 +1,7 @@
 package Widgets;
 
+import InternModels.TurnEndReason;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
@@ -7,11 +9,6 @@ import java.util.List;
 
 public class WordPickerModel {
 
-    enum State {
-        END_TURN_TEXT,
-        CHEST,
-        WORD_PICKER
-    };
     private final WordPickerController wordPickerController;
 
     private boolean isFlipped;
@@ -21,30 +18,34 @@ public class WordPickerModel {
         return this.isReadyToExitProcedure;
     }
 
+    public WordPickerModel(WordPickerController controller, TurnEndReason callReason){
+        wordPickerController = controller;
+        this.isFlipped = false;
+        this.isReadyToExitProcedure = false;
+        switch (callReason){
+            case NONE -> {
+                controller.setDescription(controller.FRONT_SIDE_CARD_DESCRIPTION);
+            }
+            case NO_MORE_ATTEMPTS -> {
+                controller.setDescription(controller.THIRD_FAIL_DESCRIPTION);
+            }
+
+            case TURN_TIMER_EXPIRATION -> {
+                controller.setDescription(controller.OUT_OF_TIME_DESCRIPTION);
+            }
+
+            case WORD_GUESSED -> {
+                controller.setDescription(controller.WIN_DESCRIPTION);
+            }
+        }
+    }
+
     public void setIsReadyToExitProcedure(boolean isReadyToExitProcedure){
         if(!this.isReadyToExitProcedure){
             this.isReadyToExitProcedure = true;
             notifyChange();
         }
     }
-
-
-    public WordPickerModel(WordPickerController controller){
-        wordPickerController = controller;
-        this.isFlipped = false;
-        this.isReadyToExitProcedure = false;
-    }
-
-    public boolean getIsFlipped(){
-        return this.isFlipped;
-    }
-    public void setIsFlipped(boolean isFlipped){
-        if(this.isFlipped != isFlipped){
-            this.isFlipped = isFlipped;
-            notifyChange();
-        }
-    }
-
 
     private final List<ChangeListener> changeListeners = new ArrayList<>();
 
@@ -62,5 +63,12 @@ public class WordPickerModel {
         }
     }
 
+    public void flip(){
+        this.isFlipped = !this.isFlipped;
+        notifyChange();
+    }
 
+    public boolean isFlipped() {
+        return isFlipped;
+    }
 }

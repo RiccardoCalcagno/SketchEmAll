@@ -1,6 +1,7 @@
 package Widgets;
 
 import InternModels.PaintMode;
+import InternModels.TurnEndReason;
 import ManagersAndServices.RepositoryService;
 
 import javax.swing.*;
@@ -13,27 +14,36 @@ import java.util.ArrayList;
  * Controller for the picking of a new word
  */
 public class WordPickerController extends SketchEmAllWidget {
-
-    private WordPickerModel wordPickerModel;
+    final String FRONT_SIDE_CARD_DESCRIPTION = "Click the treasure to discover the mysterious word!";
+    final String THIRD_FAIL_DESCRIPTION = "Oops, you failed 3 times, so we picked another word for you to try again. Click the treasure to discover the mysterious word!";
+    final String WIN_DESCRIPTION = "You won! You even won a badge with your creation on it! Now click the treasure to discover another mysterious word!";
+    final String OUT_OF_TIME_DESCRIPTION = "Oops, it looks like you took too long, so we picked another word for you to try again. Click the treasure to discover the mysterious word!";
 
     public ImageIcon modeImage;
-
     private ImageIcon frontSideImage;
     private final String chosenWordForTurn;
-
+    private String description;
+    private boolean notifiedEndOfProcedure = false;
     private final PaintMode paintMode;
+    private final ArrayList<ActionListener> endProcedureListeners = new ArrayList<>();
 
     private JPanel frontCardPanel;
     private JPanel backCardPanel;
 
-
-    public final String FRONT_SIDE_CARD_DESCRIPTION = "Click the treasure to discover the mysterious word!";
-
-
-    private boolean notifiedEndOfProcedure = false;
+    private WordPickerModel wordPickerModel;
 
 
+    public WordPickerController(PaintMode paintMode, String chosenWordForTurn){
+        this.chosenWordForTurn = chosenWordForTurn;
+        this.paintMode = paintMode;
+        init(new WordPickerModel(this, TurnEndReason.NONE));
+    }
 
+    public WordPickerController(PaintMode paintMode, String chosenWordForTurn, TurnEndReason callReason) {
+        this.chosenWordForTurn = chosenWordForTurn;
+        this.paintMode = paintMode;
+        init(new WordPickerModel(this, callReason));
+    }
 
     private void init(WordPickerModel wordPickerModel){
         this.wordPickerModel = wordPickerModel;
@@ -47,9 +57,9 @@ public class WordPickerController extends SketchEmAllWidget {
         );
 
         setUI(new WordPickerPresentation());
+        add(frontCardPanel);
     }
 
-    private final ArrayList<ActionListener> endProcedureListeners = new ArrayList<>();
 
     void notifyEndOfProcedure(){
         ActionEvent endOfProcedureActionEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "use chosen word");
@@ -57,12 +67,6 @@ public class WordPickerController extends SketchEmAllWidget {
         for (ActionListener endProcedureListener: endProcedureListeners){
             endProcedureListener.actionPerformed(endOfProcedureActionEvent);
         }
-    }
-
-    public WordPickerController(PaintMode paintMode, String chosenWordForTurn) {
-        this.chosenWordForTurn = chosenWordForTurn;
-        this.paintMode = paintMode;
-        init(new WordPickerModel(this));
     }
 
 
@@ -73,11 +77,11 @@ public class WordPickerController extends SketchEmAllWidget {
 
     private void handleChangesInModel(){
 
-        if(wordPickerModel.getIsFlipped()){
+        if (wordPickerModel.isFlipped()){
             this.remove(frontCardPanel);
             this.add(backCardPanel);
         }
-        else{
+        else {
             this.remove(backCardPanel);
             this.add(frontCardPanel);
         }
@@ -133,7 +137,7 @@ public class WordPickerController extends SketchEmAllWidget {
     }
 
     public void flipCard(){
-        wordPickerModel.setIsFlipped(true);
+        wordPickerModel.flip();
     }
 
     public void setFrontCardPanel(JPanel frontCardPanel) {
@@ -142,5 +146,13 @@ public class WordPickerController extends SketchEmAllWidget {
 
     public void setBackCardPanel(JPanel backCardPanel) {
         this.backCardPanel = backCardPanel;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

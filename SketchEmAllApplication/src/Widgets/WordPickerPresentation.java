@@ -17,11 +17,10 @@ public class WordPickerPresentation extends ComponentUI {
     public void installUI(JComponent component) {
         installListeners(component);
         WordPickerController controller = (WordPickerController) component;
-        JPanel frontCardPanel = installStructureOfFrontSideCardUI(controller);
+        installStructureOfFrontSideCardUI(controller);
         installStructureOfBackSideCardUI(controller);
 
         component.setLayout(new BorderLayout());
-        component.add(frontCardPanel);
     }
 
 
@@ -47,7 +46,7 @@ public class WordPickerPresentation extends ComponentUI {
         JPanel panelForDescriptionFrontCard = new JPanel();
         panelForDescriptionFrontCard.setBackground(BACKGROUND_COLOR);
         panelForDescriptionFrontCard.setBorder(new EmptyBorder(10,50,50,50));
-        JLabel labelForDescriptionFrontCard = new JLabel(controller.FRONT_SIDE_CARD_DESCRIPTION);
+        JLabel labelForDescriptionFrontCard = new JLabel("<html>"+ controller.getDescription() +"</html>");
         labelForDescriptionFrontCard.setFont(new Font("SansSerif", Font.PLAIN, 15));
         labelForDescriptionFrontCard.setForeground(Color.white);
         labelForDescriptionFrontCard.setAlignmentX(JLabel.CENTER_ALIGNMENT);
