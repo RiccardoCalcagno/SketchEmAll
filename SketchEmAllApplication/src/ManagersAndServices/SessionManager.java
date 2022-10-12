@@ -89,7 +89,7 @@ public class SessionManager{
 
         //badgeAttestationAnimator.PerformAnimation();
 
-        badgesController.createNewBadge(imageOfWinningDrawing);
+        badgesController.createNewBadge(imageOfWinningDrawing, turnsManager.getModeUsedInTheTurn().timerRepresentativeColor,turnsManager.getWordUsedInTheTurn());
 
         try {
             turnsManager.startTurn();

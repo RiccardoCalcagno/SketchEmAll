@@ -23,7 +23,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     private final TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
 
-    public int nextNumberOfBadge;
 
     public PaintMode getCurrentPaintMode(){
         return turnsManager.getModeUsedInTheTurn();
@@ -54,7 +53,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
         title = new JLabel("Canvas");
 
-        this.nextNumberOfBadge = 1;
     }
 
 
@@ -154,8 +152,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
 
         canvasPresentation.paint((Graphics2D) image.getGraphics(),this);
-
-        nextNumberOfBadge++;
 
         return new ImageIcon(image);
     }

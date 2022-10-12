@@ -11,16 +11,16 @@ public class StyleUtility {
 
     private static final Font MAIN_FONT = new Font("SansSerif", Font.PLAIN, 12);
 
-    public static void drawPaintModeFrame(Graphics2D pen, PaintMode paintMode, Point topLeftCorner, Dimension dimensionOfPanel, Color backgroundColor){
+    public static void drawPaintModeFrame(Graphics2D pen, Color colorFrame, String name, Point topLeftCorner, Dimension dimensionOfPanel, Color backgroundColor){
         pen.setStroke(THICK_STROKE);
 
         pen.setColor(backgroundColor);
         pen.drawRect(topLeftCorner.x,topLeftCorner.y,(int)dimensionOfPanel.getWidth(), (int)dimensionOfPanel.getHeight());
 
-        pen.setColor(paintMode.timerRepresentativeColor);
+        pen.setColor(colorFrame);
         pen.drawRoundRect(topLeftCorner.x+2,topLeftCorner.y+2,(int)dimensionOfPanel.getWidth() - 4, (int)dimensionOfPanel.getHeight() -4,10, 10);
 
-        var nameOfMode = paintMode.uiName;
+        var nameOfMode = name;
         var boundOfModeLabels =  MAIN_FONT.getStringBounds(nameOfMode, pen.getFontRenderContext());
         pen.fillRoundRect(topLeftCorner.x,topLeftCorner.y,
                 (int)boundOfModeLabels.getWidth() +22,
