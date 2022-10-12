@@ -1,5 +1,6 @@
 package PaintingTools;
 
+import PaintingDrawings.AbstractDrawing;
 import Widgets.CanvasController;
 
 import java.awt.event.KeyEvent;

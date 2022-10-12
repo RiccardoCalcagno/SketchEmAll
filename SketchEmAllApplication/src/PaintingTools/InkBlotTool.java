@@ -1,13 +1,14 @@
 package PaintingTools;
 
 import PaintingDrawings.AbstractDrawing;
+import PaintingDrawings.InkBlotDrawing;
 import PaintingDrawings.PointExtendable;
 import PaintingDrawings.PolylineDrawing;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class PencilTool extends AbstractTool {
+public class InkBlotTool extends AbstractTool{
 
     protected Point nextPointToAdd;
 
@@ -42,10 +43,10 @@ public class PencilTool extends AbstractTool {
 
     @Override
     public AbstractDrawing getNewDrawing() {
-        return new PolylineDrawing();
+        return new InkBlotDrawing();
     }
     @Override
     public PaintingToolsEnum getPaintingToolsEnum() {
-        return PaintingToolsEnum.PENCIL;
+        return PaintingToolsEnum.INK_BLOT;
     }
 }

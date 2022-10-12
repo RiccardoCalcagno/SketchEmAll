@@ -1,16 +1,16 @@
-package PaintingTools;
+package PaintingDrawings;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractDrawing{
+
+    private static final RenderingHints RENDERING_HINTS = new RenderingHints(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
 
     public AbstractDrawing(){
 
@@ -31,6 +31,9 @@ public abstract class AbstractDrawing{
     public final void paint(Graphics2D pen){
 
         if(this.isEmpty == false){
+
+            pen.setRenderingHints(RENDERING_HINTS);
+
             paintTemplateMethod(pen);
         }
     }

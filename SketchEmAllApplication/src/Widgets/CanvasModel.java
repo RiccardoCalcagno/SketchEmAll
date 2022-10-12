@@ -1,6 +1,6 @@
 package Widgets;
 
-import PaintingTools.AbstractDrawing;
+import PaintingDrawings.AbstractDrawing;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;

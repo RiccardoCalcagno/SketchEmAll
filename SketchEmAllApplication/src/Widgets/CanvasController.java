@@ -4,15 +4,12 @@ import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.ObserverOfApplicationActivityStates;
 import InternModels.PaintMode;
 import ManagersAndServices.TurnsManager;
-import PaintingTools.AbstractDrawing;
+import PaintingDrawings.AbstractDrawing;
 import PaintingTools.AbstractTool;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class CanvasController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 

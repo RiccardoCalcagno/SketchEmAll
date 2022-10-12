@@ -1,21 +1,20 @@
-package PaintingTools;
+package PaintingDrawings;
+
+import PaintingDrawings.AbstractDrawing;
+import PaintingDrawings.PointExtendable;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PencilDrawing extends AbstractDrawing implements PointExtendable{
+public class PolylineDrawing extends AbstractDrawing implements PointExtendable {
 
-    public PencilDrawing() {
+    public PolylineDrawing() {
         super();
     }
 
     @Override
     protected void paintTemplateMethod(Graphics2D pen) {
-        RenderingHints rh = new RenderingHints(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        pen.setRenderingHints(rh);
         pen.drawPolyline(getXPoints(), getYPoints(), getNumberOfPoints());
     }
 
