@@ -32,13 +32,6 @@ public class WordPickerController extends SketchEmAllWidget {
 
     private WordPickerModel wordPickerModel;
 
-
-    public WordPickerController(PaintMode paintMode, String chosenWordForTurn){
-        this.chosenWordForTurn = chosenWordForTurn;
-        this.paintMode = paintMode;
-        init(new WordPickerModel(this, TurnEndReason.NONE));
-    }
-
     public WordPickerController(PaintMode paintMode, String chosenWordForTurn, TurnEndReason callReason) {
         this.chosenWordForTurn = chosenWordForTurn;
         this.paintMode = paintMode;
@@ -62,11 +55,15 @@ public class WordPickerController extends SketchEmAllWidget {
 
 
     void notifyEndOfProcedure(){
+        if (notifiedEndOfProcedure) return;
+
         ActionEvent endOfProcedureActionEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "use chosen word");
 
         for (ActionListener endProcedureListener: endProcedureListeners){
             endProcedureListener.actionPerformed(endOfProcedureActionEvent);
         }
+
+        notifiedEndOfProcedure = true;
     }
 
 
@@ -84,11 +81,6 @@ public class WordPickerController extends SketchEmAllWidget {
         else {
             this.remove(backCardPanel);
             this.add(frontCardPanel);
-        }
-
-        if(wordPickerModel.getIsReadyToExitProcedure() && !notifiedEndOfProcedure){
-            notifyEndOfProcedure();
-            notifiedEndOfProcedure = true;
         }
 
         revalidate();

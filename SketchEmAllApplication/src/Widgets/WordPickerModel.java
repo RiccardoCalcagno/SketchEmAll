@@ -9,15 +9,10 @@ import java.util.List;
 
 public class WordPickerModel {
     private boolean isFlipped;
-
-    private final boolean isReadyToExitProcedure;
-    public boolean getIsReadyToExitProcedure(){
-        return this.isReadyToExitProcedure;
-    }
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
 
     public WordPickerModel(WordPickerController controller, TurnEndReason callReason){
         this.isFlipped = false;
-        this.isReadyToExitProcedure = false;
         switch (callReason){
             case NONE -> controller.setDescription(controller.FRONT_SIDE_CARD_DESCRIPTION);
 
@@ -29,7 +24,6 @@ public class WordPickerModel {
         }
     }
 
-    private final List<ChangeListener> changeListeners = new ArrayList<>();
 
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
