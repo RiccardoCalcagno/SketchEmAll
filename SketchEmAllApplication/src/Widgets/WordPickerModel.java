@@ -8,42 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordPickerModel {
-
-    private final WordPickerController wordPickerController;
-
     private boolean isFlipped;
 
-    private boolean isReadyToExitProcedure;
+    private final boolean isReadyToExitProcedure;
     public boolean getIsReadyToExitProcedure(){
         return this.isReadyToExitProcedure;
     }
 
     public WordPickerModel(WordPickerController controller, TurnEndReason callReason){
-        wordPickerController = controller;
         this.isFlipped = false;
         this.isReadyToExitProcedure = false;
         switch (callReason){
-            case NONE -> {
-                controller.setDescription(controller.FRONT_SIDE_CARD_DESCRIPTION);
-            }
-            case NO_MORE_ATTEMPTS -> {
-                controller.setDescription(controller.THIRD_FAIL_DESCRIPTION);
-            }
+            case NONE -> controller.setDescription(controller.FRONT_SIDE_CARD_DESCRIPTION);
 
-            case TURN_TIMER_EXPIRATION -> {
-                controller.setDescription(controller.OUT_OF_TIME_DESCRIPTION);
-            }
+            case NO_MORE_ATTEMPTS -> controller.setDescription(controller.THIRD_FAIL_DESCRIPTION);
 
-            case WORD_GUESSED -> {
-                controller.setDescription(controller.WIN_DESCRIPTION);
-            }
-        }
-    }
+            case TURN_TIMER_EXPIRATION -> controller.setDescription(controller.OUT_OF_TIME_DESCRIPTION);
 
-    public void setIsReadyToExitProcedure(boolean isReadyToExitProcedure){
-        if(!this.isReadyToExitProcedure){
-            this.isReadyToExitProcedure = true;
-            notifyChange();
+            case WORD_GUESSED -> controller.setDescription(controller.WIN_DESCRIPTION);
         }
     }
 

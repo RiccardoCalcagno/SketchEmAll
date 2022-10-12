@@ -15,7 +15,6 @@ public class WordPickerPresentation extends ComponentUI {
 
     @Override
     public void installUI(JComponent component) {
-        installListeners(component);
         WordPickerController controller = (WordPickerController) component;
         installStructureOfFrontSideCardUI(controller);
         installStructureOfBackSideCardUI(controller);
@@ -23,41 +22,48 @@ public class WordPickerPresentation extends ComponentUI {
         component.setLayout(new BorderLayout());
     }
 
-
-
-    private JPanel installStructureOfFrontSideCardUI(WordPickerController controller){
+    private void installStructureOfFrontSideCardUI(WordPickerController controller){
         JPanel frontCardPanel = new JPanel();
         frontCardPanel.setBackground(BACKGROUND_COLOR);
         frontCardPanel.setLayout(new BoxLayout(frontCardPanel, BoxLayout.Y_AXIS));
 
-        JPanel panelForImageFrontCard = new JPanel();
-        panelForImageFrontCard.setBackground(BACKGROUND_COLOR);
-        panelForImageFrontCard.setBorder(new EmptyBorder(90,50,0,50));
-        JLabel interactiveImageFrontCard = new JLabel(controller.getFrontSideImage());
-        interactiveImageFrontCard.addMouseListener(new MouseAdapter() {
+        installFrontInteractiveImage(controller, frontCardPanel);
+
+        installFrontDescription(controller, frontCardPanel);
+
+        controller.setFrontCardPanel(frontCardPanel);
+
+    }
+
+    private void installFrontInteractiveImage(WordPickerController controller, JPanel frontCardPanel){
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(BACKGROUND_COLOR);
+        imagePanel.setBorder(new EmptyBorder(90,50,0,50));
+        JLabel interactiveImage = new JLabel(controller.getFrontSideImage());
+        interactiveImage.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 controller.flipCard();
             }
         });
-        interactiveImageFrontCard.setAlignmentX(JButton.CENTER_ALIGNMENT);
-        panelForImageFrontCard.add(interactiveImageFrontCard);
+        interactiveImage.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        imagePanel.add(interactiveImage);
 
-        JPanel panelForDescriptionFrontCard = new JPanel();
-        panelForDescriptionFrontCard.setBackground(BACKGROUND_COLOR);
-        panelForDescriptionFrontCard.setBorder(new EmptyBorder(10,50,50,50));
-        JLabel labelForDescriptionFrontCard = new JLabel("<html>"+ controller.getDescription() +"</html>");
-        labelForDescriptionFrontCard.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        labelForDescriptionFrontCard.setForeground(Color.white);
-        labelForDescriptionFrontCard.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        panelForDescriptionFrontCard.add(labelForDescriptionFrontCard);
+        frontCardPanel.add(imagePanel);
+    }
+    private void installFrontDescription(WordPickerController controller, JPanel frontCardPanel){
+        JPanel descriptionPanel = new JPanel(new BorderLayout());
+        descriptionPanel.setBackground(BACKGROUND_COLOR);
+        descriptionPanel.setBorder(new EmptyBorder(10,50,50,50));
 
-        frontCardPanel.add(panelForImageFrontCard);
-        frontCardPanel.add(panelForDescriptionFrontCard);
+        JLabel descriptionLabel = new JLabel("<html>"+ controller.getDescription() +"</html>", SwingConstants.CENTER);
+        descriptionLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        descriptionLabel.setForeground(Color.white);
+        descriptionLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        controller.setFrontCardPanel(frontCardPanel);
+        descriptionPanel.add(descriptionLabel, BorderLayout.CENTER);
 
-        return frontCardPanel;
+        frontCardPanel.add(descriptionPanel);
     }
 
     private void installStructureOfBackSideCardUI(WordPickerController controller) {
@@ -65,59 +71,77 @@ public class WordPickerPresentation extends ComponentUI {
         backCardPanel.setBackground(BACKGROUND_COLOR);
         backCardPanel.setLayout(new BorderLayout());
 
-        FlowLayout layoutForModePanel = new FlowLayout();
-        layoutForModePanel.setAlignment(FlowLayout.CENTER);
-        layoutForModePanel.setHgap(20);
-        JPanel panelForModeBackCard = new JPanel(layoutForModePanel);
-        panelForModeBackCard.setBackground(BACKGROUND_COLOR);
-        panelForModeBackCard.setBorder(new EmptyBorder(65,50,0,50));
-        JLabel modeImageFrontCard = new JLabel(controller.getModeImage());
-        panelForModeBackCard.add(modeImageFrontCard);
+        installModeBackPanel(controller, backCardPanel);
 
+        installWordPanel(controller, backCardPanel);
 
-        PaintMode paintMode = controller.getPaintMode();
-        JPanel panelForTextualDescriptionsOfMode = new JPanel(new BorderLayout());
-        panelForTextualDescriptionsOfMode.setBackground(BACKGROUND_COLOR);
-        JLabel modeLabelFrontCard = new JLabel(paintMode.uiName);
-        modeLabelFrontCard.setForeground(Color.white);
-        panelForTextualDescriptionsOfMode.add(modeLabelFrontCard, BorderLayout.NORTH);
-        JLabel modeDescriptionFrontCard = new JLabel("<html>"+ paintMode.uiDescription +"</html>");
-        modeDescriptionFrontCard.setPreferredSize(new Dimension(400, 80));
-        modeDescriptionFrontCard.setForeground(Color.white);
-        panelForTextualDescriptionsOfMode.add(modeDescriptionFrontCard, BorderLayout.CENTER);
-        panelForModeBackCard.add(panelForTextualDescriptionsOfMode);
+        installStartButton(controller, backCardPanel);
 
-        JPanel panelForWordBackCard = new JPanel(new BorderLayout());
-        panelForWordBackCard.setBackground(BACKGROUND_COLOR);
-        panelForWordBackCard.setBorder(new EmptyBorder(10, 50,35,50));
-        JLabel word = new JLabel(controller.getChosenWordForTurn());
-        word.setForeground(Color.white);
-        word.setFont(new Font("SansSerif", Font.BOLD, 60));
-        word.setHorizontalAlignment(JLabel.CENTER);
-        panelForWordBackCard.add(word, BorderLayout.NORTH);
-
-        FlowLayout layout =new FlowLayout();
-        layout.setAlignment(FlowLayout.CENTER);
-        JPanel panelForStartGameTrigger = new JPanel(layout);
-        panelForStartGameTrigger.setBackground(Color.orange/*wordPickerPresentation.getBackgroundColor()*/);
-        panelForStartGameTrigger.setBorder(new EmptyBorder(25,160,25,160));
-        panelForStartGameTrigger.setPreferredSize(new Dimension(200, 100));
-        JButton buttonForStartTheGame = new JButton("START");
-
-        buttonForStartTheGame.addActionListener(e -> controller.notifyEndOfProcedure());
-        panelForStartGameTrigger.add(buttonForStartTheGame);
-        buttonForStartTheGame.setMinimumSize(new Dimension(300, 100));
-
-        backCardPanel.add(panelForModeBackCard, BorderLayout.NORTH);
-        backCardPanel.add(panelForWordBackCard, BorderLayout.CENTER);
-        backCardPanel.add(panelForStartGameTrigger, BorderLayout.SOUTH);
 
         controller.setBackCardPanel(backCardPanel);
     }
 
-    protected void installListeners(JComponent wordPickerController)
-    {
+    private void installModeBackPanel(WordPickerController controller, JPanel backCardPanel){
+        FlowLayout modeLayout = new FlowLayout();
+        modeLayout.setAlignment(FlowLayout.CENTER);
+        modeLayout.setHgap(20);
 
+        JPanel modePanel = new JPanel(modeLayout);
+        modePanel.setBackground(BACKGROUND_COLOR);
+        modePanel.setBorder(new EmptyBorder(65,50,0,50));
+        JLabel modeImage = new JLabel(controller.getModeImage());
+        modePanel.add(modeImage);
+
+
+        PaintMode paintMode = controller.getPaintMode();
+
+        JPanel modeDescriptionPanel = new JPanel(new BorderLayout());
+        modeDescriptionPanel.setBackground(BACKGROUND_COLOR);
+        JLabel modeLabel = new JLabel(paintMode.uiName);
+        modeLabel.setForeground(Color.white);
+        modeDescriptionPanel.add(modeLabel, BorderLayout.NORTH);
+
+        JLabel modeDescription = new JLabel("<html>"+ paintMode.uiDescription +"</html>");
+        modeDescription.setPreferredSize(new Dimension(400, 80));
+        modeDescription.setForeground(Color.white);
+        modeDescriptionPanel.add(modeDescription, BorderLayout.CENTER);
+
+        modePanel.add(modeDescriptionPanel);
+
+        backCardPanel.add(modePanel, BorderLayout.NORTH);
+
+    }
+
+    private void installWordPanel(WordPickerController controller, JPanel backCardPanel){
+
+        JPanel wordPanel = new JPanel(new BorderLayout());
+        wordPanel.setBackground(BACKGROUND_COLOR);
+        wordPanel.setBorder(new EmptyBorder(10, 50,35,50));
+        JLabel word = new JLabel(controller.getChosenWordForTurn());
+        word.setForeground(Color.white);
+        word.setFont(new Font("SansSerif", Font.BOLD, 60));
+        word.setHorizontalAlignment(JLabel.CENTER);
+        wordPanel.add(word, BorderLayout.NORTH);
+
+        backCardPanel.add(wordPanel, BorderLayout.CENTER);
+
+    }
+
+    private void installStartButton(WordPickerController controller, JPanel backCardPanel){
+
+        FlowLayout layout =new FlowLayout();
+        layout.setAlignment(FlowLayout.CENTER);
+        JPanel startButtonPanel = new JPanel(layout);
+        startButtonPanel.setBackground(Color.orange/*wordPickerPresentation.getBackgroundColor()*/);
+        startButtonPanel.setBorder(new EmptyBorder(25,160,25,160));
+        startButtonPanel.setPreferredSize(new Dimension(200, 100));
+
+        JButton startButton = new JButton("START");
+        startButton.addActionListener(e -> controller.notifyEndOfProcedure());
+        startButtonPanel.add(startButton);
+        startButton.setMinimumSize(new Dimension(300, 100));
+
+        backCardPanel.add(startButtonPanel, BorderLayout.SOUTH);
     }
 
     @Override
