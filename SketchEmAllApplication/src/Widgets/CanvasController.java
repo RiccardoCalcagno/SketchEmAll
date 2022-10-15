@@ -5,11 +5,14 @@ import InternModels.ObserverOfApplicationActivityStates;
 import InternModels.PaintMode;
 import ManagersAndServices.TurnsManager;
 import PaintingDrawings.AbstractDrawing;
+import PaintingDrawings.TargetableDrawing;
 import PaintingTools.AbstractTool;
+import PaintingTools.InkBlotTool;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.function.Predicate;
 
 public class CanvasController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
@@ -31,6 +34,55 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     }
 
 
+
+    public void setValueForDebugProperty(int numOfProperty, double value){
+        /*
+            ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = 0.85d;
+            WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = 0.7d;
+            THRESHOLD_FOR_ADDING_NEW_POINT = 0.1d;
+            VARIANCE_FOR_DELTA_ANGLE = 1.0d;
+            VARIANCE_FOR_DISTANCE = 1.0d;
+         */
+        switch (numOfProperty){
+            case 1:
+                ((InkBlotTool)lastToolUsed).ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = value;
+                break;
+            case 2:
+                ((InkBlotTool)lastToolUsed).WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = value;
+                break;
+            case 3:
+                ((InkBlotTool)lastToolUsed).THRESHOLD_FOR_ADDING_NEW_POINT = value;
+                break;
+            case 4:
+                ((InkBlotTool)lastToolUsed).VARIANCE_FOR_DELTA_ANGLE = value;
+                break;
+            case 5:
+                ((InkBlotTool)lastToolUsed).VARIANCE_FOR_DISTANCE = value;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+
+    public AbstractDrawing getDrawingTargeted(Point targetingPoint){
+        var optionalDrawing =  canvasModel.getDrawings().stream().filter(new Predicate<AbstractDrawing>() {
+            @Override
+            public boolean test(AbstractDrawing abstractDrawing) {
+                return (abstractDrawing instanceof TargetableDrawing)
+                        && ((TargetableDrawing)abstractDrawing).contain(targetingPoint);
+            }
+        }).findFirst();
+
+        if(optionalDrawing.isEmpty() == false && optionalDrawing.isPresent()){
+            return optionalDrawing.get();
+        }
+        return null;
+    }
+
+
     public CanvasController(TurnsManager turnsManager) {
             this.turnsManager = turnsManager;
 
@@ -46,18 +98,12 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         canvasPresentation.installUI(this);
 
         canvasModel.addChangeListener(
-                e -> onModelChange()
+                e -> repaint()
         );
 
         title = new JLabel("Canvas");
 
         this.nextNumberOfBadge = 1;
-    }
-
-
-    public void onModelChange(){
-
-        repaint();
     }
 
 
@@ -83,22 +129,30 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         }
 
         if(!canvasModel.isDrawing()){
-            addNewDrawing(toolToUse);
+            addNewDrawing(toolToUse.getNewDrawing());
         }
 
         toolToUse.applyCurrentTransformationOnSubject(canvasModel.getCurrentDrawing());
     }
 
-    public void addNewDrawing(AbstractTool toolToUse) {
+    public void addNewDrawing(AbstractDrawing drawingToAdd) {
         if(!isActive()){
             return;
         }
 
         closeCurrentDrawing();
 
-        AbstractDrawing newDrawing = toolToUse.getNewDrawing();
-        canvasModel.addNewDrawing(newDrawing);
-        canvasModel.chooseDrawingToEdit(newDrawing);
+        canvasModel.addNewDrawing(drawingToAdd);
+        canvasModel.chooseDrawingToEdit(drawingToAdd);
+    }
+    public void chooseDrawingToEdit(AbstractDrawing drawingInEditing){
+        if(!isActive()){
+            return;
+        }
+
+        closeCurrentDrawing();
+
+        canvasModel.chooseDrawingToEdit(drawingInEditing);
     }
 
     public void closeCurrentDrawing(){

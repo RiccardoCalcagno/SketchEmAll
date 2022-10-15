@@ -3,10 +3,7 @@ package ManagersAndServices;
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.PaintMode;
 import InternModels.TurnEndReason;
-import PaintingTools.CrazyPenTool;
-import PaintingTools.InvertedPenTool;
-import PaintingTools.PaintingToolsEnum;
-import PaintingTools.PencilTool;
+import PaintingTools.*;
 import Widgets.*;
 
 import java.awt.*;
@@ -136,7 +133,7 @@ public class TurnsManager{
         paintModesKit = new Hashtable<>();
 
         // ------------------------ Pencil PaintMode -----------------------
-
+/*
         paintModesKit.put(PaintingToolsEnum.PENCIL,
                 new PaintMode(
                 "Pencil",
@@ -165,6 +162,18 @@ public class TurnsManager{
                         Color.cyan,
                         0.8d,
                         new InvertedPenTool()
+                )
+        );
+
+ */
+        paintModesKit.put(PaintingToolsEnum.INK_BLOT,
+                new PaintMode(
+                        "Ink blot",
+                        "",
+                        RepositoryService.loadImageFromResources("pencil_icon.png"),
+                        Color.yellow,
+                        0.8d,
+                        new InkBlotTool()
                 )
         );
     }

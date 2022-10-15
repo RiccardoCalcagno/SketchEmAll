@@ -4,6 +4,8 @@ import Widgets.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AppLayoutManager extends JFrame {
 
@@ -41,7 +43,81 @@ public class AppLayoutManager extends JFrame {
         timerAndInputWordPanel.setLayout(layoutForTimerAndInput);
         timerAndInputWordPanel.setBackground(BACKGROUND_APPLICATION);
         timerAndInputWordPanel.setMaximumSize(new Dimension(600, 200));
-        timerAndInputWordPanel.add(timerController);
+
+
+
+
+
+        JPanel toolSettings = new JPanel();
+        var l = new BoxLayout(toolSettings, BoxLayout.Y_AXIS);
+        toolSettings.setLayout(l);
+        toolSettings.setPreferredSize(new Dimension(300, 300));
+
+        var a1 = new JTextField();
+        a1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                   canvasController.setValueForDebugProperty(1, Double.valueOf(a1.getText()));
+                }
+            }
+        });
+        var a2 = new JTextField();
+        a2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                    canvasController.setValueForDebugProperty(2, Double.valueOf(a2.getText()));
+                }
+            }
+        });
+        var a3 = new JTextField();
+        a3.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                    canvasController.setValueForDebugProperty(3, Double.valueOf(a3.getText()));
+                }
+            }
+        });
+        var a4 = new JTextField();
+        a4.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                    canvasController.setValueForDebugProperty(4, Double.valueOf(a4.getText()));
+                }
+            }
+        });
+        var a5 = new JTextField();
+        a5.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                    canvasController.setValueForDebugProperty(5, Double.valueOf(a5.getText()));
+                }
+            }
+        });
+
+        toolSettings.add(a1);
+        toolSettings.add(a2);
+        toolSettings.add(a3);
+        toolSettings.add(a4);
+        toolSettings.add(a5);
+
+
+
+
+
+        //TODO Re-Add
+        //timerAndInputWordPanel.add(timerController);
+        timerAndInputWordPanel.add(toolSettings);
+
+
+
+
+
+
         timerAndInputWordPanel.add(Box.createHorizontalGlue());
         timerAndInputWordPanel.add(wordsInputController);
         centerPanel.add(timerAndInputWordPanel);
