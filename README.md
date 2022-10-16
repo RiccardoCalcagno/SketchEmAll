@@ -8,14 +8,6 @@ Adv. Programming of Interactive Systems
 Group 11:
 Katerina Koleva, Riccardo Calcagno and Julien Marzal
 
-## Application
-
-Our application is a mini-game, that uses the tools of a creative application. In “Scketch ‘em all” there is one drawer and few people who can guess. The guessers can make attempts by submitting the name of the drawed thing. We decided to include cards with words and different modes of drawing. 
-
-## Description of the project
-### Source idea: 
-We wanted to do a game in which the children can sharpen their creativity, improve their visualization skills and logical thinking in a constructive way without playing against each other. That is why we decides to design an evolution of the game “Pictionary”. Here is a video of how to play the board game.
-The original game is with two teams, one person of each team begins drawing and the drawer changes each turn. The drawer chooses a random card with a word from a deck and he tries to draw pictures in order to suggest the word without speaking. The teammates try to guess the word the drawing is intended to represent. The team that collects more wins in the same amount of time wins the game session.
 ### Application: 
 Our application is a mini-game, that uses the tools of a creative application. In “Scketch ‘em all” there is one drawer and few people who can guess. The guessers can make attempts by submitting the name of the drawed thing. We decided to include cards with words and different modes of drawing.
 Modes of drawing: The modes should challenge the user to be original with the tools given, when representing ordinary words. Example of those modes are drawing with the mouse, drawing only with rectangles or having the ability only to make points and connect them with lines.
@@ -27,7 +19,6 @@ The goal is for the drawer to do as much words possible in this 10 minute window
 Why it complies with the topic of the course
 We tried to find a project in which we could experiment with a colorful and original set of interactions, especially the ones used by the user to draw.
 One goal of the course is to be able to create your own custom widgets, we think the canvas would be a quite complex widget that will require us to define a well structured PAC unit. It will require a fair number of components to draw in the canvas (such as a pencil, segmented pen, drawing with rectangles). It will need a hierarchical model to manage and store graphical items, like lines, rectangles and stickers, and they could be interactive too (through selection and dragging).
-
 ## Feature implementation (patterns, algorithms, components)
 
 ### The session: 
