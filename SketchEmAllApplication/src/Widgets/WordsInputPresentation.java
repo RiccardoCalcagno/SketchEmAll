@@ -3,6 +3,7 @@ package Widgets;
 import ManagersAndServices.AppLayoutManager;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -13,7 +14,6 @@ public class WordsInputPresentation {
 
     public WordsInputPresentation(WordsInputController controller){
 
-        //not showing on screen...
         JPanel labelsPanel = new JPanel();
         labelsPanel.setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
         JPanel wordsPanel = new JPanel();
@@ -46,6 +46,7 @@ public class WordsInputPresentation {
         });
 
         this.submitButton = new JButton("Submit");
+        this.submitButton.setBackground(controller.getModel().getCurrColor());
         submitButton.addActionListener(e -> controller.onSubmitRequest());
         wordsPanel.add(submitButton);
         installListeners(controller);

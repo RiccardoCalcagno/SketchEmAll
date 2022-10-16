@@ -34,7 +34,7 @@ public class BadgesController extends SketchEmAllWidget {
 
     public void createNewBadge(ImageIcon bagdeIcon, Color paintModeUsed, String word){
         //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge1.png"));
-        badgesModel.setCurrBadge(bagdeIcon, paintModeUsed,word);
+        badgesModel.setCurrBadge(bagdeIcon, paintModeUsed, word);
         repaint();
     }
 

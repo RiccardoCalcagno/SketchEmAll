@@ -132,6 +132,7 @@ public class TurnsManager{
     private void startPlayingInTheTurn(){
 
         timerController.createNewSliceForNewTurn(modeUsedInTheTurn);
+        wordsInputController.changeSubmitBttnStyle(modeUsedInTheTurn);
 
         this.timeManager.resumeTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
     }

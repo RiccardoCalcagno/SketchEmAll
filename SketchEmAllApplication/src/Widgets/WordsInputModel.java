@@ -2,11 +2,22 @@ package Widgets;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WordsInputModel {
 
+    private Color currColor;
+
+    public void setCurrColor(Color color){
+        this.currColor = color;
+        notifyChange();
+    }
+
+    public Color getCurrColor(){
+        return this.currColor;
+    }
     private boolean isActive = false;
     public boolean isActive(){
         return this.isActive;
