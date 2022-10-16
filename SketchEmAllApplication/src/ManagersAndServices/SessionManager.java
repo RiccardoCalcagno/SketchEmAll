@@ -39,7 +39,7 @@ public class SessionManager{
         canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager, loopTaskService);
         wordsInputController = new WordsInputController(turnsManager);
-        badgesController = new BadgesController(canvasController,turnsManager);
+        badgesController = new BadgesController(turnsManager);
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 

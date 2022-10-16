@@ -7,26 +7,33 @@ import ManagersAndServices.TurnsManager;
 
 import java.awt.*;
 
+/**
+ * Controller for the input of a new word.
+ *
+ * @see WordsInputModel
+ * @see WordsInputPresentation
+ */
 public class WordsInputController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
     private final TurnsManager turnsManager;
-    public Color submittButtnColor;
 
     private WordsInputModel wordsInputModel;
     private WordsInputPresentation wordsInputPresentation;
 
-
-    public WordsInputController(TurnsManager turnsManager){
+    /**
+     * Default constructor
+     @param turnsManager reference to {@link TurnsManager}
+     */
+    public WordsInputController(TurnsManager turnsManager) {
 
         this.turnsManager = turnsManager;
 
         wordsInputModel = new WordsInputModel();
-        wordsInputModel.setCurrColor(Color.white);
 
         Init(wordsInputModel);
     }
 
-    private void Init(WordsInputModel wordsInputModel){
+    private void Init(WordsInputModel wordsInputModel) {
 
         this.wordsInputModel = wordsInputModel;
 
@@ -39,22 +46,33 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
         repaint();
     }
 
-    private void checkTypedWord(String typedWord){
+    /**
+     * Chek if typed word is correct
+     *
+     * @param typedWord the inputted word
+     */
+    private void checkTypedWord(String typedWord) {
 
         turnsManager.validateNewAttempt(typedWord);
     }
 
-    public void onSubmitRequest(){
+    /**
+     * Every time the submit button is clicked
+     */
+    public void onSubmitRequest() {
 
-        var textToValidate =wordsInputPresentation.getCurrText();
+        var textToValidate = wordsInputPresentation.getCurrText();
 
-        if(textToValidate.isEmpty() == false){
+        if (textToValidate.isEmpty() == false) {
             checkTypedWord(textToValidate);
             reset();
         }
     }
 
-    public void onModelChange(){
+    /**
+     * Every time the Model is changed
+     */
+    public void onModelChange() {
 
         wordsInputPresentation.setIsEnabledInteractions(wordsInputModel.isActive());
 
@@ -64,10 +82,9 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     @Override
     public void onChangeActivityStateLevel(ChangePlayingTimeRequestLevel levelOfRequest) {
 
-        if(levelOfRequest == ChangePlayingTimeRequestLevel.NONE){
+        if (levelOfRequest == ChangePlayingTimeRequestLevel.NONE) {
             wordsInputModel.setIsActive(true);
-        }
-        else{
+        } else {
             wordsInputModel.setIsActive(false);
             wordsInputPresentation.clearInputField();
         }
@@ -75,11 +92,12 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
 
 
     @Override
-    public void instantiateWidget(Container placeToPutWidget){
+    public void instantiateWidget(Container placeToPutWidget) {
 
     }
-
-
+    /**
+     * Clear the input field
+     */
     public void reset() {
         wordsInputPresentation.clearInputField();
     }
@@ -88,21 +106,13 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     public void paintComponent(Graphics pen) {
         super.paintComponent(pen);
 
-        if(wordsInputPresentation!= null){
-            wordsInputPresentation.paint((Graphics2D)pen, this);
+        if (wordsInputPresentation != null) {
+            wordsInputPresentation.paint((Graphics2D) pen, this);
         }
     }
 
-    public WordsInputModel getModel(){
+    public WordsInputModel getModel() {
         return wordsInputModel;
-    }
-
-    public void changeSubmitBttnStyle(PaintMode mode){
-        if (mode.timerRepresentativeColor != null){
-
-            wordsInputModel.setCurrColor(mode.timerRepresentativeColor);
-            repaint();
-        }
     }
 
 
@@ -110,10 +120,12 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     public Dimension getPreferredSize() {
         return this.wordsInputPresentation.getPreferredSize();
     }
+
     @Override
     public Dimension getMaximumSize() {
         return this.wordsInputPresentation.getMaximumSize();
     }
+
     @Override
     public Dimension getMinimumSize() {
         return this.wordsInputPresentation.getMinimumSize();
