@@ -10,8 +10,8 @@ import java.util.List;
 
 public class CanvasModel {
 
-    private final HashSet<AbstractDrawing> drawings = new HashSet<>();
-    public HashSet<AbstractDrawing> getDrawings(){
+    private final ArrayList<AbstractDrawing> drawings = new ArrayList<>();
+    public ArrayList<AbstractDrawing> getDrawings(){
         return drawings;
     }
     public void removeDrawing(AbstractDrawing drawingToRemove){
@@ -30,6 +30,11 @@ public class CanvasModel {
         closeEditOfDrawing();
         drawings.clear();
         notifyChange();
+    }
+    public void removeLastDrawing(){
+        if(drawings.size() > 0){
+            removeDrawing(drawings.get(drawings.size() -1));
+        }
     }
 
     private AbstractDrawing currentDrawing = null;

@@ -18,7 +18,7 @@ public class TurnsManager{
 
     public static final int NUM_OF_ATTEMPT_EACH_TURN = 3;
 
-    public static final int DURATION_OF_SESSION_IN_SECONDS = 40000;
+    public static final int DURATION_OF_SESSION_IN_SECONDS = 300;
 
     private final SessionManager sessionManager;
     private final TimeManager timeManager;
@@ -42,6 +42,7 @@ public class TurnsManager{
         return this.wordUsedInTheTurn;
     }
     private int numberOfAttemptsLeft;
+    private int lastPaintModeIndex = -1;
 
     private final ActionListener expiredTimeForCurrentTurn = e -> notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
 
@@ -63,10 +64,14 @@ public class TurnsManager{
 
 
     private PaintMode chosePaintModeForNewTurn(){
+
         var paintModesEnumeration = paintModesKit.elements();
-        int indexOfChosenMode = new Random().nextInt(paintModesKit.size());
-        while(indexOfChosenMode > 0){
-            indexOfChosenMode--;
+        //int indexOfChosenMode = new Random().nextInt(paintModesKit.size());
+
+        lastPaintModeIndex = (lastPaintModeIndex + 1) % paintModesKit.size();
+        var counter = lastPaintModeIndex;
+        while(counter > 0){
+            counter--;
             paintModesEnumeration.nextElement();
         }
         return paintModesEnumeration.nextElement();
@@ -133,7 +138,6 @@ public class TurnsManager{
         paintModesKit = new Hashtable<>();
 
         // ------------------------ Pencil PaintMode -----------------------
-/*
         paintModesKit.put(PaintingToolsEnum.PENCIL,
                 new PaintMode(
                 "Pencil",
@@ -143,6 +147,16 @@ public class TurnsManager{
                 0.5d,
                 new PencilTool()
             )
+        );
+        paintModesKit.put(PaintingToolsEnum.INVERTED_PEN,
+                new PaintMode(
+                        "Inverted pen",
+                        "Have you ever drawn in a mirror? No? This changes now. Good luck! O:)",
+                        RepositoryService.loadImageFromResources("invertedPen.png"),
+                        Color.cyan,
+                        0.77d,
+                        new InvertedPenTool()
+                )
         );
         paintModesKit.put(PaintingToolsEnum.CRAZY_PEN,
                 new PaintMode(
@@ -154,25 +168,13 @@ public class TurnsManager{
                         new CrazyPenTool()
                 )
         );
-        paintModesKit.put(PaintingToolsEnum.INVERTED_PEN,
-                new PaintMode(
-                        "Inverted pen",
-                        "Have you ever drawn in a mirror? No? This changes now. Good luck! O:)",
-                        RepositoryService.loadImageFromResources("pencil_icon.png"),
-                        Color.cyan,
-                        0.8d,
-                        new InvertedPenTool()
-                )
-        );
-
- */
         paintModesKit.put(PaintingToolsEnum.INK_BLOT,
                 new PaintMode(
                         "Ink blot",
-                        "",
-                        RepositoryService.loadImageFromResources("pencil_icon.png"),
+                        "Try to click in the canvas and a blot of ink will appear! try to stretch it",
+                        RepositoryService.loadImageFromResources("inkBlot.png"),
                         Color.yellow,
-                        0.8d,
+                        0.95d,
                         new InkBlotTool()
                 )
         );

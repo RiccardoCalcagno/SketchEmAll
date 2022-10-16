@@ -16,7 +16,7 @@ public class InkBlotTool extends AbstractTool{
     // higher => require more accuracy to put remove the active point
     public double ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = 0.99d;
 
-    public double WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = 0.7d;
+    public double WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = 0.6d;
 
     public double THRESHOLD_FOR_ADDING_NEW_POINT = 0.5d;
 
@@ -38,6 +38,8 @@ public class InkBlotTool extends AbstractTool{
     private int counterOfPressingEvents = 0;
     private Point previousPositionOfCursor;
     private Point currentPositionOfCursor;
+    private Point farAgoPositionOfCursor;
+    private double directionOfMouseMovement;
 
     private int numberOfCycleFormLastActivePointAdded=0;
 
@@ -75,7 +77,7 @@ public class InkBlotTool extends AbstractTool{
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        if(currentInkBlot != null || canvasWhereToDraw.getDrawingTargeted(e.getPoint()) != null){
+        if(currentInkBlot != null){
             return;
         }
 
@@ -96,6 +98,7 @@ public class InkBlotTool extends AbstractTool{
 
             previousPositionOfCursor = e.getPoint();
             currentPositionOfCursor = previousPositionOfCursor;
+            farAgoPositionOfCursor = previousPositionOfCursor;
 
             updateResizingParameters(false);
 
@@ -111,12 +114,26 @@ public class InkBlotTool extends AbstractTool{
         if(currentInkBlot != null){
             currentPositionOfCursor = e.getPoint();
 
-            if(counterOfPressingEvents % RESIZING_PARAMETERS_UPDATE_GAP == 0 && currentInkBlot.contain(e.getPoint())){
+            if(counterOfPressingEvents % RESIZING_PARAMETERS_UPDATE_GAP == 0) {
 
-                var distanceWithBest = currentInkBlot.getBestPoint(currentPositionOfCursor).distance(e.getPoint());
+                var bestPoint = currentInkBlot.getBestPoint(currentPositionOfCursor);
+                var isMouseInsideShape =currentInkBlot.contain(e.getPoint());
+                directionOfMouseMovement = getDirectionInRadiansOfSegment(farAgoPositionOfCursor, currentPositionOfCursor);
 
-                if(distanceWithBest > 10){
-                    updateResizingParameters(true);
+                if (isMouseInsideShape) {
+                    if(minimumAngleBetweenAngle(
+                            getDirectionInRadiansOfSegment(currentPositionOfCursor, bestPoint),
+                            directionOfMouseMovement)
+                            > Math.PI / 2d){
+                        // I need to consider the opposite angle of the directionOfMovement because it means that the user want to shrink
+                        // the region near to the currentBestPoint (instead of enlarging the opposite region)
+
+                        directionOfMouseMovement += (directionOfMouseMovement <= 0) ? Math.PI : -Math.PI;
+                    }
+
+                    if (bestPoint.distance(e.getPoint()) > 5) {
+                        updateResizingParameters(true);
+                    }
                 }
             }
 
@@ -125,13 +142,15 @@ public class InkBlotTool extends AbstractTool{
                 updateResizing();
                 previousPositionOfCursor = currentPositionOfCursor;
             }
+
+            if(counterOfPressingEvents % RESIZING_PARAMETERS_UPDATE_GAP == 0){
+                farAgoPositionOfCursor = currentPositionOfCursor;
+            }
         }
     }
     @Override
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
-
-        canvasWhereToDraw.closeCurrentDrawing();
 
         currentInkBlot = null;
     }
@@ -197,10 +216,11 @@ public class InkBlotTool extends AbstractTool{
         }
     }
 
-    private double calculateWeighOfPoint(Point2D pointToEvaluate, Point cursorPoint, double bestDirectionAngle, double minDistance){
+    // TODO: usefull bestPointDirectionAngle????
+    private double calculateWeighOfPoint(Point2D pointToEvaluate, Point cursorPoint, double bestPointDirectionAngle, double minDistance){
         var angleWithPoint = getDirectionInRadiansOfSegment(cursorPoint, pointToEvaluate);
 
-        var deltaAngleWithOptimum = minimumAngleBetweenAngle(bestDirectionAngle, angleWithPoint);
+        var deltaAngleWithOptimum = minimumAngleBetweenAngle(directionOfMouseMovement, angleWithPoint);
         var distanceWithAngle = cursorPoint.distance(pointToEvaluate);
 
         var weightForDeltaAngle = getGaussianValueOf(deltaAngleWithOptimum, 0, VARIANCE_FOR_DELTA_ANGLE) / deltaAngleMeanValue;

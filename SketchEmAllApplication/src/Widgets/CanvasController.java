@@ -68,18 +68,18 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
 
     public AbstractDrawing getDrawingTargeted(Point targetingPoint){
-        var optionalDrawing =  canvasModel.getDrawings().stream().filter(new Predicate<AbstractDrawing>() {
+        var optionalDrawings =  canvasModel.getDrawings().stream().filter(new Predicate<AbstractDrawing>() {
             @Override
             public boolean test(AbstractDrawing abstractDrawing) {
                 return (abstractDrawing instanceof TargetableDrawing)
                         && ((TargetableDrawing)abstractDrawing).contain(targetingPoint);
             }
-        }).findFirst();
-
-        if(optionalDrawing.isEmpty() == false && optionalDrawing.isPresent()){
-            return optionalDrawing.get();
+        });
+        var objectsTargeted = optionalDrawings.toArray();
+        if(objectsTargeted.length == 0){
+            return null;
         }
-        return null;
+        return (AbstractDrawing)(objectsTargeted[objectsTargeted.length -1]);
     }
 
 
@@ -105,6 +105,7 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
         this.nextNumberOfBadge = 1;
     }
+
 
 
 
@@ -154,7 +155,14 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
         canvasModel.chooseDrawingToEdit(drawingInEditing);
     }
-
+    public void removeLastDrawing(){
+        if(canvasModel.isDrawing()){
+            canvasModel.removeDrawing(canvasModel.getCurrentDrawing());
+        }
+        else{
+            canvasModel.removeLastDrawing();
+        }
+    }
     public void closeCurrentDrawing(){
         if(canvasModel.isDrawing()){
             canvasModel.closeEditOfDrawing();

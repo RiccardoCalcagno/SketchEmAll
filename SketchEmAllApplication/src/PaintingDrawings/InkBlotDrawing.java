@@ -10,15 +10,19 @@ import java.util.List;
 
 public class InkBlotDrawing extends AbstractDrawing implements TargetableDrawing {
 
-
     private static final int NUMBER_OF_POINTS_BETWEEN_ACTIVE_POINTS = 50;
 
     private static final int AVERAGE_RADIUS_OF_INITIAL_BLOT = 70;
+    private static final Color VERY_LIGHT_GRAY = new Color(240,240,240);
 
     private static Random myRandomGenerator = new Random();
 
     @Override
     protected void paintTemplateMethod(Graphics2D pen) {
+
+        var colorMultiplier = this.hashCode() % 2;
+        pen.setColor( (colorMultiplier == 0)? Color.BLACK : VERY_LIGHT_GRAY);
+
         for(var active : activePoints){
             pen.fillOval((int)active.getX() - 2, (int)active.getY() - 2, 4, 4);
         }
@@ -136,7 +140,6 @@ public class InkBlotDrawing extends AbstractDrawing implements TargetableDrawing
         activePoints.remove(activePointToRemove);
     }
 
-
     public Point2D getBestPoint(Point2D sourcePoint){
 
         var comparator = new PointToPointComparator();
@@ -144,7 +147,6 @@ public class InkBlotDrawing extends AbstractDrawing implements TargetableDrawing
 
         return completePolyline.stream().min(comparator).get();
     }
-
 
 
     public int getIndexOfPoint(Point2D pointToSearch){
