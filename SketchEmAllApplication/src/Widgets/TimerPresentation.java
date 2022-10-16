@@ -4,12 +4,16 @@ import ManagersAndServices.AppLayoutManager;
 import ManagersAndServices.RepositoryService;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class TimerPresentation {
+
+    private static final Stroke BASIC_STROKE = new BasicStroke();
+    private static final Stroke LIGHT_THICK_STROKE = new BasicStroke(2.5f);
+    private static final Dimension PREFERRED_SIZE_TIMER_WIDGET = new Dimension(300, 200);
+    private static final double VISUALLY_SAFE_PERCENTAGE_OF_SESSION_TIME = 0.95d;
+
 
     private JButton pauseResumeButton;
 
@@ -23,12 +27,6 @@ public class TimerPresentation {
         pauseIcon = RepositoryService.loadImageFromResources("pauseIcon.png");
     }
 
-    private static final Stroke BASIC_STROKE = new BasicStroke();
-    private static final Stroke LIGHT_THICK_STROKE = new BasicStroke(2.5f);
-
-    private static final Dimension PREFERRED_SIZE_TIMER_WIDGET = new Dimension(300, 200);
-
-    private static final double VISUALLY_SAFE_PERCENTAGE_OF_SESSION_TIME = 0.95d;
 
     public void installUI(TimerController timer) {
         installComponentsHierarchy(timer);
@@ -85,8 +83,9 @@ public class TimerPresentation {
             this.pauseResumeButton.setIcon(playIcon);
         }
     }
-    private void setDigitalFormatOfTimeOfSession(LocalTime digitalTimeFormat, double percentageTimeOfSession){
 
+
+    private void renderDigitalTime(TimerController timerController, double percentageTimeOfSession){
         if(percentageTimeOfSession >= VISUALLY_SAFE_PERCENTAGE_OF_SESSION_TIME){
             digitalSessionTimeLabel.setForeground(Color.red);
         }
@@ -94,39 +93,17 @@ public class TimerPresentation {
             digitalSessionTimeLabel.setForeground(Color.white);
         }
 
-        digitalSessionTimeLabel.setText(digitalTimeFormat.format(DateTimeFormatter.ISO_LOCAL_TIME).substring(3));
+        digitalSessionTimeLabel.setText(timerController.getCurrentSessionTime().format(DateTimeFormatter.ISO_LOCAL_TIME).substring(3));
     }
-
-
-    public void paint(Graphics2D pen, JComponent component) {
-        RenderingHints rh = new RenderingHints(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        pen.setRenderingHints(rh);
-
-        TimerController timerController = ((TimerController)component);
-        TimerModel model = timerController.getModel();
-
-        setEnabledPauseResumeButton(model.isActive());
-
-        updateLocalPauseResume(model.isGameOccasionallyInterrupted());
-
-        double percentageTimeOfSession = 0;
-        var currentSlice = timerController.getCurrentSlice();
-        if(currentSlice!= null){
-            percentageTimeOfSession = currentSlice.getEndingPercentageTime();
-        }
-
-        setDigitalFormatOfTimeOfSession(timerController.getCurrentSessionTime(), percentageTimeOfSession);
-
+    private void paintSlicedTimer(Graphics2D pen, TimerController timerController){
         pen.setStroke(BASIC_STROKE);
 
-        var slices = model.getTimerSlices();
+        var slices = timerController.getModel().getTimerSlices();
         for(var slice : slices){
             slice.paint(pen, this);
         }
-
-        // ----------------------------------  arrow of sliced timer ----------------------------------
+    }
+    private void paintTimerArrow(Graphics2D pen, double percentageTimeOfSession){
         pen.setStroke(LIGHT_THICK_STROKE);
         var centerOfSlicedTimer = getCenterOfSlicedTimer();
         var arrowLength = getRadiusOfSlicedTimer() * 0.5d;
@@ -139,10 +116,44 @@ public class TimerPresentation {
         pen.drawLine(centerOfSlicedTimer.x, centerOfSlicedTimer.y, endPointOfArrow.x, endPointOfArrow.y);
     }
 
+    public void paint(Graphics2D pen, JComponent component) {
+        RenderingHints rh = new RenderingHints(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        pen.setRenderingHints(rh);
 
+        TimerController timerController = ((TimerController)component);
+        TimerModel model = timerController.getModel();
+
+        //update all elements that need to get enabled / disabled beside the model state
+        setEnabledPauseResumeButton(model.isActive());
+        updateLocalPauseResume(model.isGameOccasionallyInterrupted());
+
+        var percentageTimeOfSession = getPercentageOfSession(timerController);
+
+        //updating the presentation of the digital counter
+        renderDigitalTime(timerController, percentageTimeOfSession);
+
+        //rendering each slide of the sliced timer
+        paintSlicedTimer(pen, timerController);
+
+        //arrow of sliced timer
+        paintTimerArrow(pen, percentageTimeOfSession);
+    }
+
+
+    // -------------------------- Utility methods --------------------------
     public Point getCenterOfSlicedTimer(){
         var dimensionOfWidget = getPreferredSize();
         return new Point((int)(dimensionOfWidget.getWidth() * 0.395d), (int)(dimensionOfWidget.getHeight() * 0.49d ));
+    }
+    private double getPercentageOfSession(TimerController timerController){
+        double percentageTimeOfSession = 0;
+        var currentSlice = timerController.getCurrentSlice();
+        if(currentSlice!= null){
+            percentageTimeOfSession = currentSlice.getEndingPercentageTime();
+        }
+        return percentageTimeOfSession;
     }
     public int getRadiusOfSlicedTimer(){
         return (int)(getPreferredSize().getWidth() * 0.3d);

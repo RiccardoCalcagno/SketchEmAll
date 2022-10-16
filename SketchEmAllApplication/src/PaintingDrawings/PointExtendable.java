@@ -1,4 +1,4 @@
-package PaintingTools;
+package PaintingDrawings;
 
 import java.awt.*;
 

@@ -43,6 +43,8 @@ public class LoopTaskService {
         }
     }
 
+    public int counterOfCentisecondsFromStart = 0;
+
     private Lock lockInAccessToTasksContainer = new ReentrantLock();
     private Thread mainThread;
     private boolean isLoopRunning;
@@ -61,7 +63,9 @@ public class LoopTaskService {
         while (isLoopRunning) {
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
+
+                counterOfCentisecondsFromStart++;
 
                 lockInAccessToTasksContainer.lock();
 

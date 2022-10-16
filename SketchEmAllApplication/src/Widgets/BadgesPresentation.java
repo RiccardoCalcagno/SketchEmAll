@@ -11,37 +11,35 @@ public class BadgesPresentation {
 
     private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(900, 180);
     private static final Dimension PREFERRED_SIZE_BADGE = new Dimension(150, 100);
-    private BadgesController bc;
-    private BadgesModel bm;
+    private BadgesController badgesController;
+    private BadgesModel badgesModel;
 
 
     public BadgesPresentation(BadgesController controller) {
-        this.bc = controller;
+        this.badgesController = controller;
 
     }
 
     public void paint(Graphics2D pen, BadgesController controller) {
-        this.bc = controller;
-        this.bm = controller.getModel();
+        this.badgesController = controller;
+        this.badgesModel = controller.getModel();
         pen.setColor(Color.red);
 
         //placeholder
 
         //draw all badges
         int x = 10;
-        System.out.println(bm.getListBadges().size());
-        for (int i = 0; i < bm.getListBadges().size(); i++) {
+        for (int i = 0; i < badgesModel.getListBadges().size(); i++) {
 
-            pen.drawImage(bm.getListBadges().get(i).getImage(),
+            pen.drawImage(badgesModel.getListBadges().get(i).getImage(),
                     x,
-                    (int) (bc.getPreferredSize().height * 0.15d),
+                    (int) (badgesController.getPreferredSize().height * 0.15d),
                     PREFERRED_SIZE_BADGE.width, PREFERRED_SIZE_BADGE.height, null);
-            Point topLeftcorner = new Point(x, (int) (bc.getPreferredSize().height * 0.15d));
+            Point topLeftcorner = new Point(x, (int) (badgesController.getPreferredSize().height * 0.15d));
             pen.setStroke(new BasicStroke(5f));
-            drawPaintModeFrame(pen, bm.getListColors().get(i), bm.getListWords().get(i), topLeftcorner, PREFERRED_SIZE_BADGE, new Color(20, 20, 20));
+            drawPaintModeFrame(pen, badgesModel.getListColors().get(i), badgesModel.getListWords().get(i), topLeftcorner, PREFERRED_SIZE_BADGE, new Color(20, 20, 20));
             x = x + PREFERRED_SIZE_BADGE.width;
         }
-
     }
 
 

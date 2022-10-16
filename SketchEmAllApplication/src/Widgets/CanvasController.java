@@ -4,21 +4,20 @@ import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.ObserverOfApplicationActivityStates;
 import InternModels.PaintMode;
 import ManagersAndServices.TurnsManager;
-import PaintingTools.AbstractDrawing;
+import PaintingDrawings.AbstractDrawing;
+import PaintingDrawings.TargetableDrawing;
 import PaintingTools.AbstractTool;
+import PaintingTools.InkBlotTool;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.util.function.Predicate;
 
 public class CanvasController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
     private CanvasModel canvasModel;
     private CanvasPresentation canvasPresentation;
-    private JLabel title;
 
     private final TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
@@ -30,6 +29,29 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
     public boolean isActive(){
         return canvasModel.isActive();
+    }
+
+
+    /**
+     * given a point it will understand if there is a Drawing beneath it.
+     * If more than one it will return only the one on top
+     * If there is no one then it will return null
+     * @return
+     *  drawing targeted by the point
+     */
+    public AbstractDrawing getDrawingTargeted(Point targetingPoint){
+        var optionalDrawings =  canvasModel.getDrawings().stream().filter(new Predicate<AbstractDrawing>() {
+            @Override
+            public boolean test(AbstractDrawing abstractDrawing) {
+                return (abstractDrawing instanceof TargetableDrawing)
+                        && ((TargetableDrawing)abstractDrawing).contain(targetingPoint);
+            }
+        });
+        var objectsTargeted = optionalDrawings.toArray();
+        if(objectsTargeted.length == 0){
+            return null;
+        }
+        return (AbstractDrawing)(objectsTargeted[objectsTargeted.length -1]);
     }
 
 
@@ -48,21 +70,12 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         canvasPresentation.installUI(this);
 
         canvasModel.addChangeListener(
-                e -> onModelChange()
+                e -> repaint()
         );
-
-        title = new JLabel("Canvas");
-
     }
 
 
-    public void onModelChange(){
-
-        repaint();
-    }
-
-
-
+    @Override
     public void reset() {
         if(lastToolUsed != null) {
             this.lastToolUsed.setCanvasWhereToDraw(null);
@@ -84,24 +97,39 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         }
 
         if(!canvasModel.isDrawing()){
-            addNewDrawing(toolToUse);
+            addNewDrawing(toolToUse.getNewDrawing());
         }
 
         toolToUse.applyCurrentTransformationOnSubject(canvasModel.getCurrentDrawing());
     }
 
-    public void addNewDrawing(AbstractTool toolToUse) {
+    public void addNewDrawing(AbstractDrawing drawingToAdd) {
         if(!isActive()){
             return;
         }
 
         closeCurrentDrawing();
 
-        AbstractDrawing newDrawing = toolToUse.getNewDrawing();
-        canvasModel.addNewDrawing(newDrawing);
-        canvasModel.chooseDrawingToEdit(newDrawing);
+        canvasModel.addNewDrawing(drawingToAdd);
+        canvasModel.chooseDrawingToEdit(drawingToAdd);
     }
+    public void chooseDrawingToEdit(AbstractDrawing drawingInEditing){
+        if(!isActive()){
+            return;
+        }
 
+        closeCurrentDrawing();
+
+        canvasModel.chooseDrawingToEdit(drawingInEditing);
+    }
+    public void removeLastDrawing(){
+        if(canvasModel.isDrawing()){
+            canvasModel.removeDrawing(canvasModel.getCurrentDrawing());
+        }
+        else{
+            canvasModel.removeLastDrawing();
+        }
+    }
     public void closeCurrentDrawing(){
         if(canvasModel.isDrawing()){
             canvasModel.closeEditOfDrawing();
@@ -116,11 +144,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         canvasModel.setIsActive(levelOfRequest == ChangePlayingTimeRequestLevel.NONE);
     }
 
-
-    @Override
-    public void instantiateWidget(Container placeToPutWidget){
-        //ToDo add Canvas
-    }
 
     @Override
     public void paintComponent(Graphics pen) {
@@ -146,7 +169,9 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     }
 
 
-
+    /**
+     * Return an image that represent what is drawn in the Canvas by the user till this moment (without app decorations)
+     */
     public ImageIcon takeScreenshotOfDrawing() {
 
         BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);

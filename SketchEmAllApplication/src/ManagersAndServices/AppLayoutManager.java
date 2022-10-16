@@ -5,6 +5,8 @@ import Widgets.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Manager handling the layout of the whole application
@@ -58,12 +60,13 @@ public class AppLayoutManager extends JFrame {
         timerAndInputWordPanel.setLayout(layoutForTimerAndInput);
         timerAndInputWordPanel.setBackground(BACKGROUND_APPLICATION);
         timerAndInputWordPanel.setMaximumSize(new Dimension(600, 200));
+
         timerAndInputWordPanel.add(timerController);
         timerAndInputWordPanel.add(Box.createHorizontalGlue());
         timerAndInputWordPanel.add(wordsInputController);
         centerPanel.add(timerAndInputWordPanel);
-
         centerPanel.add(Box.createVerticalGlue());
+
 
         Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
 

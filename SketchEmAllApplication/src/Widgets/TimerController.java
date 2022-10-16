@@ -100,12 +100,7 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
         }
     }
 
-
     @Override
-    public void instantiateWidget(Container placeToPutWidget){
-
-    }
-
     public void reset() {
 
     }
