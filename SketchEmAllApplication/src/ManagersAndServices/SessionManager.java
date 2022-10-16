@@ -39,7 +39,7 @@ public class SessionManager{
         canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager, loopTaskService);
         wordsInputController = new WordsInputController(turnsManager);
-        badgesController = new BadgesController(canvasController,turnsManager);
+        badgesController = new BadgesController(turnsManager);
         badgeAttestationAnimator
                 = new BadgeAttestationAnimator(badgesController, timerController, loopTaskService);
 
@@ -58,7 +58,7 @@ public class SessionManager{
         timeManager.initializeSessionTimer();
 
         try {
-            turnsManager.startTurn();
+            turnsManager.startTurn(TurnEndReason.NONE);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -90,12 +90,12 @@ public class SessionManager{
 
         //badgeAttestationAnimator.PerformAnimation();
 
-        badgesController.createNewBadge(imageOfWinningDrawing);
+        badgesController.createNewBadge(imageOfWinningDrawing, turnsManager.getModeUsedInTheTurn().timerRepresentativeColor,turnsManager.getWordUsedInTheTurn());
 
         AudioService.playVictorySound();
 
         try {
-            turnsManager.startTurn();
+            turnsManager.startTurn(TurnEndReason.WORD_GUESSED);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -111,7 +111,7 @@ public class SessionManager{
         }
 
         try {
-            turnsManager.startTurn();
+            turnsManager.startTurn(turnEndReason);
         }
         catch (Exception e){
             System.out.println(e.getMessage());

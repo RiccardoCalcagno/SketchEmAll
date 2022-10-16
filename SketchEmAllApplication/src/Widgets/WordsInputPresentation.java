@@ -4,21 +4,23 @@ import ManagersAndServices.AppLayoutManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+/**
+ * Presentation class of Word Input
+ @see WordsInputController
+ */
 public class WordsInputPresentation {
 
     private final JTextField wordInputField;
     private final JButton submitButton;
 
-    public WordsInputPresentation(WordsInputController controller){
+    public WordsInputPresentation(WordsInputController controller) {
 
-        //not showing on screen...
         JPanel labelsPanel = new JPanel();
         labelsPanel.setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
         JPanel wordsPanel = new JPanel();
         wordsPanel.setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
-        //labelsPanel.setPreferredSize(new Dimension(200,100));
         controller.setLayout(new BoxLayout(controller, BoxLayout.Y_AXIS));
         controller.add(Box.createVerticalGlue());
         controller.add(labelsPanel);
@@ -39,13 +41,14 @@ public class WordsInputPresentation {
         wordInputField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == KeyEvent.VK_ENTER){
+                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     controller.onSubmitRequest();
                 }
             }
         });
 
         this.submitButton = new JButton("Submit");
+        this.submitButton.setBackground(Color.white);
         submitButton.addActionListener(e -> controller.onSubmitRequest());
         wordsPanel.add(submitButton);
         installListeners(controller);
@@ -54,45 +57,40 @@ public class WordsInputPresentation {
     private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(250, 90);
 
 
-    private static final Color BACKGROUND_COLOR = new Color(50,50,50);
-
+    private static final Color BACKGROUND_COLOR = new Color(50, 50, 50);
 
 
     protected void installListeners(WordsInputController controller) {
 
     }
 
-    public void clearInputField(){
+    public void clearInputField() {
         wordInputField.setText("");
     }
 
-    public void setIsEnabledInteractions(boolean isEnabled){
+    public void setIsEnabledInteractions(boolean isEnabled) {
         submitButton.setEnabled(isEnabled);
         wordInputField.setEnabled(isEnabled);
     }
 
-    public String getCurrText(){
+    public String getCurrText() {
         return this.wordInputField.getText();
     }
 
-    public void paint(Graphics2D pen, JComponent component)
-    {
-        WordsInputController wordsInputController = ((WordsInputController)component);
+    public void paint(Graphics2D pen, JComponent component) {
+        WordsInputController wordsInputController = ((WordsInputController) component);
         WordsInputModel model = wordsInputController.getModel();
         pen.setColor(Color.black);
-        //pen.fillRect(0,0, getPreferredSize().width,getPreferredSize().height);
-        pen.setColor(Color.red);
-
-
-
     }
 
     public Dimension getPreferredSize() {
         return PREFERRED_SIZE_WORD_INPUT;
     }
+
     public Dimension getMaximumSize() {
         return PREFERRED_SIZE_WORD_INPUT;
     }
+
     public Dimension getMinimumSize() {
         return PREFERRED_SIZE_WORD_INPUT;
     }

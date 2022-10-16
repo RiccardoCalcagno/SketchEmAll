@@ -58,7 +58,7 @@ public class TurnsManager{
         this.canvasController = canvasController;
         this.wordsInputController = wordsInputController;
         this.timerController = timerController;
-        this.badgesController = new BadgesController(canvasController, this);
+        this.badgesController = new BadgesController(this);
         this.timerController.addActionListener(expiredTimeForCurrentTurn);
     }
 
@@ -77,7 +77,7 @@ public class TurnsManager{
         return paintModesEnumeration.nextElement();
     }
 
-    public void startTurn() {
+    public void startTurn(TurnEndReason callReason) {
 
         System.out.println("starting new turn");
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
@@ -91,7 +91,8 @@ public class TurnsManager{
 
         try {
             invokeWordPickingProcedure(
-                    e -> startPlayingInTheTurn()
+                    e -> startPlayingInTheTurn(),
+                    callReason
             );
         }
         catch (Exception e){
@@ -99,7 +100,7 @@ public class TurnsManager{
         }
     }
 
-    private void invokeWordPickingProcedure(ActionListener endOfProcedureEvent) throws Exception{
+    private void invokeWordPickingProcedure(ActionListener endOfProcedureEvent, TurnEndReason callReason) throws Exception{
 
         if(wordPickerController != null){
             throw new Exception("a new procedure of this kind should be invoked only if there are no other actives");
@@ -107,7 +108,8 @@ public class TurnsManager{
 
         wordPickerController = new WordPickerController(
                 modeUsedInTheTurn,
-                wordUsedInTheTurn
+                wordUsedInTheTurn,
+                callReason
                 );
 
         // Auto-detach listener

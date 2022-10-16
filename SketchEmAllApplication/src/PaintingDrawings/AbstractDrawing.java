@@ -24,7 +24,7 @@ public abstract class AbstractDrawing{
             notifyChange();
         }
     }
-    public boolean IsEmpty(){
+    public boolean isEmpty(){
         return this.isEmpty;
     }
 
@@ -45,7 +45,7 @@ public abstract class AbstractDrawing{
     protected abstract void paintTemplateMethod(Graphics2D pen);
 
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
     }

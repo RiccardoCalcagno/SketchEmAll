@@ -1,51 +1,54 @@
 package Widgets;
 
-import InternModels.PaintMode;
-import ManagersAndServices.RepositoryService;
 import ManagersAndServices.TurnsManager;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Controller of the Widget responsible for displaying Badges
+ */
 public class BadgesController extends SketchEmAllWidget {
-        private  BadgesPresentation badgesPresentation;
-        private BadgesModel badgesModel;
-        public ImageIcon currBadge;
-        public PaintMode currPaintMode;
-        public String currWord;
+    private BadgesPresentation badgesPresentation;
+    private BadgesModel badgesModel;
+    public String currWord;
 
-    public BadgesController(CanvasController cc, TurnsManager tm){
+    /**
+     * Default constructor
+     @param tm reference to {@link TurnsManager}
+     */
+    public BadgesController(TurnsManager tm) {
         this.badgesModel = new BadgesModel();
         this.badgesPresentation = new BadgesPresentation(this);
-        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge_placeholder.png"));
-        this.currBadge = badgesModel.getCurrBadge();
-        this.currPaintMode = cc.getCurrentPaintMode();
         this.currWord = tm.getWordUsedInTheTurn();
         repaint();
     }
 
     @Override
-    public void instantiateWidget(Container placeToPutWidget){
+    public void instantiateWidget(Container placeToPutWidget) {
 
     }
 
+    public double[] getPointInScreenOfNextBadge() {
 
-    public double[] getPointInScreenOfNextBadge(){
-
-        // TODO
         return null;
     }
 
+    /**
+     * Creates new badge with
+     *
+     * @param badgeIcon     the screenshot of the drawing
+     * @param paintModeUsed the color of the mode
+     * @param word          the word guessed
+     */
 
+    public void createNewBadge(ImageIcon badgeIcon, Color paintModeUsed, String word) {
 
-    public void createNewBadge(ImageIcon bagdeIcon){
-        //badgesModel.setCurrBadge(RepositoryService.loadImageFromResources("badge1.png"));
-        badgesModel.setCurrBadge(bagdeIcon);
-        this.currBadge = badgesModel.getCurrBadge();
+        badgesModel.setCurrBadge(badgeIcon, paintModeUsed, word);
         repaint();
     }
 
-    public BadgesModel getModel(){
+    public BadgesModel getModel() {
         return badgesModel;
     }
 
@@ -53,8 +56,8 @@ public class BadgesController extends SketchEmAllWidget {
     public void paintComponent(Graphics pen) {
         super.paintComponent(pen);
 
-        if(badgesPresentation!= null){
-            badgesPresentation.paint((Graphics2D)pen, this);
+        if (badgesPresentation != null) {
+            badgesPresentation.paint((Graphics2D) pen, this);
         }
     }
 

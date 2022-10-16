@@ -58,7 +58,8 @@ public class CanvasPresentation{
         if(canvasController.isActive()){
             StyleUtility.drawPaintModeFrame(
                     pen,
-                    canvasController.getCurrentPaintMode(),
+                    canvasController.getCurrentPaintMode().timerRepresentativeColor,
+                    canvasController.getCurrentPaintMode().uiName,
                     new Point(0,0),
                     canvasController.getSize(),
                     AppLayoutManager.BACKGROUND_APPLICATION

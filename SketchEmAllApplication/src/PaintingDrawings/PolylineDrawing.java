@@ -18,7 +18,7 @@ public class PolylineDrawing extends AbstractDrawing implements PointExtendable 
         pen.drawPolyline(getXPoints(), getYPoints(), getNumberOfPoints());
     }
 
-    private List<Point> points = new ArrayList<>();
+    private final List<Point> points = new ArrayList<>();
 
     private int getNumberOfPoints() {
         return points.size();
