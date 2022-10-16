@@ -2,6 +2,7 @@ package Widgets;
 
 import InternModels.ChangePlayingTimeRequestLevel;
 import InternModels.ObserverOfApplicationActivityStates;
+import InternModels.PaintMode;
 import ManagersAndServices.TurnsManager;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.*;
 public class WordsInputController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
     private final TurnsManager turnsManager;
+    public Color submittButtnColor;
 
     private WordsInputModel wordsInputModel;
     private WordsInputPresentation wordsInputPresentation;
@@ -19,6 +21,7 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
         this.turnsManager = turnsManager;
 
         wordsInputModel = new WordsInputModel();
+        wordsInputModel.setCurrColor(Color.white);
 
         Init(wordsInputModel);
     }
@@ -92,6 +95,14 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
 
     public WordsInputModel getModel(){
         return wordsInputModel;
+    }
+
+    public void changeSubmitBttnStyle(PaintMode mode){
+        if (mode.timerRepresentativeColor != null){
+
+            wordsInputModel.setCurrColor(mode.timerRepresentativeColor);
+            repaint();
+        }
     }
 
 

@@ -50,6 +50,7 @@ public class TimerPresentation {
         //JLabel timerImagePlaceholder = new JLabel(RepositoryService.loadImageFromResources("timerPlaceholder.png"));
 
         this.pauseResumeButton = new JButton();
+        this.pauseResumeButton.setBackground(Color.white);
         this.pauseResumeButton.setPreferredSize(new Dimension(90, 45));
         var panelForButtonAndLabel = new JPanel();
         panelForButtonAndLabel.setMaximumSize(new Dimension(150, (int)getPreferredSize().getHeight()));
