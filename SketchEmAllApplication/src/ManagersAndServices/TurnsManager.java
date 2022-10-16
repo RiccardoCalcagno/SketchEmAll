@@ -60,7 +60,7 @@ public class TurnsManager{
         this.canvasController = canvasController;
         this.wordsInputController = wordsInputController;
         this.timerController = timerController;
-        this.badgesController = new BadgesController(canvasController, this);
+        this.badgesController = new BadgesController(this);
         this.timerController.addActionListener(expiredTimeForCurrentTurn);
     }
 
@@ -129,7 +129,6 @@ public class TurnsManager{
     private void startPlayingInTheTurn(){
 
         timerController.createNewSliceForNewTurn(modeUsedInTheTurn);
-        wordsInputController.changeSubmitBttnStyle(modeUsedInTheTurn);
 
         this.timeManager.resumeTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
     }

@@ -13,7 +13,11 @@ public class BadgesController extends SketchEmAllWidget {
     private BadgesModel badgesModel;
     public String currWord;
 
-    public BadgesController(CanvasController cc, TurnsManager tm) {
+    /**
+     * Default constructor
+     @param tm reference to {@link TurnsManager}
+     */
+    public BadgesController(TurnsManager tm) {
         this.badgesModel = new BadgesModel();
         this.badgesPresentation = new BadgesPresentation(this);
         this.currWord = tm.getWordUsedInTheTurn();
@@ -24,7 +28,6 @@ public class BadgesController extends SketchEmAllWidget {
     public void instantiateWidget(Container placeToPutWidget) {
 
     }
-
 
     public double[] getPointInScreenOfNextBadge() {
 
