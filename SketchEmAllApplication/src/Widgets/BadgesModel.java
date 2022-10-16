@@ -11,9 +11,9 @@ import java.util.List;
  * Abstraction of the Widget responsible for displaying Badges
  */
 public class BadgesModel {
-    private ImageIcon currBadge;
-    private Color currPaintMode;
-    private String currWord;
+    private ImageIcon currentBadge;
+    private Color currentPaintMode;
+    private String currentWord;
 
     private List<ImageIcon> listBadges = new ArrayList<>();
     private List<Color> listColors = new ArrayList<>();
@@ -27,12 +27,11 @@ public class BadgesModel {
      * @param wordGuessed sets the word that was guessed
      *                    also adds the badge to a list so it can later display all badges
      */
-
-    public void setCurrBadge(ImageIcon badgeIcon, Color modeColor, String wordGuessed) {
-        this.currBadge = badgeIcon;
-        this.currPaintMode = modeColor;
-        this.currWord = wordGuessed;
-        this.addBadgeToList(currBadge, currPaintMode, currWord);
+    public void setCurrentBadge(ImageIcon badgeIcon, Color modeColor, String wordGuessed) {
+        this.currentBadge = badgeIcon;
+        this.currentPaintMode = modeColor;
+        this.currentWord = wordGuessed;
+        this.addBadgeToList(currentBadge, currentPaintMode, currentWord);
         notifyChange();
     }
 
@@ -78,15 +77,12 @@ public class BadgesModel {
     }
 
     private List<ChangeListener> changeListeners = new ArrayList<>();
-
     public void addChangeListener(ChangeListener changeListenerToAdd) {
         changeListeners.add(changeListenerToAdd);
     }
-
     public void removeChangeListener(ChangeListener changeListenerToRemove) {
         changeListeners.remove(changeListenerToRemove);
     }
-
     public void notifyChange() {
         ChangeEvent changeEvent = new ChangeEvent(this);
 

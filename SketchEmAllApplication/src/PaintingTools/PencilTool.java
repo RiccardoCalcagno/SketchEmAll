@@ -19,6 +19,11 @@ public class PencilTool extends AbstractTool {
         }
     }
 
+    /**
+     * this method should transform a point provided by the mouse listener into a new point
+     * this mapping point to point will allow derived class to perform a large set of different drawing
+     * always inheriting the logics to create a polyline with these points
+     */
     protected void addNewAlteredPointFromPointer(Point pointerLocation){
         nextPointToAdd = pointerLocation;
     }

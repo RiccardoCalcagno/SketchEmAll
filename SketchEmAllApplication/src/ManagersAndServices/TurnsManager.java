@@ -79,7 +79,6 @@ public class TurnsManager{
 
     public void startTurn(TurnEndReason callReason) {
 
-        System.out.println("starting new turn");
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
         //changed to normal pen
         modeUsedInTheTurn = chosePaintModeForNewTurn();

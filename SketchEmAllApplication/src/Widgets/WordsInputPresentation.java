@@ -12,11 +12,31 @@ import java.awt.event.KeyEvent;
  */
 public class WordsInputPresentation {
 
-    private final JTextField wordInputField;
-    private final JButton submitButton;
+    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(250, 90);
 
-    public WordsInputPresentation(WordsInputController controller) {
 
+    private JTextField wordInputField;
+    private JButton submitButton;
+
+    public void installUI(JComponent component) {
+
+        var controller = (WordsInputController)component;
+
+        installUIStructure(controller);
+
+        wordInputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+                    controller.onSubmitRequest();
+                }
+            }
+        });
+
+        submitButton.addActionListener(e -> controller.onSubmitRequest());
+    }
+
+    private void installUIStructure(WordsInputController controller){
         JPanel labelsPanel = new JPanel();
         labelsPanel.setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
         JPanel wordsPanel = new JPanel();
@@ -26,7 +46,6 @@ public class WordsInputPresentation {
         controller.add(labelsPanel);
         controller.add(Box.createVerticalGlue());
         controller.add(wordsPanel);
-
 
         JLabel wordLabel = new JLabel("Guess word:");
         wordLabel.setForeground(Color.white);
@@ -38,35 +57,17 @@ public class WordsInputPresentation {
 
         wordsPanel.add(this.wordInputField);
 
-        wordInputField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    controller.onSubmitRequest();
-                }
-            }
-        });
-
         this.submitButton = new JButton("Submit");
         this.submitButton.setBackground(Color.white);
         submitButton.addActionListener(e -> controller.onSubmitRequest());
         wordsPanel.add(submitButton);
-        installListeners(controller);
     }
 
-    private static final Dimension PREFERRED_SIZE_WORD_INPUT = new Dimension(250, 90);
-
-
-    private static final Color BACKGROUND_COLOR = new Color(50, 50, 50);
-
-
-    protected void installListeners(WordsInputController controller) {
-
-    }
 
     public void clearInputField() {
         wordInputField.setText("");
     }
+
 
     public void setIsEnabledInteractions(boolean isEnabled) {
         submitButton.setEnabled(isEnabled);

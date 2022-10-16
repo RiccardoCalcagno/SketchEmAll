@@ -14,28 +14,22 @@ public class InkBlotTool extends AbstractTool{
 
     // from 0.0 to 1.0
     // higher => require more accuracy to put remove the active point
-    public double ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = 0.99d;
-
-    public double WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = 0.6d;
-
-    public double THRESHOLD_FOR_ADDING_NEW_POINT = 0.5d;
-
-    public double VARIANCE_FOR_DELTA_ANGLE = 0.1d;
-    public double VARIANCE_FOR_DISTANCE = 2d;
-
-
-    // loops of mouse drag updates
+    private static final double ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = 0.99d;
+    private static final double WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = 0.6d;
+    private static final double THRESHOLD_FOR_ADDING_NEW_POINT = 0.5d;
+    private static final double VARIANCE_FOR_DELTA_ANGLE = 0.1d;
+    private static final double VARIANCE_FOR_DISTANCE = 2d;
     private static final int BLOT_RESIZING_UPDATE_GAP = 3;
-
     private static final int RESIZING_PARAMETERS_UPDATE_GAP = 6;
 
+    private final double deltaAngleMeanValue = getGaussianValueOf(0, 0, VARIANCE_FOR_DELTA_ANGLE);
+    private final double distanceMeanValue = getGaussianValueOf(0, 0, VARIANCE_FOR_DISTANCE);
 
-    private double deltaAngleMeanValue;
-    private double distanceMeanValue;
 
     private Point bookedLocationOfNextSpawn;
 
     private int counterOfPressingEvents = 0;
+
     private Point previousPositionOfCursor;
     private Point currentPositionOfCursor;
     private Point farAgoPositionOfCursor;
@@ -82,6 +76,8 @@ public class InkBlotTool extends AbstractTool{
         }
 
         bookedLocationOfNextSpawn = e.getPoint();
+
+        // requesting the canvas to add a new drawing
         canvasWhereToDraw.addNewDrawing(InkBlotDrawing.create(bookedLocationOfNextSpawn));
     }
 
@@ -100,7 +96,7 @@ public class InkBlotTool extends AbstractTool{
             currentPositionOfCursor = previousPositionOfCursor;
             farAgoPositionOfCursor = previousPositionOfCursor;
 
-            updateResizingParameters(false);
+            updateResizingParameters();
 
             canvasWhereToDraw.chooseDrawingToEdit(drawingTargeted);
         }
@@ -115,26 +111,11 @@ public class InkBlotTool extends AbstractTool{
             currentPositionOfCursor = e.getPoint();
 
             if(counterOfPressingEvents % RESIZING_PARAMETERS_UPDATE_GAP == 0) {
+                if (currentInkBlot.contain(currentPositionOfCursor)) {
 
-                var bestPoint = currentInkBlot.getBestPoint(currentPositionOfCursor);
-                var isMouseInsideShape =currentInkBlot.contain(e.getPoint());
-                directionOfMouseMovement = getDirectionInRadiansOfSegment(farAgoPositionOfCursor, currentPositionOfCursor);
-
-                if (isMouseInsideShape) {
-                    if(minimumAngleBetweenAngle(
-                            getDirectionInRadiansOfSegment(currentPositionOfCursor, bestPoint),
-                            directionOfMouseMovement)
-                            > Math.PI / 2d){
-                        // I need to consider the opposite angle of the directionOfMovement because it means that the user want to shrink
-                        // the region near to the currentBestPoint (instead of enlarging the opposite region)
-
-                        directionOfMouseMovement += (directionOfMouseMovement <= 0) ? Math.PI : -Math.PI;
-                    }
-
-                    if (bestPoint.distance(e.getPoint()) > 5) {
-                        updateResizingParameters(true);
-                    }
+                    updateResizingParameters();
                 }
+                farAgoPositionOfCursor = currentPositionOfCursor;
             }
 
             if(counterOfPressingEvents % BLOT_RESIZING_UPDATE_GAP == 0){
@@ -142,38 +123,25 @@ public class InkBlotTool extends AbstractTool{
                 updateResizing();
                 previousPositionOfCursor = currentPositionOfCursor;
             }
-
-            if(counterOfPressingEvents % RESIZING_PARAMETERS_UPDATE_GAP == 0){
-                farAgoPositionOfCursor = currentPositionOfCursor;
-            }
         }
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
 
         currentInkBlot = null;
     }
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        super.mouseMoved(e);
-        /*
 
-        if(currentInkBlot != null){
-            return;
-        }
-
-        var drawingTargeted = canvasWhereToDraw.getDrawingTargeted(e.getPoint());
-
-        if(drawingTargeted != null && drawingTargeted instanceof InkBlotDrawing){
-
-        }
-         */
-    }
 
     public void updateResizing(){
 
+        // numberOfCycleFormLastActivePointAdded it is the countdown started when a new point of the spline
+        // was made active
         if(numberOfCycleFormLastActivePointAdded > 0){
+            // this check is needed because: the deletion of useless point should be disabled until the user had
+            // the possibility to move its new active point enough to be seen as usefull in the spline.
+            // otherwise it will be removed after its creation everytime
             numberOfCycleFormLastActivePointAdded--;
         }
         else{
@@ -186,37 +154,67 @@ public class InkBlotTool extends AbstractTool{
     }
 
 
-    public void updateResizingParameters(boolean allowCreationOfNewActivePoint){
+    private void updateDirectionOfMouseMovement(Point2D bestPoint){
+        if(farAgoPositionOfCursor != currentPositionOfCursor){
+            directionOfMouseMovement = getDirectionInRadiansOfSegment(farAgoPositionOfCursor, currentPositionOfCursor);
 
-        deltaAngleMeanValue = getGaussianValueOf(0, 0, VARIANCE_FOR_DELTA_ANGLE);
-        distanceMeanValue = getGaussianValueOf(0, 0, VARIANCE_FOR_DISTANCE);
+            if(minimumAngleBetweenAngle(
+                    getDirectionInRadiansOfSegment(currentPositionOfCursor, bestPoint),
+                    directionOfMouseMovement)
+                    > Math.PI / 2d){
+                // I need to consider the opposite angle of the directionOfMovement because it means that the user want to shrink
+                // the region near to the currentBestPoint (instead of enlarging the opposite region)
 
-        var currentBestPoint = currentInkBlot.getBestPoint(currentPositionOfCursor);
+                directionOfMouseMovement += (directionOfMouseMovement <= 0) ? Math.PI : -Math.PI;
+            }
+        }
+        else{
+            directionOfMouseMovement = getDirectionInRadiansOfSegment(currentPositionOfCursor, bestPoint);
+        }
+    }
 
-        var directionAngle = getDirectionInRadiansOfSegment(currentPositionOfCursor, currentBestPoint);
-        var minDistance = currentPositionOfCursor.distance(currentBestPoint);
-
-        // ------------------------------ calculate weighs ---------------------------------
+    private void calculateWeighsOfEachActivePoint(double directionAngle, double minDistance){
         temporaryWeighsPairedToActivePoints.clear();
 
         for (var point : currentInkBlot.activePoints){
             // Weighted average of the two weights
             temporaryWeighsPairedToActivePoints.add(calculateWeighOfPoint(point, currentPositionOfCursor, directionAngle, minDistance));
         }
-        var currentWeighOfBestPoint = calculateWeighOfPoint(currentBestPoint, currentPositionOfCursor, directionAngle, minDistance);
+    }
 
-        // -------------- add a new active point if current active ones are too far -------------
-        if(allowCreationOfNewActivePoint && shouldMakeBestPointActive(currentWeighOfBestPoint)){
-            numberOfCycleFormLastActivePointAdded = 10;
+    private void addMakeBestPointAnActivePoint(double currentWeighOfBestPoint, Point2D currentBestPoint){
+        numberOfCycleFormLastActivePointAdded = 10;
 
-            var indexOfNewActivePoint = currentInkBlot.addActivePoint(currentInkBlot.getIndexOfPoint(currentBestPoint));
-            temporaryWeighsPairedToActivePoints.add(indexOfNewActivePoint, currentWeighOfBestPoint);
+        var indexOfNewActivePoint = currentInkBlot.addActivePoint(currentInkBlot.getIndexOfPoint(currentBestPoint));
+        temporaryWeighsPairedToActivePoints.add(indexOfNewActivePoint, currentWeighOfBestPoint);
 
-            currentInkBlot.updateSplineFromActivePoints();
+        currentInkBlot.updateSplineFromActivePoints();
+    }
+
+    public void updateResizingParameters(){
+        var currentBestPoint = currentInkBlot.getBestPoint(currentPositionOfCursor);
+
+        updateDirectionOfMouseMovement(currentBestPoint);
+
+        if (currentBestPoint.distance(currentPositionOfCursor) > 5) {
+            // distance > <small_amount> otherwise the calculation of angles (cursor and line points) and the weight
+            // will suffer from imprecision errors
+
+            var directionAngle = getDirectionInRadiansOfSegment(currentPositionOfCursor, currentBestPoint);
+            var minDistance = currentPositionOfCursor.distance(currentBestPoint);
+            // ------------------------------ calculate weighs ---------------------------------
+            calculateWeighsOfEachActivePoint(directionAngle, minDistance);
+
+            // -------------- add a new active point if current active ones are too far -------------
+            var currentWeighOfBestPoint = calculateWeighOfPoint(currentBestPoint, currentPositionOfCursor, directionAngle, minDistance);
+            if(shouldMakeBestPointActive(currentWeighOfBestPoint)){
+                addMakeBestPointAnActivePoint(currentWeighOfBestPoint, currentBestPoint);
+            }
         }
     }
 
-    // TODO: usefull bestPointDirectionAngle????
+
+
     private double calculateWeighOfPoint(Point2D pointToEvaluate, Point cursorPoint, double bestPointDirectionAngle, double minDistance){
         var angleWithPoint = getDirectionInRadiansOfSegment(cursorPoint, pointToEvaluate);
 
@@ -240,11 +238,12 @@ public class InkBlotTool extends AbstractTool{
     }
 
 
+    /**
+     * with a while cycle, try to find each time a point to delete and it does it until it can not find point anymore
+     */
     private void deleteUnusefulActivePoints(InkBlotDrawing cachedDrawingSubject){
-
         var activePointToDelete = getNullableOfActivePointToBeRemovedIfRedundant(cachedDrawingSubject);
 
-        System.out.println("deleteUnusefulActivePoints, activePointToDelete ==" + activePointToDelete);
         while (activePointToDelete != null){
             var indexOfActiveToRemove = cachedDrawingSubject.activePoints.indexOf(activePointToDelete);
             cachedDrawingSubject.removeActivePoint(activePointToDelete);
@@ -256,6 +255,12 @@ public class InkBlotTool extends AbstractTool{
         cachedDrawingSubject.updateSplineFromActivePoints();
     }
 
+    /**
+     * With a test performed on the weight of the candidate to become an active point and the current weight of each
+     * active point it can understand if the candidate currentWeighOfBestPoint should become an active point or not
+     * @param currentWeighOfBestPoint
+     * @return
+     */
     private boolean shouldMakeBestPointActive(double currentWeighOfBestPoint){
 
         return ! temporaryWeighsPairedToActivePoints.stream().anyMatch(new Predicate<Double>() {
@@ -266,6 +271,15 @@ public class InkBlotTool extends AbstractTool{
         });
     }
 
+    /**
+     * the method execute a test on each active point to understand how much it is usefull in the spline
+     * if the point less useful between everyone reach a threshold of "uselessness" that that point will be
+     * retreived as the point to be deleted
+     * @param cachedDrawingSubject
+     *      if not null the Point should be deleted because it is useless
+     *      if null than there is no point to delete
+     * @return
+     */
     public Point2D getNullableOfActivePointToBeRemovedIfRedundant(InkBlotDrawing cachedDrawingSubject){
 
         var activeLine = cachedDrawingSubject.activePoints;
@@ -294,18 +308,17 @@ public class InkBlotTool extends AbstractTool{
 
 
 
-
-    private double getAngleOfMiddleActivePoint(Point2D firstEdge, Point2D middlePoint, Point2D secondEdge){
+    // ------------------------------------ Utility methods ---------------------------------------------
+    private static double getAngleOfMiddleActivePoint(Point2D firstEdge, Point2D middlePoint, Point2D secondEdge){
 
         var firstHalfAngle = getDirectionInRadiansOfSegment(firstEdge, middlePoint);
         var secondHalfAngle = getDirectionInRadiansOfSegment(secondEdge,middlePoint);
 
         return minimumAngleBetweenAngle(firstHalfAngle, secondHalfAngle);
     }
-    private double getGaussianValueOf(double x, double mean, double variance){
+    private static double getGaussianValueOf(double x, double mean, double variance){
         return (1d / Math.sqrt(variance* 2 * Math.PI))*Math.exp(-(((x - mean) * (x - mean)) / ((2 * variance))));
     }
-
     public static double getDirectionInRadiansOfSegment(Point2D sourcePoint, Point2D targetPoint){
         double disorientedAngle;
         if(Math.abs(targetPoint.getX() - sourcePoint.getX()) < 0.1) {
@@ -327,7 +340,6 @@ public class InkBlotTool extends AbstractTool{
 
         return disorientedAngle;
     }
-
     public static double minimumAngleBetweenAngle(double source, double target){
 
         if(Math.signum(source) == Math.signum(target)){
@@ -338,7 +350,6 @@ public class InkBlotTool extends AbstractTool{
 
         return (angle > Math.PI) ? Math.PI*2d -angle : angle;
     }
-
 
 
 

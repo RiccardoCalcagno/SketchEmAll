@@ -42,19 +42,21 @@ public class CanvasPresentation{
 
     }
 
-    public void paint(Graphics2D pen, CanvasController canvasController) {
-        CanvasModel model = canvasController.getModel();
-
+    private void paintEmptyCanvas(Graphics2D pen, CanvasController canvasController){
         pen.setColor(Color.white);
         pen.fillRect(0,0, canvasController.getWidth(), canvasController.getHeight());
+    }
 
+    private void paintAnnotations(Graphics2D pen, CanvasController canvasController){
         pen.setColor(Color.black);
-        var drawAnnotations = model.getDrawings();
+        var drawAnnotations = canvasController.getModel().getDrawings();
         for (var drawAnnotation: drawAnnotations) {
 
             drawAnnotation.paint(pen);
         }
+    }
 
+    private void paintCanvasDecorations(Graphics2D pen, CanvasController canvasController){
         if(canvasController.isActive()){
             StyleUtility.drawPaintModeFrame(
                     pen,
@@ -65,6 +67,18 @@ public class CanvasPresentation{
                     AppLayoutManager.BACKGROUND_APPLICATION
             );
         }
+    }
+
+
+    public void paint(Graphics2D pen, CanvasController canvasController) {
+
+        deleteLastDrawingButton.setEnabled(canvasController.getModel().isActive());
+
+        paintEmptyCanvas(pen, canvasController);
+
+        paintAnnotations(pen, canvasController);
+
+        paintCanvasDecorations(pen, canvasController);
     }
 
     public Dimension getPreferredSize() {

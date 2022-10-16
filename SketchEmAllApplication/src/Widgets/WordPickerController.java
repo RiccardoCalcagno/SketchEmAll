@@ -98,11 +98,6 @@ public class WordPickerController extends SketchEmAllWidget {
     }
 
 
-    @Override
-    public void instantiateWidget(Container placeToPutWidget){
-
-    }
-
     /**
      * Changes the content of the view according to the changes in the model
      */

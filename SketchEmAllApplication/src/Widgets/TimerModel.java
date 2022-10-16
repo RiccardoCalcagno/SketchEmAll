@@ -12,8 +12,8 @@ import java.util.List;
 
 public class TimerModel {
 
-    private ImageIcon timerIcon;
     private boolean isActive = false;
+
     public boolean isActive(){
         return this.isActive;
     }
@@ -23,6 +23,10 @@ public class TimerModel {
     }
 
     private boolean isGameOccasionallyInterrupted;
+
+    /**
+     * ture if the user has interrupted the timer by pressing the button
+     */
     public boolean isGameOccasionallyInterrupted() {
         return this.isGameOccasionallyInterrupted;
     }
@@ -40,6 +44,13 @@ public class TimerModel {
     public ArrayList<TimerSlice> getTimerSlices(){
         return timerSlices;
     }
+
+    /**
+     * This operation will prevent the last slice to grow more, so that its paramiter like isWonMode and isGrowing will get
+     * their final value
+     * @param isWon
+     *  in order to stop the growth of a slice you need to explaining the reason (the turn is won or is loosed)
+     */
     public void stopGrowthOfCurrentSlice(boolean isWon){
         if(timerSlices.size() > 0) {
             var currentSlice = timerSlices.get(timerSlices.size() - 1);
@@ -48,6 +59,13 @@ public class TimerModel {
             notifyChange();
         }
     }
+
+    /**
+     * To set to the last slice of the sliced timer a new end (figurative by a new angle that may enlarge the slice,
+     * pratically by a new percentage of the whole circle)
+     * @param endPercentageTime
+     *  percentage of the sliced timer where to put the end of the last slice
+     */
     public void setCurrentSliceEndPercentageTime(double endPercentageTime){
         if(timerSlices.size() > 0){
             timerSlices.get(timerSlices.size()-1).setEndingPercentageTime(endPercentageTime);

@@ -18,7 +18,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
     private CanvasModel canvasModel;
     private CanvasPresentation canvasPresentation;
-    private JLabel title;
 
     private final TurnsManager turnsManager;
     private AbstractTool lastToolUsed;
@@ -33,39 +32,13 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     }
 
 
-
-    public void setValueForDebugProperty(int numOfProperty, double value){
-        /*
-            ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = 0.85d;
-            WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = 0.7d;
-            THRESHOLD_FOR_ADDING_NEW_POINT = 0.1d;
-            VARIANCE_FOR_DELTA_ANGLE = 1.0d;
-            VARIANCE_FOR_DISTANCE = 1.0d;
-         */
-        switch (numOfProperty){
-            case 1:
-                ((InkBlotTool)lastToolUsed).ACTIVE_POINT_REDUNDANCY_CHECK_COEFFICIENT = value;
-                break;
-            case 2:
-                ((InkBlotTool)lastToolUsed).WEIGHT_OF_DISTANCE_RELATIVE_TO_DELTA_ANGLE = value;
-                break;
-            case 3:
-                ((InkBlotTool)lastToolUsed).THRESHOLD_FOR_ADDING_NEW_POINT = value;
-                break;
-            case 4:
-                ((InkBlotTool)lastToolUsed).VARIANCE_FOR_DELTA_ANGLE = value;
-                break;
-            case 5:
-                ((InkBlotTool)lastToolUsed).VARIANCE_FOR_DISTANCE = value;
-                break;
-            default:
-                break;
-        }
-
-    }
-
-
-
+    /**
+     * given a point it will understand if there is a Drawing beneath it.
+     * If more than one it will return only the one on top
+     * If there is no one then it will return null
+     * @return
+     *  drawing targeted by the point
+     */
     public AbstractDrawing getDrawingTargeted(Point targetingPoint){
         var optionalDrawings =  canvasModel.getDrawings().stream().filter(new Predicate<AbstractDrawing>() {
             @Override
@@ -99,14 +72,10 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
         canvasModel.addChangeListener(
                 e -> repaint()
         );
-
-        title = new JLabel("Canvas");
-
     }
 
 
-
-
+    @Override
     public void reset() {
         if(lastToolUsed != null) {
             this.lastToolUsed.setCanvasWhereToDraw(null);
@@ -177,11 +146,6 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
 
 
     @Override
-    public void instantiateWidget(Container placeToPutWidget){
-        //ToDo add Canvas
-    }
-
-    @Override
     public void paintComponent(Graphics pen) {
         super.paintComponent(pen);
 
@@ -205,7 +169,9 @@ public class CanvasController extends SketchEmAllWidget implements ObserverOfApp
     }
 
 
-
+    /**
+     * Return an image that represent what is drawn in the Canvas by the user till this moment (without app decorations)
+     */
     public ImageIcon takeScreenshotOfDrawing() {
 
         BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);

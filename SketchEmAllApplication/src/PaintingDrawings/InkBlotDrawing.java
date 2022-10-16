@@ -78,6 +78,8 @@ public class InkBlotDrawing extends AbstractDrawing implements TargetableDrawing
     }
 
     public void updateSplineFromActivePoints(){
+
+        // --------------------  creation of an object spline from the active points --------------------
         CatmullRomSpline interpolatingSpline = CatmullRomSpline.create(
                 activePoints,
                 NUMBER_OF_POINTS_BETWEEN_ACTIVE_POINTS,
@@ -85,6 +87,7 @@ public class InkBlotDrawing extends AbstractDrawing implements TargetableDrawing
                 true
         );
 
+        // --------------------  getting the points of the spline --------------------------
         completePolyline = interpolatingSpline.getInterpolatedPoints();
 
         // Re-defying activePoints based on the new line, useful to understand where to place new ActivePoints
@@ -94,6 +97,7 @@ public class InkBlotDrawing extends AbstractDrawing implements TargetableDrawing
             activePoints.set(i, completePolyline.stream().min(nearestPointComparator).get());
         }
 
+        // -------------------- update the shape that will be used to render the ink blot
         updatePolygon();
 
         notifyChange();

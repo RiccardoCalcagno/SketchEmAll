@@ -11,26 +11,20 @@ import java.awt.*;
 public class BadgesController extends SketchEmAllWidget {
     private BadgesPresentation badgesPresentation;
     private BadgesModel badgesModel;
-    public String currWord;
+    public String currentWord;
 
     /**
      * Default constructor
-     @param tm reference to {@link TurnsManager}
+     @param turnManager reference to {@link TurnsManager}
      */
-    public BadgesController(TurnsManager tm) {
+    public BadgesController(TurnsManager turnManager) {
         this.badgesModel = new BadgesModel();
         this.badgesPresentation = new BadgesPresentation(this);
-        this.currWord = tm.getWordUsedInTheTurn();
+        this.currentWord = turnManager.getWordUsedInTheTurn();
         repaint();
     }
 
-    @Override
-    public void instantiateWidget(Container placeToPutWidget) {
-
-    }
-
     public double[] getPointInScreenOfNextBadge() {
-
         return null;
     }
 
@@ -44,7 +38,7 @@ public class BadgesController extends SketchEmAllWidget {
 
     public void createNewBadge(ImageIcon badgeIcon, Color paintModeUsed, String word) {
 
-        badgesModel.setCurrBadge(badgeIcon, paintModeUsed, word);
+        badgesModel.setCurrentBadge(badgeIcon, paintModeUsed, word);
         repaint();
     }
 

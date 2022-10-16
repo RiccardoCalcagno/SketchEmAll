@@ -37,7 +37,9 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
 
         this.wordsInputModel = wordsInputModel;
 
-        this.wordsInputPresentation = new WordsInputPresentation(this);
+        this.wordsInputPresentation = new WordsInputPresentation();
+
+        this.wordsInputPresentation.installUI(this);
 
         wordsInputModel.addChangeListener(
                 e -> onModelChange()
@@ -91,13 +93,10 @@ public class WordsInputController extends SketchEmAllWidget implements ObserverO
     }
 
 
-    @Override
-    public void instantiateWidget(Container placeToPutWidget) {
-
-    }
     /**
      * Clear the input field
      */
+    @Override
     public void reset() {
         wordsInputPresentation.clearInputField();
     }
