@@ -18,20 +18,16 @@ import java.util.List;
 
 public class TimerController extends SketchEmAllWidget implements ObserverOfApplicationActivityStates {
 
-    private LoopTaskService loopTaskService;
-    private TimeManager timerManager;
+    private final LoopTaskService loopTaskService;
+    private final TimeManager timerManager;
     private TimerModel timerModel;
     private TimerPresentation timerPresentation;
     private BufferedImage timerBuffImage;
 
-    private LoopTaskService.TaskOfSession updateTimerTask = new LoopTaskService.TaskOfSession() {
-        @Override
-        public void performTask() {
-            updateTimerOnSessionTimeIncrement();
-        }
-    };
+    private final LoopTaskService.TaskOfSession updateTimerTask = this::updateTimerOnSessionTimeIncrement;
 
     public static final String TIMER_OF_SLICE_EXPIRED_ACTION_NAME = "timerOfSliceExpired";
+    private final List<ActionListener> actionListeners = new ArrayList<>();
 
     public boolean isActive(){
         return timerModel.isActive();
@@ -71,7 +67,7 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
                 ChangePlayingTimeRequestLevel.USER_REQUEST :
                 ChangePlayingTimeRequestLevel.OCCASIONAL_PROGRAM_REQUEST;
 
-        boolean isPauseRequest = timerModel.isGameOccasionallyInterrupted() == false;
+        boolean isPauseRequest = !timerModel.isGameOccasionallyInterrupted();
 
         if(isPauseRequest){
             timerManager.stopTime_levelledRequest(levelOfRequest);
@@ -136,7 +132,7 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     public void updateTimerOnSessionTimeIncrement(){
         var currentSlice = getCurrentSlice();
 
-        if(currentSlice != null && currentSlice.isGrowing == true){
+        if(currentSlice != null && currentSlice.isGrowing){
 
             var maxSecondsForCurrentMode = PaintMode.MAXIMUM_SECONDS_OF_HARDEST_MODE * currentSlice.paintMode.weightedTimeInPercentage;
 
@@ -185,7 +181,6 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     }
 
 
-    private List<ActionListener> actionListeners = new ArrayList<>();
     public void addActionListener(ActionListener actionListenerToAdd){
         actionListeners.add(actionListenerToAdd);
     }
