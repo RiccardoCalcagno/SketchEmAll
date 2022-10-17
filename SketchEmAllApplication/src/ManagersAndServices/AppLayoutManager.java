@@ -71,6 +71,8 @@ public class AppLayoutManager extends JFrame {
         Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
 
         badgesController.setBorder(border);
+
+
         JScrollPane scrollPane = new JScrollPane(badgesController,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -81,7 +83,9 @@ public class AppLayoutManager extends JFrame {
         scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
         scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
 
+
         centerPanel.add(scrollPane);
+
 
         centerPanel.add(Box.createVerticalGlue());
 

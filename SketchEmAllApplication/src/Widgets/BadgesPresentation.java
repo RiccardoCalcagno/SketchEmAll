@@ -1,8 +1,11 @@
 package Widgets;
 
+import ManagersAndServices.AppLayoutManager;
+
 import javax.swing.*;
 import java.awt.*;
 
+import static ManagersAndServices.AppLayoutManager.BACKGROUND_APPLICATION;
 import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
 
 /**
@@ -10,7 +13,7 @@ import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
  */
 public class BadgesPresentation {
 
-    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(900, 180);
+    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(800, 250);
     private static final Dimension PREFERRED_SIZE_BADGE = new Dimension(150, 100);
     private BadgesController badgesController;
     private BadgesModel badgesModel;
@@ -29,10 +32,9 @@ public class BadgesPresentation {
 
 
     private void InstallUIStructure(BadgesController controller){
+        controller.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
-        controller.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        //controller.add(new ScrollPane(awda))
     }
 
     public void paint(Graphics2D pen, BadgesController controller) {
@@ -43,17 +45,25 @@ public class BadgesPresentation {
         //placeholder
 
         //draw all badges
-        int x = 10;
+        int x;
+        int y;
         for (int i = 0; i < badgesModel.getListBadges().size(); i++) {
-
+           if(i < 6) {
+               x = 10 + PREFERRED_SIZE_BADGE.width*i;
+               y = (int) (badgesController.getPreferredSize().height * 0.05d);
+           } else {
+               x = 10 + PREFERRED_SIZE_BADGE.width*(i-6);
+               y = (int) (badgesController.getPreferredSize().height * 0.05d) + PREFERRED_SIZE_BADGE.height;
+           }
             pen.drawImage(badgesModel.getListBadges().get(i).getImage(),
                     x,
-                    (int) (badgesController.getPreferredSize().height * 0.15d),
+                    y,
                     PREFERRED_SIZE_BADGE.width, PREFERRED_SIZE_BADGE.height, null);
-            Point topLeftcorner = new Point(x, (int) (badgesController.getPreferredSize().height * 0.15d));
+
+            Point topLeftcorner = new Point(x, y);
             pen.setStroke(new BasicStroke(5f));
             drawPaintModeFrame(pen, badgesModel.getListColors().get(i), badgesModel.getListWords().get(i), topLeftcorner, PREFERRED_SIZE_BADGE, new Color(20, 20, 20));
-            x = x + PREFERRED_SIZE_BADGE.width;
+
         }
     }
 
