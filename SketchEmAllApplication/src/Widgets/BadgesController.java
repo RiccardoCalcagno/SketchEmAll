@@ -9,8 +9,8 @@ import java.awt.*;
  * Controller of the Widget responsible for displaying Badges
  */
 public class BadgesController extends SketchEmAllWidget {
-    private BadgesPresentation badgesPresentation;
-    private BadgesModel badgesModel;
+    private final BadgesPresentation badgesPresentation;
+    private final BadgesModel badgesModel;
     public String currentWord;
 
     /**
@@ -38,7 +38,6 @@ public class BadgesController extends SketchEmAllWidget {
      * @param paintModeUsed the color of the mode
      * @param word          the word guessed
      */
-
     public void createNewBadge(ImageIcon badgeIcon, Color paintModeUsed, String word) {
 
         badgesModel.setCurrentBadge(badgeIcon, paintModeUsed, word);
