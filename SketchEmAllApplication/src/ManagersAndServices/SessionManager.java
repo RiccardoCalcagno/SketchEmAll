@@ -69,8 +69,7 @@ public class SessionManager{
         }
     }
 
-    private void endSession(){
-
+    public void endSession(){
         loopTaskService.stopLoop();
     }
 

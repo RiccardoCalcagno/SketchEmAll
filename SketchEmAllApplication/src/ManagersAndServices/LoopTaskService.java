@@ -16,7 +16,7 @@ public class LoopTaskService {
         isLoopRunning = false;
     }
 
-    private HashSet<TaskOfSession> tasksToPerform = new HashSet<>();
+    private final HashSet<TaskOfSession> tasksToPerform = new HashSet<>();
 
     public void addTaskInLoop(TaskOfSession taskToAddInTheLoop){
         try {

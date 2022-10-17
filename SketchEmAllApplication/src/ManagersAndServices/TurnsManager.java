@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.Random;
 
 
 public class TurnsManager{
@@ -51,7 +50,7 @@ public class TurnsManager{
     private int lastPaintModeIndex = -1;
 
     // this manager gives to the TimerController a listener to provide an appropriate reaction to the expiration of turn timeout
-    private final ActionListener expiredTimeForCurrentTurn = e -> notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
+    private final ActionListener expiredTimeForCurrentTurn = this::notifyEndOfTimer;
 
     public TurnsManager(SessionManager sessionManager){
 
@@ -217,6 +216,7 @@ public class TurnsManager{
      * method that handle the submitting of a new attempt (a new word), it manages autonomously the validation
      * , the possible fail of the turn or the winning of the turn => so that the end of it for these reasons
      * @param wordToCheck
+     *  Word input by the user, to check its validity
      */
     public void validateNewAttempt(String wordToCheck){
 
@@ -231,6 +231,21 @@ public class TurnsManager{
             } else {
                 notifyEndOfTurn(TurnEndReason.NO_MORE_ATTEMPTS);
             }
+        }
+    }
+
+    /**
+     * Listener for the timerController
+     * @param e
+     *  Action event to know what actually happened.
+     */
+    private void notifyEndOfTimer(ActionEvent e){
+
+        if (e.getActionCommand().equals(TimerController.TIMER_OF_SLICE_EXPIRED_ACTION_NAME)){
+            notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
+        } else if (e.getActionCommand().equals(TimerController.SESSION_EXPIRED_ACTION_NAME)) {
+            timerController.endCurrentSlice(false);
+            sessionManager.endSession();
         }
     }
 

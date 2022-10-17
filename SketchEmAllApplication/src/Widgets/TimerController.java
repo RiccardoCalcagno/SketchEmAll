@@ -27,6 +27,7 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     private final LoopTaskService.TaskOfSession updateTimerTask = this::updateTimerOnSessionTimeIncrement;
 
     public static final String TIMER_OF_SLICE_EXPIRED_ACTION_NAME = "timerOfSliceExpired";
+    public static final String SESSION_EXPIRED_ACTION_NAME = "sessionExpired";
     private final List<ActionListener> actionListeners = new ArrayList<>();
 
     public boolean isActive(){
@@ -145,6 +146,10 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
             else{
                 timerModel.setCurrentSliceEndPercentageTime(timerManager.getPercentageOfSession());
             }
+
+            if (getCurrentSessionTime().compareTo(LocalTime.of(0,0,0)) == 0){
+                notifyExpirationOfSession();
+            }
         }
     }
 
@@ -189,6 +194,14 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     }
     public void notifyExpirationOfTurn(){
         ActionEvent actionEventEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, TIMER_OF_SLICE_EXPIRED_ACTION_NAME);
+
+        for (var listener: actionListeners){
+            listener.actionPerformed(actionEventEvent);
+        }
+    }
+
+    public void notifyExpirationOfSession(){
+        ActionEvent actionEventEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, SESSION_EXPIRED_ACTION_NAME);
 
         for (var listener: actionListeners){
             listener.actionPerformed(actionEventEvent);
