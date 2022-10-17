@@ -36,7 +36,7 @@ public class AudioService {
         try {
             return AudioSystem.getAudioInputStream(RepositoryService.loadSoundFromResources(soundName));
         } catch (UnsupportedAudioFileException e) {
-            System.out.println("Could not open file format :(");
+            System.out.println("Could not open file format :( for file "+soundName);
             return null;
         } catch (IOException e) {
             System.out.println("Could not read sound file");

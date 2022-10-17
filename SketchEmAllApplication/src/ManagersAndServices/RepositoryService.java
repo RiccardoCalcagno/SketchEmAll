@@ -105,6 +105,8 @@ public class RepositoryService {
 
         assert sound != null;
 
+        System.out.println(sound.getPath());
+
         return new File(sound.getPath());
     }
 }
