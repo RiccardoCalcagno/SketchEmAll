@@ -9,6 +9,7 @@ import javax.swing.*;
 
 public class SessionManager{
 
+    // -------------------------  Managers and Services ------------------------
     private final TurnsManager turnsManager;
     private BadgeAttestationAnimator badgeAttestationAnimator;
     public AppLayoutManager appLayoutManager;
@@ -25,17 +26,17 @@ public class SessionManager{
 
 
     public SessionManager() {
-        // ----------------- Services -------------------
+        // ----------------- Initialization Services -------------------
         RepositoryService.initializeAsSingleton(this);
         AudioService.initialize();
         loopTaskService = new LoopTaskService();
 
-        // ----------------- Managers -------------------
+        // ----------------- Initialization Managers -------------------
         timeManager = new TimeManager();
         turnsManager = new TurnsManager(this);
         appLayoutManager = new AppLayoutManager();
 
-        // ----------------- Widgets -------------------
+        // ----------------- Initialization Widgets -------------------
         canvasController = new CanvasController(turnsManager);
         timerController = new TimerController(timeManager, loopTaskService);
         wordsInputController = new WordsInputController(turnsManager);
@@ -45,16 +46,19 @@ public class SessionManager{
 
         turnsManager.setTurnWidgets(canvasController, wordsInputController, timerController);
 
+        // Add listeners that needs to be notified when the level of session time change
         timeManager.addPlayableTimeResponsiveController(canvasController);
         timeManager.addPlayableTimeResponsiveController(timerController);
         timeManager.addPlayableTimeResponsiveController(wordsInputController);
     }
 
     public void startSession(){
+        // start of the background loop of the game
         loopTaskService.startLoop();
 
         appLayoutManager.presentStartLayout(badgesController, canvasController, timerController, wordsInputController);
 
+        // initialize the timeManager and prepare it to be activated (the first time) by the start of the first turn
         timeManager.initializeSessionTimer();
 
         try {
