@@ -50,7 +50,6 @@ public class AudioService {
      *  Audio stream to read
      */
     private static void playSound(AudioInputStream stream){
-        /*
         if (audioClip == null) return;
         if (audioClip.isRunning()) audioClip.stop();
         if (audioClip.isOpen()) audioClip.close();
@@ -62,7 +61,6 @@ public class AudioService {
         } catch (IOException e) {
             System.out.println("IO Exception while playing the audio.");
         }
-        */
     }
 
     /**
