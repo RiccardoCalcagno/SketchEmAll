@@ -19,7 +19,10 @@ public class BadgesController extends SketchEmAllWidget {
      */
     public BadgesController(TurnsManager turnManager) {
         this.badgesModel = new BadgesModel();
-        this.badgesPresentation = new BadgesPresentation(this);
+        this.badgesPresentation = new BadgesPresentation();
+
+        this.badgesPresentation.InstallUI(this);
+
         this.currentWord = turnManager.getWordUsedInTheTurn();
         repaint();
     }

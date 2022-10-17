@@ -1,5 +1,6 @@
 package Widgets;
 
+import javax.swing.*;
 import java.awt.*;
 
 import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
@@ -15,9 +16,23 @@ public class BadgesPresentation {
     private BadgesModel badgesModel;
 
 
-    public BadgesPresentation(BadgesController controller) {
+    public BadgesPresentation() {
+
+
+    }
+
+    public void InstallUI(BadgesController controller){
         this.badgesController = controller;
 
+        InstallUIStructure(controller);
+    }
+
+
+    private void InstallUIStructure(BadgesController controller){
+
+        controller.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        //controller.add(new ScrollPane(awda))
     }
 
     public void paint(Graphics2D pen, BadgesController controller) {
