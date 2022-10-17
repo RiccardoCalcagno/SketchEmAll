@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimeManager {
-    private LocalDateTime timeOfSessionStart;
 
     private int centisecondsOfSession;
     private LocalTime localTimeOfSession;
@@ -23,13 +22,11 @@ public class TimeManager {
     private Timer executorTimer;
     private ActionListener timerListener;
 
+    private ChangePlayingTimeRequestLevel currentLevelOfStoppedTime;
+
+
     public boolean isSessionRunningOverThisLevel(ChangePlayingTimeRequestLevel levelToCheck){
         return currentLevelOfStoppedTime.compareTo(levelToCheck) < 0;
-    }
-
-    private ChangePlayingTimeRequestLevel currentLevelOfStoppedTime;
-    public ChangePlayingTimeRequestLevel getCurrentLevelOfStoppedTime() {
-        return currentLevelOfStoppedTime;
     }
 
 
@@ -60,10 +57,21 @@ public class TimeManager {
         executorTimer.stop();
     }
 
+    /**
+     * you can add a controller that implements ObserverOfApplicationActivityStates, so that each thie that the game
+     * will experience a change of it time level it will be notified
+     * @param controllerToManage
+     */
     public void addPlayableTimeResponsiveController(ObserverOfApplicationActivityStates controllerToManage){
         playableTimeResponsiveControllers.add(controllerToManage);
     }
 
+    /**
+     * each extern controller can try to request the break of the time of the play at a certain level.
+     * if this level is higher than the one in which the application is currently going then the application
+     * must reach this level of inactivity
+     * @param levelOfRequest
+     */
     public void stopTime_levelledRequest(ChangePlayingTimeRequestLevel levelOfRequest){
 
         executorTimer.stop();
@@ -78,6 +86,12 @@ public class TimeManager {
         }
     }
 
+    /**
+     * each extern controller can try to request the resume of the time of the play at a certain level.
+     * if this level is higher than the one in which the application is currently going then the application
+     * must decrease the level of inactivity at the level provide as the argument
+     * @param levelOfRequest
+     */
     public void resumeTime_levelledRequest(ChangePlayingTimeRequestLevel levelOfRequest){
 
         if(levelOfRequest.compareTo(currentLevelOfStoppedTime) >= 0 && currentLevelOfStoppedTime != ChangePlayingTimeRequestLevel.NONE){
@@ -91,7 +105,9 @@ public class TimeManager {
         }
     }
 
-
+    /**
+     * Timer Loop management
+     */
     private void handleTimerTic() {
 
         centisecondsOfSession++;

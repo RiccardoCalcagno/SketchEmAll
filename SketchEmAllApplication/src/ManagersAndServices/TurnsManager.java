@@ -16,23 +16,27 @@ import java.util.Random;
 
 public class TurnsManager{
 
+    // the user can try with a maximum of NUM_OF_ATTEMPT_EACH_TURN words each turn to guess the draw of the partner
     public static final int NUM_OF_ATTEMPT_EACH_TURN = 3;
 
+    // The collection of each turn must end in seconds
     public static final int DURATION_OF_SESSION_IN_SECONDS = 300;
 
+    // ------------------------------------ Managers references ------------------------------------
     private final SessionManager sessionManager;
     private final TimeManager timeManager;
 
+    // ------------------------------------ widgets references ------------------------------------
     private CanvasController canvasController;
     private WordsInputController wordsInputController;
     private TimerController timerController;
     // present only in a sub-procedure of the turn
     private WordPickerController wordPickerController;
 
-    private BadgesController badgesController;
 
     private Dictionary<PaintingToolsEnum, PaintMode> paintModesKit = new Hashtable<>();
 
+    // public interface access to relevant information (like what is the current mode in use)
     private PaintMode modeUsedInTheTurn = null;
     public PaintMode getModeUsedInTheTurn(){
         return this.modeUsedInTheTurn;
@@ -42,8 +46,11 @@ public class TurnsManager{
         return this.wordUsedInTheTurn;
     }
     private int numberOfAttemptsLeft;
+
+    // used to perform the cycle of modes ("cyclic" in the presentation, "random" in production)
     private int lastPaintModeIndex = -1;
 
+    // this manager gives to the TimerController a listener to provide an appropriate reaction to the expiration of turn timeout
     private final ActionListener expiredTimeForCurrentTurn = e -> notifyEndOfTurn(TurnEndReason.TURN_TIMER_EXPIRATION);
 
     public TurnsManager(SessionManager sessionManager){
@@ -54,20 +61,28 @@ public class TurnsManager{
         setPaintModesKit();
     }
 
+    /**
+     * initial setting of the widgets that turnManager is going to use
+     */
     public void setTurnWidgets(CanvasController canvasController, WordsInputController wordsInputController, TimerController timerController){
         this.canvasController = canvasController;
         this.wordsInputController = wordsInputController;
         this.timerController = timerController;
-        this.badgesController = new BadgesController(this);
         this.timerController.addActionListener(expiredTimeForCurrentTurn);
     }
 
 
+    /**
+     * for each new turn this method will retrieve to the caller a new paintMode with which it could initialize the turn
+     */
     private PaintMode chosePaintModeForNewTurn(){
 
         var paintModesEnumeration = paintModesKit.elements();
+
+        // random choice
         //int indexOfChosenMode = new Random().nextInt(paintModesKit.size());
 
+        // cycled choice
         lastPaintModeIndex = (lastPaintModeIndex + 1) % paintModesKit.size();
         var counter = lastPaintModeIndex;
         while(counter > 0){
@@ -77,15 +92,20 @@ public class TurnsManager{
         return paintModesEnumeration.nextElement();
     }
 
+    /**
+     * start a new turn after the end of other or simpler to start the first turn
+     * @param callReason
+     *  if there was a past turn => reason of the end of it (useful to present feedback of the progression of the game)
+     */
     public void startTurn(TurnEndReason callReason) {
 
         wordUsedInTheTurn =  RepositoryService.chooseNextWord();
         //changed to normal pen
         modeUsedInTheTurn = chosePaintModeForNewTurn();
 
+        // ----------------- resetting states and data of controllers of the game -------------------
         canvasController.reset();
         wordsInputController.reset();
-
         numberOfAttemptsLeft = NUM_OF_ATTEMPT_EACH_TURN;
 
         try {
@@ -99,6 +119,9 @@ public class TurnsManager{
         }
     }
 
+    /**
+     * Asynchronous procedure needed to present the word and mode chosen for this turn
+     */
     private void invokeWordPickingProcedure(ActionListener endOfProcedureEvent, TurnEndReason callReason) throws Exception{
 
         if(wordPickerController != null){
@@ -127,14 +150,22 @@ public class TurnsManager{
         sessionManager.appLayoutManager.instantiateWordPickerWidget(wordPickerController);
     }
 
+    /**
+     * At this point the program can really start the new turn because the asynchronous procedure
+     * of picking the new word is finished
+     */
     private void startPlayingInTheTurn(){
 
         timerController.createNewSliceForNewTurn(modeUsedInTheTurn);
 
+        // at start or at the end of the previous turn the time of the session was stopped so now we are going to resume it
         this.timeManager.resumeTime_levelledRequest(ChangePlayingTimeRequestLevel.TURN_OVER);
     }
 
 
+    /**
+     * Creating the set of tools (modes) that can be used in the game
+     */
     public void setPaintModesKit(){
         paintModesKit = new Hashtable<>();
 
@@ -182,6 +213,11 @@ public class TurnsManager{
     }
 
 
+    /**
+     * method that handle the submitting of a new attempt (a new word), it manages autonomously the validation
+     * , the possible fail of the turn or the winning of the turn => so that the end of it for these reasons
+     * @param wordToCheck
+     */
     public void validateNewAttempt(String wordToCheck){
 
         if(wordToCheck.toLowerCase().compareTo(wordUsedInTheTurn.toLowerCase()) == 0){
@@ -198,14 +234,15 @@ public class TurnsManager{
         }
     }
 
-
+    /**
+     * The end of turn is detected in the level of turnManager but it has to be handled in the upper level of the
+     * SessionManager
+     * @param turnEndReason
+     */
     private void notifyEndOfTurn(TurnEndReason turnEndReason){
 
         timerController.endCurrentSlice(turnEndReason == TurnEndReason.WORD_GUESSED);
-        /*if (turnEndReason == TurnEndReason.WORD_GUESSED){
-            canvasController.takeScreenshotOfDrawing();
-            badgesController.createNewBadge(canvasController.takeScreenshotOfDrawing());
-        }*/
+
         sessionManager.handleGenericEndOfTurn(turnEndReason);
     }
 }
