@@ -41,6 +41,7 @@ public class BadgesController extends SketchEmAllWidget {
     public void createNewBadge(ImageIcon badgeIcon, Color paintModeUsed, String word) {
 
         badgesModel.setCurrentBadge(badgeIcon, paintModeUsed, word);
+        revalidate();
         repaint();
     }
 
@@ -68,7 +69,10 @@ public class BadgesController extends SketchEmAllWidget {
     }
 
     @Override
-    public Dimension getMaximumSize() {
+    public Dimension getMaximumSize() {return badgesPresentation.getPreferredSize();}
+
+    @Override
+    public Dimension getSize() {
         return badgesPresentation.getPreferredSize();
     }
 }

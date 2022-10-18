@@ -69,11 +69,7 @@ public class AppLayoutManager extends JFrame {
         centerPanel.add(timerAndInputWordPanel);
         centerPanel.add(Box.createVerticalGlue());
 
-
-        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
-
-        badgesController.setBorder(border);
-        JScrollPane scrollPane = setupScrollPane(badgesController);
+        JScrollPane scrollPane = setupScrollPane(badgesController, new Dimension(1000, 260));
 
         centerPanel.add(scrollPane);
 
@@ -97,22 +93,19 @@ public class AppLayoutManager extends JFrame {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(BACKGROUND_APPLICATION);
 
-        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
-
-        badgesController.setBorder(border);
-        JScrollPane scrollPane = setupScrollPane(badgesController);
+        JScrollPane scrollPane = setupScrollPane(badgesController, new Dimension(1000, 400));
 
         centerPanel.add(Box.createVerticalGlue());
-        
+
         JLabel gameOverLabel = new JLabel("!! GAME OVER !!");
         gameOverLabel.setForeground(Color.WHITE);
         gameOverLabel.setFont(new Font("SansSerif", Font.PLAIN, 40));
         gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         centerPanel.add(gameOverLabel);
         centerPanel.add(Box.createVerticalGlue());
-        
-        JLabel descriptionTankMessage = new JLabel("Thank you for playing, you made a very good job!! take a look at the drawings you collect");
+
+        JLabel descriptionTankMessage = new JLabel("Thank you for playing, you made a very good job!! Take a look at the drawings you collected");
         descriptionTankMessage.setForeground(Color.WHITE);
         descriptionTankMessage.setFont(new Font("SansSerif", Font.PLAIN, 15));
         descriptionTankMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -128,7 +121,7 @@ public class AppLayoutManager extends JFrame {
 
         centerPanel.add(restartLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        
+
         JButton restartButton = new JButton("RESTART");
         restartButton.addActionListener(restart);
         restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -143,16 +136,20 @@ public class AppLayoutManager extends JFrame {
         this.setVisible(true);
     }
 
-    private JScrollPane setupScrollPane(BadgesController badgesController){
+    private JScrollPane setupScrollPane(BadgesController badgesController, Dimension dimension){
         JScrollPane scrollPane = new JScrollPane(badgesController,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
+
+        scrollPane.setBorder(border);
         scrollPane.setBackground(BACKGROUND_APPLICATION);
         scrollPane.getViewport().setBackground(BACKGROUND_APPLICATION);
         scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
         scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.setPreferredSize(dimension);
+
         return scrollPane;
     }
 
