@@ -35,7 +35,7 @@ public class TimerModel {
         notifyChange();
     }
 
-    public ArrayList<TimerSlice> timerSlices = new ArrayList<>();
+    private final ArrayList<TimerSlice> timerSlices = new ArrayList<>();
 
     public void addTimerSlice(TimerSlice timerSlice){
         timerSlices.add(timerSlice);
@@ -73,7 +73,12 @@ public class TimerModel {
         }
     }
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    public void resetTimerSlices(){
+        timerSlices.clear();
+        notifyChange();
+    }
+
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
     }

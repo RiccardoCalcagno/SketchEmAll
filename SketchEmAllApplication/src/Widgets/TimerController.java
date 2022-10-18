@@ -22,7 +22,6 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
     private final TimeManager timerManager;
     private TimerModel timerModel;
     private TimerPresentation timerPresentation;
-    private BufferedImage timerBuffImage;
 
     private final LoopTaskService.TaskOfSession updateTimerTask = this::updateTimerOnSessionTimeIncrement;
 
@@ -99,7 +98,7 @@ public class TimerController extends SketchEmAllWidget implements ObserverOfAppl
 
     @Override
     public void reset() {
-
+        timerModel.resetTimerSlices();
     }
 
 
