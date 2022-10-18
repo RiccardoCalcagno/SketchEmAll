@@ -1,12 +1,9 @@
 package Widgets;
 
-import InternModels.PaintMode;
 import InternModels.TimerSlice;
 
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +43,14 @@ public class TimerModel {
     }
 
     /**
+     * Removes all slices from the component
+     */
+    public void resetTimerSlices(){
+        timerSlices.clear();
+        notifyChange();
+    }
+
+    /**
      * This operation will prevent the last slice to grow more, so that its paramiter like isWonMode and isGrowing will get
      * their final value
      * @param isWon
@@ -71,11 +76,6 @@ public class TimerModel {
             timerSlices.get(timerSlices.size()-1).setEndingPercentageTime(endPercentageTime);
             notifyChange();
         }
-    }
-
-    public void resetTimerSlices(){
-        timerSlices.clear();
-        notifyChange();
     }
 
     private final List<ChangeListener> changeListeners = new ArrayList<>();
