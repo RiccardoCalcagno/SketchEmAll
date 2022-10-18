@@ -1,6 +1,5 @@
 package Widgets;
 
-import javax.swing.*;
 import java.awt.*;
 
 import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
@@ -10,8 +9,9 @@ import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
  */
 public class BadgesPresentation {
 
-    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(900, 180);
+    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(960, 250);
     private static final Dimension PREFERRED_SIZE_BADGE = new Dimension(150, 100);
+    private static final int BADGES_PER_LINE = 6;
     private BadgesController badgesController;
     private BadgesModel badgesModel;
 
@@ -29,10 +29,9 @@ public class BadgesPresentation {
 
 
     private void InstallUIStructure(BadgesController controller){
+        controller.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
-        controller.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        //controller.add(new ScrollPane(awda))
     }
 
     public void paint(Graphics2D pen, BadgesController controller) {
@@ -40,21 +39,29 @@ public class BadgesPresentation {
         this.badgesModel = controller.getModel();
         pen.setColor(Color.red);
 
-        //placeholder
-
+        int preferredHorizontalSpacing = (PREFERRED_SIZE_BADGES_BOX.width - BADGES_PER_LINE*PREFERRED_SIZE_BADGE.width - 20) / (BADGES_PER_LINE-1);
+        int verticalSpacing = 20;
         //draw all badges
-        int x = 10;
+        int x;
+        int y;
         for (int i = 0; i < badgesModel.getListBadges().size(); i++) {
-
-            pen.drawImage(badgesModel.getListBadges().get(i).getImage(),
+           x = 10 + (PREFERRED_SIZE_BADGE.width + preferredHorizontalSpacing)*(i%BADGES_PER_LINE);
+           y = (int) (badgesController.getPreferredSize().height * 0.05d) + (PREFERRED_SIZE_BADGE.height + verticalSpacing) * (i/BADGES_PER_LINE);
+           pen.drawImage(badgesModel.getListBadges().get(i).getImage(),
                     x,
-                    (int) (badgesController.getPreferredSize().height * 0.15d),
+                    y,
                     PREFERRED_SIZE_BADGE.width, PREFERRED_SIZE_BADGE.height, null);
-            Point topLeftcorner = new Point(x, (int) (badgesController.getPreferredSize().height * 0.15d));
+
+            Point topLeftCorner = new Point(x, y);
             pen.setStroke(new BasicStroke(5f));
-            drawPaintModeFrame(pen, badgesModel.getListColors().get(i), badgesModel.getListWords().get(i), topLeftcorner, PREFERRED_SIZE_BADGE, new Color(20, 20, 20));
-            x = x + PREFERRED_SIZE_BADGE.width;
+            drawPaintModeFrame(pen, badgesModel.getListColors().get(i), badgesModel.getListWords().get(i), topLeftCorner, PREFERRED_SIZE_BADGE, new Color(20, 20, 20));
+
         }
+        setPreferredHeight(20 + (badgesModel.getListBadges().size()/BADGES_PER_LINE + 1)*(PREFERRED_SIZE_BADGE.height + verticalSpacing));
+    }
+
+    private void setPreferredHeight(int newHeight){
+        PREFERRED_SIZE_BADGES_BOX.height = Math.max(250, newHeight);
     }
 
 
