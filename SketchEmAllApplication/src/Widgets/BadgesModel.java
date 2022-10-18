@@ -11,13 +11,10 @@ import java.util.List;
  * Abstraction of the Widget responsible for displaying Badges
  */
 public class BadgesModel {
-    private ImageIcon currentBadge;
-    private Color currentPaintMode;
-    private String currentWord;
 
-    private List<ImageIcon> listBadges = new ArrayList<>();
-    private List<Color> listColors = new ArrayList<>();
-    private List<String> listWords = new ArrayList<>();
+    private final List<ImageIcon> listBadges = new ArrayList<>();
+    private final List<Color> listColors = new ArrayList<>();
+    private final List<String> listWords = new ArrayList<>();
 
     /**
      * setter for the current badge
@@ -28,10 +25,7 @@ public class BadgesModel {
      *                    also adds the badge to a list so it can later display all badges
      */
     public void setCurrentBadge(ImageIcon badgeIcon, Color modeColor, String wordGuessed) {
-        this.currentBadge = badgeIcon;
-        this.currentPaintMode = modeColor;
-        this.currentWord = wordGuessed;
-        this.addBadgeToList(currentBadge, currentPaintMode, currentWord);
+        this.addBadgeToList(badgeIcon, modeColor, wordGuessed);
         notifyChange();
     }
 
@@ -76,7 +70,17 @@ public class BadgesModel {
         this.notifyChange();
     }
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    /**
+     * Clears all the badges
+     */
+    public void resetAllLists(){
+        listWords.clear();
+        listBadges.clear();
+        listColors.clear();
+        notifyChange();
+    }
+
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd) {
         changeListeners.add(changeListenerToAdd);
     }
@@ -90,4 +94,5 @@ public class BadgesModel {
             changeListener.stateChanged(changeEvent);
         }
     }
+
 }

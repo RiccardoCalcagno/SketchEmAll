@@ -103,13 +103,15 @@ public class AppLayoutManager extends JFrame {
         JScrollPane scrollPane = setupScrollPane(badgesController);
 
         centerPanel.add(Box.createVerticalGlue());
-        //TODO
+        
         JLabel gameOverLabel = new JLabel("!! GAME OVER !!");
         gameOverLabel.setForeground(Color.WHITE);
         gameOverLabel.setFont(new Font("SansSerif", Font.PLAIN, 40));
         gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
         centerPanel.add(gameOverLabel);
         centerPanel.add(Box.createVerticalGlue());
+        
         JLabel descriptionTankMessage = new JLabel("Thank you for playing, you made a very good job!! take a look at the drawings you collect");
         descriptionTankMessage.setForeground(Color.WHITE);
         descriptionTankMessage.setFont(new Font("SansSerif", Font.PLAIN, 15));
@@ -118,20 +120,20 @@ public class AppLayoutManager extends JFrame {
         centerPanel.add(Box.createVerticalGlue());
 
         centerPanel.add(scrollPane);
-
         centerPanel.add(Box.createVerticalGlue());
 
         JLabel restartLabel = new JLabel("Who knows if your partner will be better at drawing ;) Press the RESTART button and discover it!!");
         restartLabel.setForeground(Color.WHITE);
         restartLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         centerPanel.add(restartLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        
         JButton restartButton = new JButton("RESTART");
         restartButton.addActionListener(restart);
         restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         centerPanel.add(restartButton);
-
         centerPanel.add(Box.createVerticalGlue());
 
         this.add(centerPanel, BorderLayout.CENTER);

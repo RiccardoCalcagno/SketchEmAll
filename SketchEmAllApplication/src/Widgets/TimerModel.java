@@ -1,12 +1,9 @@
 package Widgets;
 
-import InternModels.PaintMode;
 import InternModels.TimerSlice;
 
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class TimerModel {
         notifyChange();
     }
 
-    public ArrayList<TimerSlice> timerSlices = new ArrayList<>();
+    private final ArrayList<TimerSlice> timerSlices = new ArrayList<>();
 
     public void addTimerSlice(TimerSlice timerSlice){
         timerSlices.add(timerSlice);
@@ -43,6 +40,14 @@ public class TimerModel {
     }
     public ArrayList<TimerSlice> getTimerSlices(){
         return timerSlices;
+    }
+
+    /**
+     * Removes all slices from the component
+     */
+    public void resetTimerSlices(){
+        timerSlices.clear();
+        notifyChange();
     }
 
     /**
@@ -73,7 +78,7 @@ public class TimerModel {
         }
     }
 
-    private List<ChangeListener> changeListeners = new ArrayList<>();
+    private final List<ChangeListener> changeListeners = new ArrayList<>();
     public void addChangeListener(ChangeListener changeListenerToAdd){
         changeListeners.add(changeListenerToAdd);
     }
