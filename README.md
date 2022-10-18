@@ -14,10 +14,14 @@ Our application is a mini-game, that uses the tools of a creative application. I
 ### Modes of drawing: 
 The modes should challenge the user to be original with the tools given, when representing ordinary words. 
  
-### **Pencil**: the basic stroke drawing, mapped 1:1 with the cursor 
-### **Crazy pen**: a tool that transforms each new point located by the cursor by randow offset vector.  This vector gets bigger when the speed of the movement increases. 
-### **Inverted pen**: a tool that takes the cursor's movement and applies central symetry transform 
-### **Ink blot**: You can create and strech smooth filled closed splines in two colors - black and gray.
+### **Pencil**: 
+the basic stroke drawing, mapped 1:1 with the cursor 
+### **Crazy pen**: 
+a tool that transforms each new point located by the cursor by randow offset vector.  This vector gets bigger when the speed of the movement increases. 
+### **Inverted pen**: 
+a tool that takes the cursor's movement and applies central symetry transform 
+### **Ink blot**: 
+You can create and strech smooth filled closed splines in two colors - black and gray.
 
 ### Timer: 
 The session has a duration of 10 minutes, this time is splitted into different chunks of time, each of them representing the available time to guess a single drawing. In this perspective, at any new figure will be added a new chunk of time to the timer. If the player guesses the word than he gains a badge. If he guesses right or the number of attempts ends or the time of the chunk is over than the players can continue with the next drawing by picking another word.
