@@ -1,6 +1,6 @@
 package PaintingTools;
 
-public enum PaintingToolsEnum {
+public enum PaintingToolsEnum{
     PENCIL,
     CRAZY_PEN,
     INVERTED_PEN,
