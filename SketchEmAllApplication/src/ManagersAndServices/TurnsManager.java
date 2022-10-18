@@ -19,7 +19,7 @@ public class TurnsManager{
     public static final int NUM_OF_ATTEMPT_EACH_TURN = 3;
 
     // The collection of each turn must end in seconds
-    public static final int DURATION_OF_SESSION_IN_SECONDS = 300;
+    public static final int DURATION_OF_SESSION_IN_SECONDS = 3;//300;
 
     // ------------------------------------ Managers references ------------------------------------
     private final SessionManager sessionManager;
