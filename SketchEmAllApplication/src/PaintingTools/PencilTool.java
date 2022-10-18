@@ -7,6 +7,9 @@ import PaintingDrawings.PolylineDrawing;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
+/**
+ * Simple drawing pencil
+ */
 public class PencilTool extends AbstractTool {
 
     protected Point nextPointToAdd;

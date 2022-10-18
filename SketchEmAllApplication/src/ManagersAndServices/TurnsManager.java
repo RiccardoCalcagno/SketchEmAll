@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-
+/**
+ * Object that handles the system of turns in a session
+ */
 public class TurnsManager{
 
     // the user can try with a maximum of NUM_OF_ATTEMPT_EACH_TURN words each turn to guess the draw of the partner
@@ -253,6 +255,7 @@ public class TurnsManager{
      * The end of turn is detected in the level of turnManager but it has to be handled in the upper level of the
      * SessionManager
      * @param turnEndReason
+     *  Reason that led to the end of the turn
      */
     private void notifyEndOfTurn(TurnEndReason turnEndReason){
 

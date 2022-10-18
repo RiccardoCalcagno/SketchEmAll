@@ -7,6 +7,9 @@ import Widgets.*;
 
 import javax.swing.*;
 
+/**
+ * Object that handles the whole game
+ */
 public class SessionManager{
 
     // -------------------------  Managers and Services ------------------------
