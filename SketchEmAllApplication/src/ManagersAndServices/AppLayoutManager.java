@@ -5,8 +5,7 @@ import Widgets.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Manager handling the layout of the whole application
@@ -22,6 +21,8 @@ public class AppLayoutManager extends JFrame {
     public AppLayoutManager() {
         super();
         setTitle("SketchEmAll");
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -42,7 +43,8 @@ public class AppLayoutManager extends JFrame {
                                    TimerController timerController,
                                    WordsInputController wordsInputController) {
 
-        this.setLayout(new BorderLayout());
+        this.getContentPane().removeAll();
+        // BorderLayout is already the default in a JFrame
         this.setPreferredSize(APP_PREFERRED_SIZE);
 
         JPanel centerPanel = new JPanel();
@@ -71,15 +73,7 @@ public class AppLayoutManager extends JFrame {
         Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
 
         badgesController.setBorder(border);
-        JScrollPane scrollPane = new JScrollPane(badgesController,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setBackground(BACKGROUND_APPLICATION);
-        scrollPane.getViewport().setBackground(BACKGROUND_APPLICATION);
-        scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
-        scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        JScrollPane scrollPane = setupScrollPane(badgesController);
 
         centerPanel.add(scrollPane);
 
@@ -90,10 +84,64 @@ public class AppLayoutManager extends JFrame {
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+
+    public void presentEndLayout(BadgesController badgesController, ActionListener restart) {
+        this.getContentPane().removeAll();
+        this.setPreferredSize(APP_PREFERRED_SIZE);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(BACKGROUND_APPLICATION);
+
+        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
+
+        badgesController.setBorder(border);
+        JScrollPane scrollPane = setupScrollPane(badgesController);
+
+        centerPanel.add(Box.createVerticalGlue());
+        //TODO
+        JLabel thanksLabel = new JLabel("Thank you something");
+        thanksLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(thanksLabel);
+        centerPanel.add(Box.createVerticalGlue());
+        centerPanel.add(scrollPane);
+
+        centerPanel.add(Box.createVerticalGlue());
+
+        JLabel restartLabel = new JLabel("Thank you something");
+        restartLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(restartLabel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        JButton restartButton = new JButton("RESTART");
+        restartButton.addActionListener(restart);
+        restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(restartButton);
+
+        centerPanel.add(Box.createVerticalGlue());
+
+        this.add(centerPanel, BorderLayout.CENTER);
 
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+    private JScrollPane setupScrollPane(BadgesController badgesController){
+        JScrollPane scrollPane = new JScrollPane(badgesController,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBackground(BACKGROUND_APPLICATION);
+        scrollPane.getViewport().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        return scrollPane;
     }
 
 

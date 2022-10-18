@@ -71,6 +71,8 @@ public class SessionManager{
 
     public void endSession(){
         loopTaskService.stopLoop();
+        AudioService.playVictorySound();
+        appLayoutManager.presentEndLayout(badgesController, e->startSession());
     }
 
 
