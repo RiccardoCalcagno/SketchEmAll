@@ -20,7 +20,6 @@ public class TimeManager {
     }
 
     private Timer executorTimer;
-    private ActionListener timerListener;
 
     private ChangePlayingTimeRequestLevel currentLevelOfStoppedTime;
 
@@ -31,7 +30,7 @@ public class TimeManager {
 
 
 
-    private List<ObserverOfApplicationActivityStates> playableTimeResponsiveControllers = new ArrayList<ObserverOfApplicationActivityStates>();
+    private final List<ObserverOfApplicationActivityStates> playableTimeResponsiveControllers = new ArrayList<ObserverOfApplicationActivityStates>();
 
 
     public void initializeSessionTimer(){
@@ -40,12 +39,7 @@ public class TimeManager {
 
         centisecondsOfSession = 0;
 
-        timerListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleTimerTic();
-            }
-        };
+        ActionListener timerListener = e -> handleTimerTic();
 
         updateLocalTimeOfSession();
 
@@ -53,12 +47,11 @@ public class TimeManager {
         executorTimer.setDelay(10);
         executorTimer.setRepeats(true);
         executorTimer.start();
-
         executorTimer.stop();
     }
 
     /**
-     * you can add a controller that implements ObserverOfApplicationActivityStates, so that each thie that the game
+     * you can add a controller that implements ObserverOfApplicationActivityStates, so that each time that the game
      * will experience a change of it time level it will be notified
      * @param controllerToManage
      */
@@ -109,7 +102,6 @@ public class TimeManager {
      * Timer Loop management
      */
     private void handleTimerTic() {
-
         centisecondsOfSession++;
 
         if(centisecondsOfSession % 100 == 0){
@@ -126,6 +118,8 @@ public class TimeManager {
         int hours = totalRemainingSeconds / 3600;
         int minutes = (totalRemainingSeconds / 60) % 60;
         int seconds = totalRemainingSeconds % 60;
+
+        if (totalRemainingSeconds == 0) stopTime_levelledRequest(ChangePlayingTimeRequestLevel.FORCED_INTERRUPTION);
 
         localTimeOfSession = LocalTime.of(hours, minutes, seconds);
     }

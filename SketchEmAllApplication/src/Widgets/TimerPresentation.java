@@ -129,7 +129,7 @@ public class TimerPresentation {
         setEnabledPauseResumeButton(model.isActive());
         updateLocalPauseResume(model.isGameOccasionallyInterrupted());
 
-        var percentageTimeOfSession = getPercentageOfSession(timerController);
+        double percentageTimeOfSession = getPercentageOfSession(timerController);
 
         //updating the presentation of the digital counter
         renderDigitalTime(timerController, percentageTimeOfSession);

@@ -59,6 +59,11 @@ public class BadgesController extends SketchEmAllWidget {
     }
 
     @Override
+    public void reset(){
+        badgesModel.resetAllLists();
+    }
+
+    @Override
     public Dimension getPreferredSize() {
         return badgesPresentation.getPreferredSize();
     }

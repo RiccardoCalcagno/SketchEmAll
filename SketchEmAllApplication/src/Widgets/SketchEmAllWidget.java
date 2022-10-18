@@ -16,7 +16,10 @@ public abstract class SketchEmAllWidget extends JPanel {
         setBackground(AppLayoutManager.BACKGROUND_APPLICATION);
     }
 
-    void reset(){
+    /**
+     * Resets the content of the component
+     */
+    public void reset(){
 
     }
 }

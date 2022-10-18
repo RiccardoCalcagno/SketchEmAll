@@ -5,8 +5,7 @@ import Widgets.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Manager handling the layout of the whole application
@@ -22,6 +21,8 @@ public class AppLayoutManager extends JFrame {
     public AppLayoutManager() {
         super();
         setTitle("SketchEmAll");
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -42,7 +43,8 @@ public class AppLayoutManager extends JFrame {
                                    TimerController timerController,
                                    WordsInputController wordsInputController) {
 
-        this.setLayout(new BorderLayout());
+        this.getContentPane().removeAll();
+        // BorderLayout is already the default in a JFrame
         this.setPreferredSize(APP_PREFERRED_SIZE);
 
         JPanel centerPanel = new JPanel();
@@ -67,25 +69,9 @@ public class AppLayoutManager extends JFrame {
         centerPanel.add(timerAndInputWordPanel);
         centerPanel.add(Box.createVerticalGlue());
 
-
-        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
-
-
-
-        JScrollPane scrollPane = new JScrollPane(badgesController,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        scrollPane.setBorder(border);
-        scrollPane.setBackground(BACKGROUND_APPLICATION);
-        scrollPane.getViewport().setBackground(BACKGROUND_APPLICATION);
-        scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
-        scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
-        scrollPane.setPreferredSize(new Dimension(1000, 260));
-
+        JScrollPane scrollPane = setupScrollPane(badgesController);
 
         centerPanel.add(scrollPane);
-
 
         centerPanel.add(Box.createVerticalGlue());
 
@@ -94,10 +80,77 @@ public class AppLayoutManager extends JFrame {
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+
+    public void presentEndLayout(BadgesController badgesController, ActionListener restart) {
+        this.getContentPane().removeAll();
+        this.setPreferredSize(APP_PREFERRED_SIZE);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(BACKGROUND_APPLICATION);
+
+        JScrollPane scrollPane = setupScrollPane(badgesController);
+
+        centerPanel.add(Box.createVerticalGlue());
+
+        JLabel gameOverLabel = new JLabel("!! GAME OVER !!");
+        gameOverLabel.setForeground(Color.WHITE);
+        gameOverLabel.setFont(new Font("SansSerif", Font.PLAIN, 40));
+        gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(gameOverLabel);
+        centerPanel.add(Box.createVerticalGlue());
+
+        JLabel descriptionTankMessage = new JLabel("Thank you for playing, you made a very good job!! take a look at the drawings you collect");
+        descriptionTankMessage.setForeground(Color.WHITE);
+        descriptionTankMessage.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        descriptionTankMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(descriptionTankMessage);
+        centerPanel.add(Box.createVerticalGlue());
+
+        centerPanel.add(scrollPane);
+        centerPanel.add(Box.createVerticalGlue());
+
+        JLabel restartLabel = new JLabel("Who knows if your partner will be better at drawing ;) Press the RESTART button and discover it!!");
+        restartLabel.setForeground(Color.WHITE);
+        restartLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(restartLabel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JButton restartButton = new JButton("RESTART");
+        restartButton.addActionListener(restart);
+        restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(restartButton);
+        centerPanel.add(Box.createVerticalGlue());
+
+        this.add(centerPanel, BorderLayout.CENTER);
 
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+    private JScrollPane setupScrollPane(BadgesController badgesController){
+        JScrollPane scrollPane = new JScrollPane(badgesController,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
+
+        scrollPane.setBorder(border);
+        scrollPane.setBackground(BACKGROUND_APPLICATION);
+        scrollPane.getViewport().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.setPreferredSize(new Dimension(1000, 260));
+
+        return scrollPane;
     }
 
 

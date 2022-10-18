@@ -69,9 +69,18 @@ public class SessionManager{
         }
     }
 
-    private void endSession(){
+    public void restartSession(){
+        // start of the background loop of the game
+        badgesController.reset();
+        timerController.reset();
+        wordsInputController.reset();
+        startSession();
+    }
 
+    public void endSession(){
         loopTaskService.stopLoop();
+        AudioService.playVictorySound();
+        appLayoutManager.presentEndLayout(badgesController, e->restartSession());
     }
 
 
