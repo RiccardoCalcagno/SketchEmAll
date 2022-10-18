@@ -1,11 +1,7 @@
 package Widgets;
 
-import ManagersAndServices.AppLayoutManager;
-
-import javax.swing.*;
 import java.awt.*;
 
-import static ManagersAndServices.AppLayoutManager.BACKGROUND_APPLICATION;
 import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
 
 /**
