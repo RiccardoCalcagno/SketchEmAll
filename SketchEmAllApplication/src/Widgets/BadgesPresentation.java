@@ -13,7 +13,7 @@ import static ManagersAndServices.StyleUtility.drawPaintModeFrame;
  */
 public class BadgesPresentation {
 
-    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(980, 250);
+    private static final Dimension PREFERRED_SIZE_BADGES_BOX = new Dimension(960, 250);
     private static final Dimension PREFERRED_SIZE_BADGE = new Dimension(150, 100);
     private static final int BADGES_PER_LINE = 6;
     private BadgesController badgesController;
@@ -61,6 +61,11 @@ public class BadgesPresentation {
             drawPaintModeFrame(pen, badgesModel.getListColors().get(i), badgesModel.getListWords().get(i), topLeftCorner, PREFERRED_SIZE_BADGE, new Color(20, 20, 20));
 
         }
+        setPreferredHeight(20 + (badgesModel.getListBadges().size()/BADGES_PER_LINE + 1)*(PREFERRED_SIZE_BADGE.height + verticalSpacing));
+    }
+
+    private void setPreferredHeight(int newHeight){
+        PREFERRED_SIZE_BADGES_BOX.height = Math.max(250, newHeight);
     }
 
 

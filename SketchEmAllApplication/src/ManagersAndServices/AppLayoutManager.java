@@ -70,18 +70,18 @@ public class AppLayoutManager extends JFrame {
 
         Border border = BorderFactory.createStrokeBorder(new BasicStroke(5.0f), Color.DARK_GRAY);
 
-        badgesController.setBorder(border);
 
 
         JScrollPane scrollPane = new JScrollPane(badgesController,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBorder(border);
         scrollPane.setBackground(BACKGROUND_APPLICATION);
         scrollPane.getViewport().setBackground(BACKGROUND_APPLICATION);
         scrollPane.getVerticalScrollBar().setBackground(BACKGROUND_APPLICATION);
         scrollPane.getHorizontalScrollBar().setBackground(BACKGROUND_APPLICATION);
+        scrollPane.setPreferredSize(new Dimension(1000, 260));
 
 
         centerPanel.add(scrollPane);
