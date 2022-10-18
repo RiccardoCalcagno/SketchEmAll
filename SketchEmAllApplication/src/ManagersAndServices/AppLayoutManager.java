@@ -112,7 +112,8 @@ public class AppLayoutManager extends JFrame {
 
         centerPanel.add(Box.createVerticalGlue());
 
-        JLabel restartLabel = new JLabel("Thank you something");
+        JLabel restartLabel = new JLabel("If you liked the game and want to play another session, please press the RESTART button!!");
+        restartLabel.setForeground(Color.WHITE);
         restartLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(restartLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
