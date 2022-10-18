@@ -11,17 +11,19 @@ Katerina Koleva, Riccardo Calcagno and Julien Marzal
 ### Application: 
 Our application is a mini-game, that uses the tools of a creative application. In “Scketch ‘em all” there is one drawer and few people who can guess. The guessers can make attempts by submitting the name of the drawed thing. We decided to include cards with words and different modes of drawing.
 
-### Modes of drawing: The modes should challenge the user to be original with the tools given, when representing ordinary words. 
-Example of those modes are 
-**Pencil**: the basic stroke drawing, mapped 1:1 with the cursor 
-**Crazy pen**: a tool that transforms each new point located by the cursor by randow offset vector.  This vector gets bigger when the speed of the movement increases. 
-**Inverted pen**: a tool that takes the cursor's movement and applies central symetry transform 
-**Ink blot**: You can create and strech smooth filled closed splines in two colors - black and gray.
+### Modes of drawing: 
+The modes should challenge the user to be original with the tools given, when representing ordinary words. 
+ 
+### **Pencil**: the basic stroke drawing, mapped 1:1 with the cursor 
+### **Crazy pen**: a tool that transforms each new point located by the cursor by randow offset vector.  This vector gets bigger when the speed of the movement increases. 
+### **Inverted pen**: a tool that takes the cursor's movement and applies central symetry transform 
+### **Ink blot**: You can create and strech smooth filled closed splines in two colors - black and gray.
 
 ### Timer: 
 The session has a duration of 10 minutes, this time is splitted into different chunks of time, each of them representing the available time to guess a single drawing. In this perspective, at any new figure will be added a new chunk of time to the timer. If the player guesses the word than he gains a badge. If he guesses right or the number of attempts ends or the time of the chunk is over than the players can continue with the next drawing by picking another word.
 
-### Picking words: The words as well as the modes would be chosen randomly - so the drawer could not know what the next turn would be. When picking a word the drawer should click on a card to turn it around and see the next word and mode. At this point the other players should not be looking at the screen.
+### Picking words: 
+The words as well as the modes would be chosen randomly - so the drawer could not know what the next turn would be. When picking a word the drawer should click on a card to turn it around and see the next word and mode. At this point the other players should not be looking at the screen.
 
 ### Goal: 
 The goal is for the drawer to do as much words possible in this 10 minute window and the guessers to guess them correctly. When the word is correctly guessed in 3 attempts and before the time is up, the players get a reward in the form of a badge with the drawing.
@@ -47,4 +49,4 @@ The word input manager stores the current word and in the event of submission ch
 We tried basing our architecture on PAC principles. We used Java and Java Swing library. We added audio feedback at the end of every turn.
 
 ### Conclusion
-We think the main focus of the game, which are the different drawing interactions with the canvas, is achieved. It is interesting and challenging to draw with some of the modes, but that is the point, to be creative and express yourself with the tools given. For us it was fun to play that game with our friends.
+We think the main focus of the game, which are the different drawing interactions with the canvas, is achieved. It is interesting and challenging to draw with some of the modes, but that is the point, to be creative. For us it was fun to play that game with our friends.
