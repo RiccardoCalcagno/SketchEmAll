@@ -34,7 +34,7 @@ public class AppLayoutManager extends JFrame {
      * @param wordsInputController the word input field and submit button
      *                             Reference to badges {@link BadgesController}
      *                             Reference to canvas {@link CanvasController}
-     *                             Reference to timer {@link TimerController
+     *                             Reference to timer {@link TimerController}
      *                             Reference to word input {@link WordsInputController}
      */
 

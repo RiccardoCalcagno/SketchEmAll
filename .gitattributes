@@ -12,3 +12,6 @@
 *.it lfs
 *.s3m lfs
 *.xm lfs
+
+# Documents
+*.pdf lfs
